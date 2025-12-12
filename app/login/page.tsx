@@ -7,6 +7,7 @@ import { Lock, Mail, User, Eye, EyeOff, Loader2 } from 'lucide-react';
 
 // URL de ton API Railway
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://web-production-06c3.up.railway.app';
+const DASHBOARD_URL = 'https://targetym-dashboard.vercel.app';
 
 function LoginForm() {
   const searchParams = useSearchParams();
@@ -49,14 +50,9 @@ function LoginForm() {
           throw new Error(data.detail || 'Erreur de connexion');
         }
 
-        // Stocker le token et les infos user
-        localStorage.setItem('access_token', data.access_token);
-        localStorage.setItem('refresh_token', data.refresh_token);
-        localStorage.setItem('user', JSON.stringify(data.user));
-
-  
-        // Rediriger vers le dashboard externe avec le token
-        window.location.href = `https://targetym-dashboard.vercel.app?token=${data.access_token}`;
+        // Rediriger vers le dashboard avec les tokens dans l'URL
+        const userEncoded = encodeURIComponent(JSON.stringify(data.user));
+        window.location.href = `${DASHBOARD_URL}?token=${data.access_token}&refresh=${data.refresh_token}&user=${userEncoded}`;
 
       } else {
         // REGISTER
@@ -80,13 +76,9 @@ function LoginForm() {
           throw new Error(data.detail || "Erreur lors de l'inscription");
         }
 
-        // Stocker le token et les infos user
-        localStorage.setItem('access_token', data.access_token);
-        localStorage.setItem('refresh_token', data.refresh_token);
-        localStorage.setItem('user', JSON.stringify(data.user));
-
-        // Rediriger vers le dashboard
-        router.push('/dashboard');
+        // Rediriger vers le dashboard avec les tokens dans l'URL
+        const userEncoded = encodeURIComponent(JSON.stringify(data.user));
+        window.location.href = `${DASHBOARD_URL}?token=${data.access_token}&refresh=${data.refresh_token}&user=${userEncoded}`;
       }
     } catch (err) {
       if (err instanceof Error) {
