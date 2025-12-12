@@ -86,9 +86,13 @@ function LoginForm() {
         // Rediriger vers le dashboard
         router.push('/dashboard');
       }
-    } catch (err: any) {
-      setError(err.message || 'Une erreur est survenue');
-    } finally {
+    } } catch (err) {
+  if (err instanceof Error) {
+    setError(err.message);
+  } else {
+    setError('Une erreur est survenue');
+  }
+} finally {
       setIsLoading(false);
     }
   };
