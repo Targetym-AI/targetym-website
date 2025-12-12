@@ -2,7 +2,7 @@
 
 import { useState, Suspense } from 'react';
 import Link from 'next/link';
-import { useSearchParams, useRouter } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import { Lock, Mail, User, Eye, EyeOff, Loader2 } from 'lucide-react';
 
 // URL de ton API Railway
@@ -11,7 +11,6 @@ const DASHBOARD_URL = 'https://targetym-dashboard.vercel.app';
 
 function LoginForm() {
   const searchParams = useSearchParams();
-  const router = useRouter();
   const defaultTab = searchParams.get('tab') === 'register' ? 'register' : 'login';
   
   const [activeTab, setActiveTab] = useState(defaultTab);
