@@ -2,15 +2,20 @@
 
 import { useState, Suspense } from 'react';
 import Link from 'next/link';
-import { useSearchParams } from 'next/navigation';
-import { Lock, Mail, User, Eye, EyeOff } from 'lucide-react';
+import { useSearchParams, useRouter } from 'next/navigation';
+import { Lock, Mail, User, Eye, EyeOff, Loader2 } from 'lucide-react';
 
+// URL de ton API Railway - À mettre dans .env.local en prod
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://web-production-06c3.up.railway.app';
 function LoginForm() {
   const searchParams = useSearchParams();
+  const router = useRouter();
   const defaultTab = searchParams.get('tab') === 'register' ? 'register' : 'login';
   
   const [activeTab, setActiveTab] = useState(defaultTab);
   const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -18,10 +23,74 @@ function LoginForm() {
     company: ''
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Simuler la connexion - rediriger vers le dashboard
-    window.location.href = 'http://localhost:3001/dashboard';
+    setIsLoading(true);
+    setError('');
+
+    try {
+      if (activeTab === 'login') {
+        // LOGIN
+        const response = await fetch(`${API_URL}/api/auth/login`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email: formData.email,
+            password: formData.password,
+          }),
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.detail || 'Erreur de connexion');
+        }
+
+        // Stocker le token et les infos user
+        localStorage.setItem('access_token', data.access_token);
+        localStorage.setItem('refresh_token', data.refresh_token);
+        localStorage.setItem('user', JSON.stringify(data.user));
+
+        // Rediriger vers le dashboard
+        router.push('/dashboard');
+
+      } else {
+        // REGISTER
+        const response = await fetch(`${API_URL}/api/auth/register`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email: formData.email,
+            password: formData.password,
+            first_name: formData.name.split(' ')[0] || '',
+            last_name: formData.name.split(' ').slice(1).join(' ') || '',
+            tenant_slug: formData.company.toLowerCase().replace(/\s+/g, '-') || null,
+          }),
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.detail || 'Erreur lors de l\'inscription');
+        }
+
+        // Stocker le token et les infos user
+        localStorage.setItem('access_token', data.access_token);
+        localStorage.setItem('refresh_token', data.refresh_token);
+        localStorage.setItem('user', JSON.stringify(data.user));
+
+        // Rediriger vers le dashboard
+        router.push('/dashboard');
+      }
+    } catch (err: any) {
+      setError(err.message || 'Une erreur est survenue');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -60,6 +129,13 @@ function LoginForm() {
           </button>
         </div>
 
+        {/* Error Message */}
+        {error && (
+          <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-700 rounded-lg text-sm">
+            {error}
+          </div>
+        )}
+
         {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-5">
           {activeTab === 'register' && (
@@ -77,6 +153,7 @@ function LoginForm() {
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     placeholder="Votre nom"
                     className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-all"
+                    required
                   />
                 </div>
               </div>
@@ -113,6 +190,7 @@ function LoginForm() {
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                 placeholder="votre@email.com"
                 className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-all"
+                required
               />
             </div>
           </div>
@@ -130,6 +208,7 @@ function LoginForm() {
                 onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                 placeholder="••••••••"
                 className="w-full pl-10 pr-12 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-all"
+                required
               />
               <button
                 type="button"
@@ -155,9 +234,17 @@ function LoginForm() {
 
           <button
             type="submit"
-            className="w-full py-3 px-4 bg-dark text-white font-medium rounded-lg hover:bg-gray-800 transition-colors"
+            disabled={isLoading}
+            className="w-full py-3 px-4 bg-dark text-white font-medium rounded-lg hover:bg-gray-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
           >
-            {activeTab === 'login' ? 'Se connecter' : 'Créer un compte'}
+            {isLoading ? (
+              <>
+                <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                Chargement...
+              </>
+            ) : (
+              activeTab === 'login' ? 'Se connecter' : 'Créer un compte'
+            )}
           </button>
         </form>
 
