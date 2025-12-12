@@ -5,8 +5,9 @@ import Link from 'next/link';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { Lock, Mail, User, Eye, EyeOff, Loader2 } from 'lucide-react';
 
-// URL de ton API Railway - À mettre dans .env.local en prod
+// URL de ton API Railway
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://web-production-06c3.up.railway.app';
+
 function LoginForm() {
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -75,7 +76,7 @@ function LoginForm() {
         const data = await response.json();
 
         if (!response.ok) {
-          throw new Error(data.detail || 'Erreur lors de l\'inscription');
+          throw new Error(data.detail || "Erreur lors de l'inscription");
         }
 
         // Stocker le token et les infos user
@@ -86,13 +87,13 @@ function LoginForm() {
         // Rediriger vers le dashboard
         router.push('/dashboard');
       }
-    } } catch (err) {
-  if (err instanceof Error) {
-    setError(err.message);
-  } else {
-    setError('Une erreur est survenue');
-  }
-} finally {
+    } catch (err) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError('Une erreur est survenue');
+      }
+    } finally {
       setIsLoading(false);
     }
   };
