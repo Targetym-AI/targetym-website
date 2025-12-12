@@ -54,8 +54,9 @@ function LoginForm() {
         localStorage.setItem('refresh_token', data.refresh_token);
         localStorage.setItem('user', JSON.stringify(data.user));
 
-        // Rediriger vers le dashboard
-        router.push('/dashboard');
+  
+        // Rediriger vers le dashboard externe avec le token
+        window.location.href = `https://targetym-dashboard.vercel.app?token=${data.access_token}`;
 
       } else {
         // REGISTER
