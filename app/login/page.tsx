@@ -9,6 +9,30 @@ import { Lock, Mail, Eye, EyeOff, Loader2, Building2, Phone, CheckCircle, Clock,
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://web-production-06c3.up.railway.app';
 const DASHBOARD_URL = 'https://targetym-dashboard.vercel.app';
 
+// Domaines emails personnels bloqués
+const BLOCKED_EMAIL_DOMAINS = [
+  'gmail.com', 'googlemail.com',
+  'yahoo.com', 'yahoo.fr', 'yahoo.co.uk', 'ymail.com',
+  'hotmail.com', 'hotmail.fr', 'hotmail.co.uk',
+  'outlook.com', 'outlook.fr',
+  'live.com', 'live.fr',
+  'msn.com',
+  'icloud.com', 'me.com', 'mac.com',
+  'aol.com', 'aol.fr',
+  'protonmail.com', 'proton.me',
+  'mail.com', 'email.com',
+  'gmx.com', 'gmx.fr',
+  'zoho.com',
+  'yandex.com', 'yandex.ru',
+  'mail.ru',
+  'orange.fr', 'wanadoo.fr', 'free.fr', 'sfr.fr', 'laposte.net',
+];
+
+function isPersonalEmail(email: string): boolean {
+  const domain = email.split('@')[1]?.toLowerCase();
+  return domain ? BLOCKED_EMAIL_DOMAINS.includes(domain) : false;
+}
+
 function LoginForm() {
   const searchParams = useSearchParams();
   const defaultTab = searchParams.get('tab') === 'register' ? 'register' : 'login';
@@ -17,6 +41,7 @@ function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
+  const [emailError, setEmailError] = useState('');
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -31,6 +56,14 @@ function LoginForm() {
     e.preventDefault();
     setIsLoading(true);
     setError('');
+    setEmailError('');
+
+    // Validation email professionnel pour inscription
+    if (activeTab === 'register' && isPersonalEmail(formData.email)) {
+      setEmailError('Les emails personnels ne sont pas acceptés. Utilisez votre email professionnel.');
+      setIsLoading(false);
+      return;
+    }
 
     try {
       if (activeTab === 'login') {
@@ -255,7 +288,8 @@ function LoginForm() {
           {/* Email */}
           <div>
             <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1.5">
-              Email {activeTab === 'register' && '*'}
+              Email {activeTab === 'register' && <span className="text-red-500">*</span>}
+              {activeTab === 'register' && <span className="text-gray-400 text-xs ml-2">(professionnel uniquement)</span>}
             </label>
             <div className="relative">
               <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -263,12 +297,30 @@ function LoginForm() {
                 type="email"
                 id="email"
                 value={formData.email}
-                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                placeholder="votre@email.com"
-                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-all"
+                onChange={(e) => {
+                  const email = e.target.value;
+                  setFormData({ ...formData, email });
+                  // Validation en temps réel pour inscription
+                  if (activeTab === 'register' && email.includes('@')) {
+                    if (isPersonalEmail(email)) {
+                      setEmailError('Les emails personnels (Gmail, Yahoo, etc.) ne sont pas acceptés.');
+                    } else {
+                      setEmailError('');
+                    }
+                  } else {
+                    setEmailError('');
+                  }
+                }}
+                placeholder={activeTab === 'register' ? 'votre@entreprise.com' : 'votre@email.com'}
+                className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-all ${
+                  emailError ? 'border-red-300 bg-red-50' : 'border-gray-300'
+                }`}
                 required
               />
             </div>
+            {emailError && (
+              <p className="mt-1 text-sm text-red-600">{emailError}</p>
+            )}
           </div>
 
           {/* Mot de passe */}
