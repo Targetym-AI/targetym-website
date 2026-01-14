@@ -3,7 +3,7 @@
 import { useState, Suspense } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
-import { Lock, Mail, User, Eye, EyeOff, Loader2, Building2, Phone, CheckCircle, Clock, Users } from 'lucide-react';
+import { Lock, Mail, Eye, EyeOff, Loader2, Building2, Phone, CheckCircle, Clock, Users } from 'lucide-react';
 
 // URL de ton API Railway
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://web-production-06c3.up.railway.app';
