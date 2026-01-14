@@ -23,7 +23,8 @@ function LoginForm() {
     firstName: '',
     lastName: '',
     company: '',
-    phone: ''
+    phone: '',
+    jobTitle: ''
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -69,6 +70,7 @@ function LoginForm() {
             first_name: formData.firstName,
             last_name: formData.lastName,
             phone: formData.phone || null,
+            job_title: formData.jobTitle || null,
           }),
         });
 
@@ -231,6 +233,21 @@ function LoginForm() {
                     className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-all"
                   />
                 </div>
+              </div>
+
+              {/* Poste */}
+              <div>
+                <label htmlFor="jobTitle" className="block text-sm font-medium text-gray-700 mb-1.5">
+                  Votre poste <span className="text-gray-400">(optionnel)</span>
+                </label>
+                <input
+                  type="text"
+                  id="jobTitle"
+                  value={formData.jobTitle}
+                  onChange={(e) => setFormData({ ...formData, jobTitle: e.target.value })}
+                  placeholder="Ex: Directeur Général, DRH, Fondateur..."
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-all"
+                />
               </div>
             </>
           )}
