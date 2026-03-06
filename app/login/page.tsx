@@ -1,9 +1,9 @@
 'use client';
 
-import { useState, Suspense } from 'react';
+import { useState, useRef, Suspense, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
-import { Lock, Mail, Eye, EyeOff, Loader2, Building2, Phone, CheckCircle, Clock, Users } from 'lucide-react';
+import { Lock, Mail, Eye, EyeOff, Loader2, Building2, Phone, CheckCircle, Clock, Users, Shield, ArrowLeft } from 'lucide-react';
 
 // URL de ton API Railway
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://web-production-06c3.up.railway.app';
@@ -36,7 +36,7 @@ function isPersonalEmail(email: string): boolean {
 function LoginForm() {
   const searchParams = useSearchParams();
   const defaultTab = searchParams.get('tab') === 'register' ? 'register' : 'login';
-  
+
   const [activeTab, setActiveTab] = useState(defaultTab);
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -51,6 +51,119 @@ function LoginForm() {
     phone: '',
     jobTitle: ''
   });
+
+  // 2FA state
+  const [twoFactorStep, setTwoFactorStep] = useState(false);
+  const [needsSetup, setNeedsSetup] = useState(false);
+  const [tempToken, setTempToken] = useState('');
+  const [qrCode, setQrCode] = useState('');
+  const [otpCode, setOtpCode] = useState(['', '', '', '', '', '']);
+  const [verifying2FA, setVerifying2FA] = useState(false);
+  const otpRefs = useRef<(HTMLInputElement | null)[]>([]);
+
+  // Setup 2FA (fetch QR code)
+  const setup2FA = useCallback(async (token: string) => {
+    try {
+      const res = await fetch(`${API_URL}/api/auth/2fa/setup`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setQrCode(data.qr_code_base64);
+      } else {
+        setError('Erreur lors de la configuration 2FA');
+      }
+    } catch {
+      setError('Erreur de connexion');
+    }
+  }, []);
+
+  // Auto-setup when entering 2FA step with needs_setup
+  useEffect(() => {
+    if (twoFactorStep && needsSetup && tempToken && !qrCode) {
+      setup2FA(tempToken);
+    }
+  }, [twoFactorStep, needsSetup, tempToken, qrCode, setup2FA]);
+
+  const handleOtpChange = (index: number, value: string) => {
+    if (value.length > 1) value = value.slice(-1);
+    if (value && !/^\d$/.test(value)) return;
+
+    const newCode = [...otpCode];
+    newCode[index] = value;
+    setOtpCode(newCode);
+
+    // Auto-focus next input
+    if (value && index < 5) {
+      otpRefs.current[index + 1]?.focus();
+    }
+  };
+
+  const handleOtpKeyDown = (index: number, e: React.KeyboardEvent) => {
+    if (e.key === 'Backspace' && !otpCode[index] && index > 0) {
+      otpRefs.current[index - 1]?.focus();
+    }
+  };
+
+  const handleOtpPaste = (e: React.ClipboardEvent) => {
+    e.preventDefault();
+    const pasted = e.clipboardData.getData('text').replace(/\D/g, '').slice(0, 6);
+    const newCode = [...otpCode];
+    for (let i = 0; i < pasted.length; i++) {
+      newCode[i] = pasted[i];
+    }
+    setOtpCode(newCode);
+    if (pasted.length > 0) {
+      const focusIndex = Math.min(pasted.length, 5);
+      otpRefs.current[focusIndex]?.focus();
+    }
+  };
+
+  const verify2FA = async () => {
+    const code = otpCode.join('');
+    if (code.length !== 6) {
+      setError('Veuillez entrer les 6 chiffres');
+      return;
+    }
+
+    setVerifying2FA(true);
+    setError('');
+
+    try {
+      const res = await fetch(`${API_URL}/api/auth/2fa/verify`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${tempToken}`,
+        },
+        body: JSON.stringify({ code }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.detail || 'Code invalide');
+      }
+
+      // Rediriger vers le dashboard avec les vrais tokens
+      const userEncoded = encodeURIComponent(JSON.stringify(data.user));
+      window.location.href = `${DASHBOARD_URL}?token=${data.access_token}&refresh=${data.refresh_token}&user=${userEncoded}`;
+    } catch (err) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError('Code invalide ou expiré');
+      }
+      setOtpCode(['', '', '', '', '', '']);
+      otpRefs.current[0]?.focus();
+    } finally {
+      setVerifying2FA(false);
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -83,6 +196,14 @@ function LoginForm() {
 
         if (!response.ok) {
           throw new Error(data.detail || 'Erreur de connexion');
+        }
+
+        // Vérifier si 2FA est requis
+        if (data.requires_2fa) {
+          setTempToken(data.temp_token);
+          setNeedsSetup(data.needs_setup);
+          setTwoFactorStep(true);
+          return;
         }
 
         // Rediriger vers le dashboard avec les tokens dans l'URL
@@ -128,6 +249,119 @@ function LoginForm() {
     }
   };
 
+  // ============================================
+  // ÉCRAN 2FA
+  // ============================================
+  if (twoFactorStep) {
+    return (
+      <div className="w-full max-w-md">
+        <div className="bg-white rounded-2xl shadow-xl p-8">
+          {/* Header */}
+          <div className="text-center mb-6">
+            <div className="w-14 h-14 bg-primary-500 rounded-xl flex items-center justify-center mx-auto mb-4">
+              <Shield className="w-7 h-7 text-white" />
+            </div>
+            <h1 className="text-2xl font-bold text-gray-900">Vérification en deux étapes</h1>
+            <p className="text-gray-500 mt-1">
+              {needsSetup
+                ? 'Configurez votre application d\'authentification'
+                : 'Entrez le code de votre application d\'authentification'
+              }
+            </p>
+          </div>
+
+          {/* Error */}
+          {error && (
+            <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-700 rounded-lg text-sm">
+              {error}
+            </div>
+          )}
+
+          {/* QR Code Setup */}
+          {needsSetup && (
+            <div className="mb-6">
+              <div className="bg-gray-50 rounded-xl p-4 mb-4">
+                <h3 className="text-sm font-semibold text-gray-900 mb-2">Instructions :</h3>
+                <ol className="text-sm text-gray-600 space-y-1.5 list-decimal list-inside">
+                  <li>Ouvrez <strong>Google Authenticator</strong>, <strong>Authy</strong> ou une autre app TOTP</li>
+                  <li>Scannez le QR code ci-dessous</li>
+                  <li>Entrez le code à 6 chiffres affiché</li>
+                </ol>
+              </div>
+
+              <div className="flex justify-center p-4 bg-white border-2 border-gray-200 rounded-xl">
+                {qrCode ? (
+                  <img src={qrCode} alt="QR Code 2FA" className="w-48 h-48" />
+                ) : (
+                  <div className="w-48 h-48 flex items-center justify-center">
+                    <Loader2 className="w-8 h-8 text-primary-500 animate-spin" />
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* OTP Input */}
+          <div className="mb-6">
+            <label className="block text-sm font-medium text-gray-700 mb-3 text-center">
+              Code à 6 chiffres
+            </label>
+            <div className="flex justify-center gap-2" onPaste={handleOtpPaste}>
+              {otpCode.map((digit, i) => (
+                <input
+                  key={i}
+                  ref={(el) => { otpRefs.current[i] = el; }}
+                  type="text"
+                  inputMode="numeric"
+                  maxLength={1}
+                  value={digit}
+                  onChange={(e) => handleOtpChange(i, e.target.value)}
+                  onKeyDown={(e) => handleOtpKeyDown(i, e)}
+                  className="w-12 h-14 text-center text-xl font-bold border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all"
+                  autoFocus={i === 0}
+                />
+              ))}
+            </div>
+          </div>
+
+          {/* Verify Button */}
+          <button
+            onClick={verify2FA}
+            disabled={verifying2FA || otpCode.join('').length !== 6}
+            className="w-full py-3 px-4 bg-dark text-white font-medium rounded-lg hover:bg-gray-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+          >
+            {verifying2FA ? (
+              <>
+                <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                Vérification...
+              </>
+            ) : (
+              'Vérifier'
+            )}
+          </button>
+
+          {/* Back button */}
+          <button
+            onClick={() => {
+              setTwoFactorStep(false);
+              setTempToken('');
+              setQrCode('');
+              setOtpCode(['', '', '', '', '', '']);
+              setError('');
+            }}
+            className="w-full mt-4 py-2 text-sm text-gray-500 hover:text-gray-700 flex items-center justify-center"
+          >
+            <ArrowLeft className="w-4 h-4 mr-1" />
+            Retour à la connexion
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // ============================================
+  // FORMULAIRE LOGIN / REGISTER NORMAL
+  // ============================================
   return (
     <div className="w-full max-w-md">
       <div className="bg-white rounded-2xl shadow-xl p-8">
