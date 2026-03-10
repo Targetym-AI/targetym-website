@@ -6,7 +6,7 @@ import { useSearchParams } from 'next/navigation';
 import { Lock, Mail, Eye, EyeOff, Loader2, Building2, Phone, CheckCircle, Clock, Users, Shield, ArrowLeft } from 'lucide-react';
 
 // URL de ton API Railway
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://web-production-06c3.up.railway.app';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://targetym-alb-380014716.eu-west-1.elb.amazonaws.com';
 const DASHBOARD_URL = 'https://targetym-dashboard.vercel.app';
 
 // Domaines emails personnels bloqués
