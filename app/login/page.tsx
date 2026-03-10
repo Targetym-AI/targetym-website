@@ -7,7 +7,7 @@ import { Lock, Mail, Eye, EyeOff, Loader2, Building2, Phone, CheckCircle, Clock,
 
 // URL de ton API Railway
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.targetym.ai';
-const DASHBOARD_URL = 'https://targetym-dashboard.vercel.app';
+const DASHBOARD_URL = 'https://dashboard.targetym.ai';
 
 // Domaines emails personnels bloqués
 const BLOCKED_EMAIL_DOMAINS = [
