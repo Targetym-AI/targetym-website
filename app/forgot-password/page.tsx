@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { Mail, Loader2, ArrowLeft, CheckCircle } from 'lucide-react';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://targetym-alb-380014716.eu-west-1.elb.amazonaws.com';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.targetym.ai';
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState('');
