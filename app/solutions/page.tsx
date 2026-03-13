@@ -21,106 +21,138 @@ const modules = [
   {
     icon: Users,
     title: "Administration du Personnel",
-    description: "Centralisez et digitalisez toute la gestion de vos collaborateurs. Dossiers employes, contrats, organigramme, mouvements... tout est accessible en quelques clics.",
+    description: "Centralisez la gestion de vos collaborateurs en un seul endroit.",
     features: [
-      "Dossiers employes complets et securises",
-      "Organigramme dynamique et interactif",
-      "Suivi des contrats et periodes d'essai",
-      "Historique complet des promotions et mobilites",
-      "Gestion multi-sites et multi-entites"
+      "Dossiers employes complets",
+      "Organigramme dynamique",
+      "Suivi des contrats et echeances",
+      "Historique des promotions",
+      "Gestion multi-sites"
     ],
-    aiFeature: "L'IA detecte automatiquement les echeances critiques (fin de contrat, fin de periode d'essai) et vous alerte en avance."
+    aiFeature: "Detection automatique des echeances critiques et alertes proactives.",
+    color: "from-blue-500 to-blue-600",
+    bgLight: "bg-blue-50",
+    textColor: "text-blue-600",
+    borderColor: "border-blue-200"
   },
   {
     icon: TrendingUp,
-    title: "Gestion de la Performance",
-    description: "Pilotez la performance individuelle et collective avec des evaluations structurees, des campagnes automatisees et un feedback continu.",
+    title: "Performance",
+    description: "Evaluations structurees et feedback continu pour piloter la performance.",
     features: [
-      "Evaluations de performance 360\u00b0",
-      "Campagnes d'evaluation automatisees",
-      "Entretiens one-on-one structures avec suivi",
-      "Calibrage et classement des performances",
-      "Historique et evolution des notes"
+      "Evaluations 360\u00b0",
+      "Campagnes automatisees",
+      "Entretiens one-on-one",
+      "Calibrage des notes",
+      "Plans de developpement"
     ],
-    aiFeature: "L'IA analyse les tendances de performance et recommande des plans de developpement personnalises pour chaque collaborateur."
+    aiFeature: "Analyse des tendances et recommandations de developpement personnalisees.",
+    color: "from-emerald-500 to-emerald-600",
+    bgLight: "bg-emerald-50",
+    textColor: "text-emerald-600",
+    borderColor: "border-emerald-200"
   },
   {
     icon: Target,
     title: "Objectifs & OKR",
-    description: "Alignez toute l'organisation avec des objectifs clairs et mesurables. Du top management aux equipes terrain, chacun sait ou il va.",
+    description: "Alignez toute l'organisation avec des objectifs clairs et mesurables.",
     features: [
-      "OKR en cascade (entreprise, equipe, individu)",
-      "Suivi des Key Results en temps reel",
-      "Daily Checklist connectee aux objectifs",
-      "Visualisation des progres et tableaux de bord",
-      "Alertes automatiques sur les ecarts"
+      "OKR en cascade",
+      "Suivi temps reel des KR",
+      "Daily Checklist connectee",
+      "Tableaux de bord visuels",
+      "Alertes sur les ecarts"
     ],
-    aiFeature: "L'IA identifie les objectifs a risque et suggere des actions correctives avant qu'il ne soit trop tard."
+    aiFeature: "Identification des objectifs a risque et suggestions d'actions correctives.",
+    color: "from-violet-500 to-violet-600",
+    bgLight: "bg-violet-50",
+    textColor: "text-violet-600",
+    borderColor: "border-violet-200"
   },
   {
     icon: UserPlus,
-    title: "Recrutement & Acquisition de Talents",
-    description: "Attirez, evaluez et integrez les meilleurs talents avec un processus de recrutement intelligent de bout en bout.",
+    title: "Recrutement",
+    description: "Attirez et integrez les meilleurs talents avec un processus intelligent.",
     features: [
-      "Publication d'offres multi-canaux",
-      "Filtrage et scoring de candidats par l'IA",
-      "Pipeline de recrutement visuel",
-      "Grilles d'evaluation collaboratives",
-      "Onboarding structure des nouvelles recrues"
+      "Offres multi-canaux",
+      "Scoring IA des candidats",
+      "Pipeline visuel",
+      "Grilles collaboratives",
+      "Onboarding structure"
     ],
-    aiFeature: "L'IA analyse les CV, evalue la compatibilite avec le poste et propose un classement automatique des meilleurs candidats."
+    aiFeature: "Analyse automatique des CV et classement des meilleurs profils.",
+    color: "from-orange-500 to-orange-600",
+    bgLight: "bg-orange-50",
+    textColor: "text-orange-600",
+    borderColor: "border-orange-200"
   },
   {
     icon: Award,
-    title: "Gestion des Talents & Carrieres",
-    description: "Cartographiez vos talents, identifiez les hauts potentiels et construisez des plans de succession solides pour l'avenir.",
+    title: "Gestion des Talents",
+    description: "Cartographiez vos talents et construisez des plans de succession solides.",
     features: [
-      "Matrice 9-Box pour cartographier les talents",
-      "Plans de succession et vivier de talents",
-      "Parcours de carriere personnalises",
-      "Analyse des ecarts de competences",
-      "Mobilite interne et passerelles metiers"
+      "Matrice 9-Box",
+      "Plans de succession",
+      "Parcours de carriere",
+      "Analyse des competences",
+      "Mobilite interne"
     ],
-    aiFeature: "L'IA detecte les hauts potentiels, predit les risques de depart et recommande des plans de retention cibles."
+    aiFeature: "Detection des hauts potentiels et prediction des risques de depart.",
+    color: "from-rose-500 to-rose-600",
+    bgLight: "bg-rose-50",
+    textColor: "text-rose-600",
+    borderColor: "border-rose-200"
   },
   {
     icon: GraduationCap,
-    title: "Formation & Developpement",
-    description: "Developpez les competences de vos equipes avec des parcours de formation intelligents et un suivi precis des acquis.",
+    title: "Formation",
+    description: "Developpez les competences avec des parcours intelligents et adaptatifs.",
     features: [
-      "Catalogue de formations personnalisable",
-      "Parcours d'apprentissage adaptatifs",
-      "Suivi des competences et certifications",
-      "Budget formation et analytique ROI",
-      "Plans de developpement individuels"
+      "Catalogue personnalisable",
+      "Parcours adaptatifs",
+      "Suivi des certifications",
+      "Budget et ROI formation",
+      "Plans individuels"
     ],
-    aiFeature: "L'IA recommande les formations les plus pertinentes en fonction des ecarts de competences et des objectifs de carriere."
+    aiFeature: "Recommandations de formations basees sur les ecarts de competences.",
+    color: "from-cyan-500 to-cyan-600",
+    bgLight: "bg-cyan-50",
+    textColor: "text-cyan-600",
+    borderColor: "border-cyan-200"
   },
   {
     icon: CalendarCheck,
     title: "Conges & Absences",
-    description: "Simplifiez la gestion des conges et absences avec des workflows de validation automatiques et une visibilite totale sur les plannings.",
+    description: "Simplifiez la gestion des conges avec des workflows automatiques.",
     features: [
-      "Demandes de conges en un clic",
-      "Validation multi-niveaux parametrable",
-      "Calendrier d'equipe partage",
-      "Soldes de conges en temps reel",
-      "Rapports d'absenteisme et tendances"
+      "Demandes en un clic",
+      "Validation multi-niveaux",
+      "Calendrier d'equipe",
+      "Soldes temps reel",
+      "Rapports d'absenteisme"
     ],
-    aiFeature: "L'IA anticipe les periodes de forte absence et alerte les managers pour eviter les sous-effectifs."
+    aiFeature: "Anticipation des periodes de forte absence pour eviter les sous-effectifs.",
+    color: "from-amber-500 to-amber-600",
+    bgLight: "bg-amber-50",
+    textColor: "text-amber-600",
+    borderColor: "border-amber-200"
   },
   {
     icon: FileText,
     title: "Documents RH",
-    description: "Generez automatiquement tous vos documents RH officiels en quelques secondes. Fini les modeles Word et les erreurs de saisie.",
+    description: "Generez tous vos documents RH officiels en quelques secondes.",
     features: [
-      "Attestations de travail automatiques",
-      "Certificats de travail avec historique de carriere",
-      "Modeles personnalisables par entreprise",
-      "Signature electronique integree",
-      "Archivage securise et conforme"
+      "Attestations automatiques",
+      "Certificats de travail",
+      "Modeles personnalisables",
+      "Signature electronique",
+      "Archivage securise"
     ],
-    aiFeature: "L'IA genere les documents en s'appuyant sur les donnees du dossier employe, sans aucune saisie manuelle."
+    aiFeature: "Generation automatique a partir des donnees employe, zero saisie manuelle.",
+    color: "from-indigo-500 to-indigo-600",
+    bgLight: "bg-indigo-50",
+    textColor: "text-indigo-600",
+    borderColor: "border-indigo-200"
   }
 ];
 
@@ -128,22 +160,22 @@ const aiHighlights = [
   {
     icon: Bot,
     title: "Agents IA Specialises",
-    description: "Jusqu'a 30 agents IA, chacun expert dans un domaine RH precis : recrutement, performance, formation, talents, documents..."
+    description: "Jusqu'a 30 agents IA experts dans chaque domaine RH"
   },
   {
     icon: Sparkles,
     title: "Automatisation Intelligente",
-    description: "L'IA ne se contente pas d'analyser : elle agit. Generation de documents, alertes proactives, recommandations actionnables."
+    description: "L'IA agit : generation de documents, alertes, recommandations"
   },
   {
     icon: LayoutDashboard,
-    title: "Tableaux de Bord Predictifs",
-    description: "Des dashboards intelligents qui ne montrent pas seulement le passe, mais predisent les tendances futures de votre capital humain."
+    title: "Dashboards Predictifs",
+    description: "Des tableaux de bord qui predisent les tendances futures"
   },
   {
     icon: MessageSquare,
-    title: "Assistant RH Conversationnel",
-    description: "Posez vos questions en langage naturel. L'IA comprend le contexte et vous donne des reponses precises instantanement."
+    title: "Assistant Conversationnel",
+    description: "Posez vos questions RH en langage naturel"
   }
 ];
 
@@ -155,7 +187,7 @@ export default function SolutionsPage() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
           <div className="inline-flex items-center px-4 py-2 bg-white/15 text-white rounded-full text-sm font-medium mb-8 backdrop-blur-sm border border-white/20">
             <ClipboardList className="w-4 h-4 mr-2" />
-            8 Modules Integres
+            Suite SIRH Complete
           </div>
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-6">
             Une Suite SIRH Complete pour{' '}
@@ -185,18 +217,18 @@ export default function SolutionsPage() {
         </div>
       </section>
 
-      {/* AI Highlights */}
-      <section className="py-16 bg-white border-b border-gray-100">
+      {/* AI Highlights Bar */}
+      <section className="py-6 bg-gray-900">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {aiHighlights.map((item, index) => (
-              <div key={index} className="flex items-start gap-4 p-5">
-                <div className="w-10 h-10 bg-primary-50 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <item.icon className="w-5 h-5 text-primary-500" />
+              <div key={index} className="flex items-center gap-3 py-2">
+                <div className="w-10 h-10 bg-primary-500/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <item.icon className="w-5 h-5 text-primary-400" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-gray-900 mb-1">{item.title}</h3>
-                  <p className="text-sm text-gray-600 leading-relaxed">{item.description}</p>
+                  <h3 className="font-semibold text-white text-sm">{item.title}</h3>
+                  <p className="text-xs text-gray-400">{item.description}</p>
                 </div>
               </div>
             ))}
@@ -204,57 +236,58 @@ export default function SolutionsPage() {
         </div>
       </section>
 
-      {/* Modules Detail */}
-      <section className="py-24 bg-white">
+      {/* Modules Grid */}
+      <section className="py-24 bg-gray-50">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
-              Tous les Modules en Detail
+              Tous les Modules
             </h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Chaque module est concu pour fonctionner independamment ou en synergie
-              avec les autres, pour une experience RH unifiee
+              Chaque module fonctionne independamment ou en synergie avec les autres
             </p>
           </div>
 
-          <div className="space-y-8">
+          <div className="grid md:grid-cols-2 gap-6">
             {modules.map((module, index) => (
               <div
                 key={index}
-                className="p-8 bg-white border border-gray-100 rounded-2xl hover:shadow-lg transition-shadow"
+                className={`relative bg-white rounded-2xl overflow-hidden border ${module.borderColor} hover:shadow-xl transition-all group`}
               >
-                <div className="grid md:grid-cols-3 gap-8">
-                  <div className="md:col-span-2">
-                    <div className="flex items-center gap-4 mb-4">
-                      <div className="w-12 h-12 bg-primary-50 rounded-lg flex items-center justify-center">
-                        <module.icon className="w-6 h-6 text-primary-500" />
-                      </div>
-                      <h3 className="text-xl font-bold text-gray-900">
-                        {module.title}
-                      </h3>
+                {/* Color accent top */}
+                <div className={`h-1.5 bg-gradient-to-r ${module.color}`} />
+
+                <div className="p-7">
+                  {/* Header */}
+                  <div className="flex items-center gap-4 mb-4">
+                    <div className={`w-12 h-12 ${module.bgLight} rounded-xl flex items-center justify-center`}>
+                      <module.icon className={`w-6 h-6 ${module.textColor}`} />
                     </div>
-                    <p className="text-gray-600 mb-6">
-                      {module.description}
-                    </p>
-                    <ul className="grid sm:grid-cols-2 gap-3">
-                      {module.features.map((feature, i) => (
-                        <li key={i} className="flex items-start text-sm text-gray-600">
-                          <CheckCircle className="w-4 h-4 text-primary-500 mr-2 flex-shrink-0 mt-0.5" />
-                          {feature}
-                        </li>
-                      ))}
-                    </ul>
+                    <div>
+                      <h3 className="text-lg font-bold text-gray-900">{module.title}</h3>
+                      <p className="text-sm text-gray-500">{module.description}</p>
+                    </div>
                   </div>
-                  <div className="flex items-center">
-                    <div className="p-5 bg-primary-50 rounded-xl w-full">
-                      <div className="flex items-center gap-2 mb-2">
-                        <Sparkles className="w-4 h-4 text-primary-500" />
-                        <span className="text-sm font-semibold text-primary-700">Boost IA</span>
-                      </div>
-                      <p className="text-sm text-primary-600 leading-relaxed">
-                        {module.aiFeature}
-                      </p>
-                    </div>
+
+                  {/* Features as pills */}
+                  <div className="flex flex-wrap gap-2 mb-5">
+                    {module.features.map((feature, i) => (
+                      <span
+                        key={i}
+                        className="inline-flex items-center px-3 py-1.5 bg-gray-50 text-gray-700 text-xs font-medium rounded-full border border-gray-100"
+                      >
+                        <CheckCircle className={`w-3.5 h-3.5 ${module.textColor} mr-1.5`} />
+                        {feature}
+                      </span>
+                    ))}
+                  </div>
+
+                  {/* AI Feature */}
+                  <div className={`flex items-start gap-2.5 p-3.5 ${module.bgLight} rounded-xl`}>
+                    <Sparkles className={`w-4 h-4 ${module.textColor} mt-0.5 flex-shrink-0`} />
+                    <p className={`text-sm ${module.textColor} font-medium leading-relaxed`}>
+                      {module.aiFeature}
+                    </p>
                   </div>
                 </div>
               </div>
@@ -264,7 +297,7 @@ export default function SolutionsPage() {
       </section>
 
       {/* CTA */}
-      <section className="py-24 bg-gray-50">
+      <section className="py-24 bg-white">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="bg-gradient-to-r from-primary-500 to-secondary-500 rounded-3xl p-12 md:p-16 text-white text-center">
             <h2 className="text-3xl sm:text-4xl font-bold mb-6">
