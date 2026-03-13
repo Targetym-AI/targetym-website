@@ -12,7 +12,6 @@ import {
   CalendarCheck,
   UserPlus,
   GraduationCap,
-  ClipboardCheck,
   MessageSquare,
   Zap,
   CheckCircle,
@@ -35,7 +34,7 @@ const valuePropositions = [
   {
     icon: Bot,
     title: "Jusqu'a 30 agents IA RH integres",
-    description: "La plus grande flotte d'agents IA specialises RH au monde, directement integree dans votre SIRH. Chaque agent maitrise un domaine : recrutement, performance, formation, paie, conformite, bien-etre...",
+    description: "La plus grande flotte d'agents IA specialises RH au monde, directement integree dans votre SIRH. Chaque agent maitrise un domaine : recrutement, performance, formation, bien-etre...",
     highlight: "30",
     highlightLabel: "agents IA specialises"
   },
@@ -55,7 +54,6 @@ const aiAgents = [
   { icon: Target, name: "Agent OKR", desc: "Suit les objectifs en temps reel et alerte sur les ecarts de performance" },
   { icon: GraduationCap, name: "Agent Formation", desc: "Identifie les besoins en competences et propose des parcours personnalises" },
   { icon: CalendarCheck, name: "Agent Planning", desc: "Optimise la gestion des conges, absences et plannings d'equipe" },
-  { icon: ClipboardCheck, name: "Agent Conformite", desc: "Veille reglementaire automatique et alertes de conformite en continu" },
   { icon: MessageSquare, name: "Agent Engagement", desc: "Mesure le climat social et propose des actions pour ameliorer le bien-etre" },
   { icon: PieChart, name: "Agent Analytics", desc: "Tableaux de bord intelligents et predictions sur le turnover et la retention" },
   { icon: Award, name: "Agent Talents", desc: "Cartographie les talents, detecte les hauts potentiels via la matrice 9-Box" },
@@ -125,10 +123,10 @@ export default function HomePage() {
             Jusqu&apos;a 30 Agents IA RH Integres
           </div>
 
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight">
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-6 leading-tight">
             Le SIRH optimise IA qui fait{' '}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-500 to-secondary-500">
-              50% du travail de la DRH
+              50% du travail du DRH
             </span>
           </h1>
 
