@@ -195,7 +195,13 @@ function LoginForm() {
         const data = await response.json();
 
         if (!response.ok) {
-          throw new Error(data.detail || 'Erreur de connexion');
+          const detail = typeof data.detail === 'string' ? data.detail : 'Erreur de connexion';
+          // Rediriger vers pending-activation si compte en attente de validation
+          if (response.status === 403 && detail.includes('en cours de validation')) {
+            window.location.href = '/pending-activation';
+            return;
+          }
+          throw new Error(detail);
         }
 
         // Vérifier si 2FA est requis
@@ -234,12 +240,16 @@ function LoginForm() {
           throw new Error(data.detail || "Erreur lors de l'inscription");
         }
 
-        // Rediriger vers le dashboard avec les tokens dans l'URL
-        const userEncoded = encodeURIComponent(JSON.stringify(data.user));
-        window.location.href = `${DASHBOARD_URL}?token=${data.access_token}&refresh=${data.refresh_token}&user=${userEncoded}`;
+        // Compte en attente de validation → page d'attente
+        window.location.href = '/pending-activation';
       }
     } catch (err) {
       if (err instanceof Error) {
+        // Si c'est un 403 "en cours de validation", rediriger
+        if (err.message.includes('en cours de validation')) {
+          window.location.href = '/pending-activation';
+          return;
+        }
         setError(err.message);
       } else {
         setError('Une erreur est survenue');
@@ -403,20 +413,20 @@ function LoginForm() {
           <div className="mb-6 p-4 bg-gradient-to-r from-primary-50 to-secondary-50 rounded-xl border border-primary-100">
             <h3 className="font-semibold text-gray-900 mb-3 flex items-center">
               <CheckCircle className="w-5 h-5 text-primary-500 mr-2" />
-              Essai gratuit - 14 jours
+              Essai gratuit - 30 jours
             </h3>
             <ul className="space-y-2 text-sm text-gray-600">
               <li className="flex items-center">
                 <Clock className="w-4 h-4 text-primary-500 mr-2 flex-shrink-0" />
-                14 jours d&apos;accès complet sans engagement
+                30 jours d&apos;accès complet aux fonctionnalités Premium
               </li>
               <li className="flex items-center">
                 <Users className="w-4 h-4 text-primary-500 mr-2 flex-shrink-0" />
-                Jusqu&apos;à 10 collaborateurs
+                Jusqu&apos;à 50 collaborateurs
               </li>
               <li className="flex items-center">
                 <CheckCircle className="w-4 h-4 text-primary-500 mr-2 flex-shrink-0" />
-                Toutes les fonctionnalités incluses
+                Frais d&apos;installation : 297 000 FCFA
               </li>
             </ul>
           </div>
@@ -628,7 +638,7 @@ function LoginForm() {
             <>
               Pas encore de compte ?{' '}
               <button onClick={() => setActiveTab('register')} className="text-primary-600 hover:text-primary-700 font-medium">
-                Essai gratuit 14 jours
+                Essai gratuit 30 jours
               </button>
             </>
           ) : (
