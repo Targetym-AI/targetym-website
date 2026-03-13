@@ -115,42 +115,42 @@ export default function HomePage() {
   return (
     <div>
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-b from-primary-50 via-white to-white pt-16 pb-24 overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-primary-100/40 via-transparent to-transparent" />
+      <section className="relative bg-gradient-to-br from-primary-600 via-primary-500 to-primary-700 pt-16 pb-24 overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-white/10 via-transparent to-transparent" />
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
-          <div className="inline-flex items-center px-4 py-2 bg-primary-100 text-primary-700 rounded-full text-sm font-medium mb-8">
+          <div className="inline-flex items-center px-4 py-2 bg-white/15 text-white rounded-full text-sm font-medium mb-8 backdrop-blur-sm border border-white/20">
             <Bot className="w-4 h-4 mr-2" />
             Jusqu&apos;a 30 Agents IA RH Integres
           </div>
 
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-6 leading-tight">
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-6 leading-tight">
             Le SIRH optimise IA qui fait{' '}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-500 to-secondary-500">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-yellow-100">
               50% du travail du DRH
             </span>
           </h1>
 
-          <p className="text-lg sm:text-xl text-gray-600 max-w-4xl mx-auto mb-4">
+          <p className="text-lg sm:text-xl text-white/85 max-w-4xl mx-auto mb-4">
             Targetym AI : la suite SIRH la plus complete au monde avec jusqu&apos;a 30 agents IA RH integres.
             Passez de l&apos;administration du personnel au pilotage de la performance humaine.
           </p>
 
-          <p className="text-base text-gray-500 max-w-3xl mx-auto mb-10">
-            Recrutement, gestion des talents, evaluations 360&deg;, OKR, formation, documents RH,
-            conformite... Tout est automatise, intelligent et integrable a votre ecosysteme.
+          <p className="text-base text-white/65 max-w-3xl mx-auto mb-10">
+            Recrutement, gestion des talents, evaluations 360&deg;, OKR, formation, documents RH...
+            Tout est automatise, intelligent et integrable a votre ecosysteme.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               href="/login?tab=register"
-              className="inline-flex items-center justify-center px-8 py-4 text-base font-semibold text-white bg-primary-500 rounded-lg hover:bg-primary-600 transition-colors shadow-lg shadow-primary-500/25"
+              className="inline-flex items-center justify-center px-8 py-4 text-base font-semibold text-primary-600 bg-white rounded-lg hover:bg-gray-100 transition-colors shadow-lg"
             >
               Demarrer l&apos;Essai Gratuit
               <ArrowRight className="ml-2 w-5 h-5" />
             </Link>
             <Link
               href="/solutions"
-              className="inline-flex items-center justify-center px-8 py-4 text-base font-semibold text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+              className="inline-flex items-center justify-center px-8 py-4 text-base font-semibold text-white border-2 border-white/30 rounded-lg hover:bg-white/10 transition-colors"
             >
               Decouvrir les Solutions
             </Link>
