@@ -1,6 +1,5 @@
 import Link from 'next/link';
 import {
-  BarChart3,
   Users,
   Target,
   TrendingUp,
