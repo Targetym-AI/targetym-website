@@ -48,7 +48,7 @@ const valuePropositions = [
 ];
 
 const aiAgents = [
-  { icon: FileText, name: "Agent Documents", desc: "Genere automatiquement attestations, certificats de travail et bulletins de paie" },
+  { icon: FileText, name: "Agent Documents", desc: "Genere automatiquement attestations, certificats de travail et documents RH" },
   { icon: UserPlus, name: "Agent Recrutement", desc: "Filtre les candidatures, evalue les profils et propose les meilleurs matchs" },
   { icon: TrendingUp, name: "Agent Performance", desc: "Analyse les evaluations 360\u00b0 et recommande des plans de developpement" },
   { icon: Target, name: "Agent OKR", desc: "Suit les objectifs en temps reel et alerte sur les ecarts de performance" },
@@ -233,7 +233,7 @@ export default function HomePage() {
           </div>
 
           <p className="text-center text-gray-500 text-sm mt-8">
-            Et bien d&apos;autres agents specialises : paie, bien-etre, onboarding, offboarding, audit RH...
+            Et bien d&apos;autres agents specialises : bien-etre, onboarding, offboarding, audit RH...
           </p>
         </div>
       </section>
