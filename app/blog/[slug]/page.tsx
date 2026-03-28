@@ -30,6 +30,12 @@ async function fetchPost(slug: string): Promise<BlogPostFull | null> {
   }
 }
 
+/** Préfixe les URLs relatives (/media-uploads/...) avec l'URL de l'API */
+function mediaUrl(url?: string | null): string {
+  if (!url) return '';
+  return url.startsWith('/') ? `${API_URL}${url}` : url;
+}
+
 function formatDate(iso: string | null) {
   if (!iso) return '';
   return new Date(iso).toLocaleDateString('fr-FR', {
@@ -106,7 +112,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
         <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 mb-10">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src={post.cover_image_url}
+            src={mediaUrl(post.cover_image_url)}
             alt={post.title}
             className="w-full rounded-2xl object-cover max-h-80"
           />

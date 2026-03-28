@@ -46,6 +46,12 @@ async function fetchCategories(): Promise<{ category: string; count: number }[]>
   }
 }
 
+/** Préfixe les URLs relatives (/media-uploads/...) avec l'URL de l'API */
+function mediaUrl(url?: string | null): string {
+  if (!url) return '';
+  return url.startsWith('/') ? `${API_URL}${url}` : url;
+}
+
 function formatDate(iso: string | null) {
   if (!iso) return '';
   return new Date(iso).toLocaleDateString('fr-FR', {
@@ -142,7 +148,7 @@ export default async function BlogPage({
                       {featuredPost.cover_image_url ? (
                         // eslint-disable-next-line @next/next/no-img-element
                         <img
-                          src={featuredPost.cover_image_url}
+                          src={mediaUrl(featuredPost.cover_image_url)}
                           alt={featuredPost.title}
                           className="w-full h-full object-cover"
                         />
@@ -194,7 +200,7 @@ export default async function BlogPage({
                         {post.cover_image_url ? (
                           // eslint-disable-next-line @next/next/no-img-element
                           <img
-                            src={post.cover_image_url}
+                            src={mediaUrl(post.cover_image_url)}
                             alt={post.title}
                             className="w-full h-full object-cover"
                           />
