@@ -20,7 +20,7 @@ interface BlogPostFull {
 async function fetchPost(slug: string): Promise<BlogPostFull | null> {
   try {
     const res = await fetch(`${API_URL}/api/public/blog/${slug}`, {
-      next: { revalidate: 300 },
+      cache: 'no-store',
     });
     if (res.status === 404) return null;
     if (!res.ok) return null;

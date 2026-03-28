@@ -31,7 +31,7 @@ export const metadata = {
 async function fetchResources(): Promise<ResourcesData> {
   try {
     const res = await fetch(`${API_URL}/api/public/resources`, {
-      next: { revalidate: 300 },
+      cache: 'no-store',
     });
     if (!res.ok) return { categories: [], resources: [], total: 0 };
     return res.json();

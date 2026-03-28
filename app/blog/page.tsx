@@ -25,7 +25,7 @@ async function fetchPosts(category?: string): Promise<BlogListResponse> {
     const params = new URLSearchParams({ limit: '50' });
     if (category) params.append('category', category);
     const res = await fetch(`${API_URL}/api/public/blog?${params}`, {
-      next: { revalidate: 300 }, // revalidate toutes les 5 minutes
+      cache: 'no-store',
     });
     if (!res.ok) return { items: [], total: 0 };
     return res.json();
@@ -37,7 +37,7 @@ async function fetchPosts(category?: string): Promise<BlogListResponse> {
 async function fetchCategories(): Promise<{ category: string; count: number }[]> {
   try {
     const res = await fetch(`${API_URL}/api/public/blog/categories`, {
-      next: { revalidate: 300 },
+      cache: 'no-store',
     });
     if (!res.ok) return [];
     return res.json();
