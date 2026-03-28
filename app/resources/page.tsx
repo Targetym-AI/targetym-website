@@ -46,24 +46,31 @@ function mediaUrl(url?: string | null): string {
   return url.startsWith('/') ? `${API_URL}${url}` : url;
 }
 
-/** Convertit une URL YouTube standard en URL d'embed */
-function getYoutubeEmbedUrl(url: string): string | null {
+/** Convertit une URL vidéo en embed. Retourne { type, src } ou null. */
+function getVideoEmbed(url: string): { type: 'iframe' | 'video'; src: string } | null {
   try {
     const u = new URL(url);
-    // https://www.youtube.com/watch?v=ID
+    // YouTube
     if (u.hostname.includes('youtube.com') && u.searchParams.get('v')) {
-      return `https://www.youtube.com/embed/${u.searchParams.get('v')}`;
+      return { type: 'iframe', src: `https://www.youtube.com/embed/${u.searchParams.get('v')}` };
     }
-    // https://youtu.be/ID
     if (u.hostname === 'youtu.be') {
-      return `https://www.youtube.com/embed${u.pathname}`;
+      return { type: 'iframe', src: `https://www.youtube.com/embed${u.pathname}` };
     }
-    // Déjà un embed
-    if (u.pathname.includes('/embed/')) return url;
+    if (u.pathname.includes('/embed/')) {
+      return { type: 'iframe', src: url };
+    }
+    // Vimeo
+    if (u.hostname.includes('vimeo.com')) {
+      const id = u.pathname.replace(/^\//, '');
+      if (/^\d+$/.test(id)) return { type: 'iframe', src: `https://player.vimeo.com/video/${id}` };
+    }
+    // Fichier vidéo direct ou URL non reconnue → lecture native (jamais de nouvel onglet)
+    return { type: 'video', src: url };
   } catch {
     /* URL invalide */
+    return null;
   }
-  return null;
 }
 
 function typeLabel(type: string) {
@@ -184,29 +191,38 @@ export default async function ResourcesPage({
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {filtered.map((resource) => {
-                const embedUrl = resource.resource_type === 'video' && resource.video_url
-                  ? getYoutubeEmbedUrl(resource.video_url)
+                const embed = resource.resource_type === 'video' && resource.video_url
+                  ? getVideoEmbed(resource.video_url)
                   : null;
                 const href = resourceHref(resource);
                 const isExternal = href !== '#';
 
                 // Carte vidéo avec embed inline
-                if (embedUrl) {
+                if (embed) {
                   return (
                     <div
                       key={resource.id}
                       className="group bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-md transition-all"
                     >
-                      {/* Iframe YouTube inline */}
+                      {/* Embed vidéo inline */}
                       <div className="relative aspect-video bg-gray-900">
-                        <iframe
-                          src={embedUrl}
-                          title={resource.title}
-                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                          allowFullScreen
-                          className="w-full h-full"
-                          loading="lazy"
-                        />
+                        {embed.type === 'iframe' ? (
+                          <iframe
+                            src={embed.src}
+                            title={resource.title}
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowFullScreen
+                            className="w-full h-full"
+                            loading="lazy"
+                          />
+                        ) : (
+                          <video
+                            src={embed.src}
+                            controls
+                            className="w-full h-full"
+                            poster={resource.thumbnail_url ? mediaUrl(resource.thumbnail_url) : undefined}
+                          />
+                        )}
                       </div>
                       {/* Body */}
                       <div className="p-5">
