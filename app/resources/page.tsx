@@ -1,5 +1,6 @@
 import Link from 'next/link';
-import { Play, FileText, ExternalLink, BookOpen, Layers } from 'lucide-react';
+import { FileText, ExternalLink, BookOpen, Layers, Play } from 'lucide-react';
+import VideoCard from '@/components/VideoCard';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.targetym.ai';
 
@@ -197,50 +198,23 @@ export default async function ResourcesPage({
                 const href = resourceHref(resource);
                 const isExternal = href !== '#';
 
-                // Carte vidéo avec embed inline
+                // Carte vidéo avec miniature + lecture inline au clic
                 if (embed) {
                   return (
-                    <div
+                    <VideoCard
                       key={resource.id}
-                      className="group bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-md transition-all"
-                    >
-                      {/* Embed vidéo inline */}
-                      <div className="relative aspect-video bg-gray-900">
-                        {embed.type === 'iframe' ? (
-                          <iframe
-                            src={embed.src}
-                            title={resource.title}
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                            allowFullScreen
-                            className="w-full h-full"
-                            loading="lazy"
-                          />
-                        ) : (
-                          <video
-                            src={embed.src}
-                            controls
-                            className="w-full h-full"
-                            poster={resource.thumbnail_url ? mediaUrl(resource.thumbnail_url) : undefined}
-                          />
-                        )}
-                      </div>
-                      {/* Body */}
-                      <div className="p-5">
-                        <div className="flex items-center justify-between mb-3">
-                          <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold ${typeColor(resource.resource_type)}`}>
-                            {typeIcon(resource.resource_type)}
-                            {typeLabel(resource.resource_type)}
-                          </span>
-                          {resource.duration_minutes && (
-                            <span className="text-xs text-gray-400">{resource.duration_minutes} min</span>
-                          )}
-                        </div>
-                        <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2">{resource.title}</h3>
-                        {resource.description && (
-                          <p className="text-sm text-gray-500 line-clamp-2">{resource.description}</p>
-                        )}
-                      </div>
-                    </div>
+                      embed={embed}
+                      title={resource.title}
+                      description={resource.description}
+                      thumbnailUrl={resource.thumbnail_url ? mediaUrl(resource.thumbnail_url) : null}
+                      durationMinutes={resource.duration_minutes}
+                      typeBadge={
+                        <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold ${typeColor(resource.resource_type)}`}>
+                          {typeIcon(resource.resource_type)}
+                          {typeLabel(resource.resource_type)}
+                        </span>
+                      }
+                    />
                   );
                 }
 
