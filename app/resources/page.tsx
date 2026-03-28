@@ -40,6 +40,32 @@ async function fetchResources(): Promise<ResourcesData> {
   }
 }
 
+/** Préfixe les URLs relatives (/media-uploads/...) avec l'URL de l'API */
+function mediaUrl(url?: string | null): string {
+  if (!url) return '';
+  return url.startsWith('/') ? `${API_URL}${url}` : url;
+}
+
+/** Convertit une URL YouTube standard en URL d'embed */
+function getYoutubeEmbedUrl(url: string): string | null {
+  try {
+    const u = new URL(url);
+    // https://www.youtube.com/watch?v=ID
+    if (u.hostname.includes('youtube.com') && u.searchParams.get('v')) {
+      return `https://www.youtube.com/embed/${u.searchParams.get('v')}`;
+    }
+    // https://youtu.be/ID
+    if (u.hostname === 'youtu.be') {
+      return `https://www.youtube.com/embed${u.pathname}`;
+    }
+    // Déjà un embed
+    if (u.pathname.includes('/embed/')) return url;
+  } catch {
+    /* URL invalide */
+  }
+  return null;
+}
+
 function typeLabel(type: string) {
   if (type === 'video') return 'Vidéo';
   if (type === 'pdf') return 'PDF';
@@ -158,8 +184,51 @@ export default async function ResourcesPage({
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {filtered.map((resource) => {
+                const embedUrl = resource.resource_type === 'video' && resource.video_url
+                  ? getYoutubeEmbedUrl(resource.video_url)
+                  : null;
                 const href = resourceHref(resource);
                 const isExternal = href !== '#';
+
+                // Carte vidéo avec embed inline
+                if (embedUrl) {
+                  return (
+                    <div
+                      key={resource.id}
+                      className="group bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-md transition-all"
+                    >
+                      {/* Iframe YouTube inline */}
+                      <div className="relative aspect-video bg-gray-900">
+                        <iframe
+                          src={embedUrl}
+                          title={resource.title}
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                          allowFullScreen
+                          className="w-full h-full"
+                          loading="lazy"
+                        />
+                      </div>
+                      {/* Body */}
+                      <div className="p-5">
+                        <div className="flex items-center justify-between mb-3">
+                          <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold ${typeColor(resource.resource_type)}`}>
+                            {typeIcon(resource.resource_type)}
+                            {typeLabel(resource.resource_type)}
+                          </span>
+                          {resource.duration_minutes && (
+                            <span className="text-xs text-gray-400">{resource.duration_minutes} min</span>
+                          )}
+                        </div>
+                        <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2">{resource.title}</h3>
+                        {resource.description && (
+                          <p className="text-sm text-gray-500 line-clamp-2">{resource.description}</p>
+                        )}
+                      </div>
+                    </div>
+                  );
+                }
+
+                // Carte PDF / lien
                 return (
                   <a
                     key={resource.id}
@@ -173,7 +242,7 @@ export default async function ResourcesPage({
                       {resource.thumbnail_url ? (
                         // eslint-disable-next-line @next/next/no-img-element
                         <img
-                          src={resource.thumbnail_url}
+                          src={mediaUrl(resource.thumbnail_url)}
                           alt={resource.title}
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                         />
@@ -181,13 +250,6 @@ export default async function ResourcesPage({
                         <div className="w-full h-full flex items-center justify-center">
                           <div className={`p-4 rounded-full ${typeColor(resource.resource_type)}`}>
                             {typeIcon(resource.resource_type)}
-                          </div>
-                        </div>
-                      )}
-                      {resource.resource_type === 'video' && (
-                        <div className="absolute inset-0 flex items-center justify-center">
-                          <div className="w-12 h-12 bg-white/90 rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
-                            <Play className="w-5 h-5 text-primary-600 ml-0.5" />
                           </div>
                         </div>
                       )}
