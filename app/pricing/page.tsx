@@ -5,7 +5,6 @@ import {
   Sparkles,
   HeadphonesIcon,
   Phone,
-  Mail,
   X,
   Zap,
   Users,

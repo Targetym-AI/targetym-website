@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Users, TrendingUp, Clock, Star, ArrowRight, Building2, Award } from 'lucide-react';
+import { TrendingUp, Clock, Star, ArrowRight, Building2, Award } from 'lucide-react';
 
 const caseStudies = [
   {
