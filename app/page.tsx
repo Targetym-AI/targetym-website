@@ -26,47 +26,47 @@ import {
 const valuePropositions = [
   {
     icon: BrainCircuit,
-    title: "50% du travail de la DRH automatise",
-    description: "Targetym AI prend en charge la moitie des taches repetitives et chronophages de votre Direction des Ressources Humaines : generation de documents, suivi des conges, evaluations, rapports... Vos equipes RH se concentrent enfin sur l'essentiel.",
+    title: "50% du travail de la DRH automatisé",
+    description: "Targetym AI prend en charge la moitié des tâches répétitives et chronophages de votre Direction des Ressources Humaines : génération de documents, suivi des congés, évaluations, rapports... Vos équipes RH se concentrent enfin sur l'essentiel.",
     highlight: "50%",
     highlightLabel: "de gain de temps RH"
   },
   {
     icon: Bot,
-    title: "Jusqu'a 30 agents IA RH integres",
-    description: "La plus grande flotte d'agents IA specialises RH au monde, directement integree dans votre SIRH. Chaque agent maitrise un domaine : recrutement, performance, formation, bien-etre...",
+    title: "Jusqu'à 30 agents IA RH intégrés",
+    description: "La plus grande flotte d'agents IA spécialisés RH au monde, directement intégrée dans votre SIRH. Chaque agent maîtrise un domaine : recrutement, performance, formation, bien-être...",
     highlight: "30",
-    highlightLabel: "agents IA specialises"
+    highlightLabel: "agents IA spécialisés"
   },
   {
     icon: Layers,
     title: "Du personnel au pilotage de la performance",
-    description: "Passez de la simple administration du personnel au pilotage strategique de la performance humaine. Un SIRH integreable qui transforme vos donnees RH en decisions eclairees.",
+    description: "Passez de la simple administration du personnel au pilotage stratégique de la performance humaine. Un SIRH intégrable qui transforme vos données RH en decisions eclairees.",
     highlight: "360\u00b0",
     highlightLabel: "vision de la performance"
   }
 ];
 
 const aiAgents = [
-  { icon: FileText, name: "Agent Documents", desc: "Genere automatiquement attestations, certificats de travail et documents RH" },
-  { icon: UserPlus, name: "Agent Recrutement", desc: "Filtre les candidatures, evalue les profils et propose les meilleurs matchs" },
-  { icon: TrendingUp, name: "Agent Performance", desc: "Analyse les evaluations 360\u00b0 et recommande des plans de developpement" },
+  { icon: FileText, name: "Agent Documents", desc: "Génère automatiquement attestations, certificats de travail et documents RH" },
+  { icon: UserPlus, name: "Agent Recrutement", desc: "Filtre les candidatures, évalue les profils et propose les meilleurs matchs" },
+  { icon: TrendingUp, name: "Agent Performance", desc: "Analyse les évaluations 360\u00b0 et recommande des plans de développement" },
   { icon: Target, name: "Agent OKR", desc: "Suit les objectifs en temps reel et alerte sur les ecarts de performance" },
-  { icon: GraduationCap, name: "Agent Formation", desc: "Identifie les besoins en competences et propose des parcours personnalises" },
-  { icon: CalendarCheck, name: "Agent Planning", desc: "Optimise la gestion des conges, absences et plannings d'equipe" },
-  { icon: MessageSquare, name: "Agent Engagement", desc: "Mesure le climat social et propose des actions pour ameliorer le bien-etre" },
-  { icon: PieChart, name: "Agent Analytics", desc: "Tableaux de bord intelligents et predictions sur le turnover et la retention" },
-  { icon: Award, name: "Agent Talents", desc: "Cartographie les talents, detecte les hauts potentiels via la matrice 9-Box" },
+  { icon: GraduationCap, name: "Agent Formation", desc: "Identifie les besoins en compétences et propose des parcours personnalisés" },
+  { icon: CalendarCheck, name: "Agent Planning", desc: "Optimise la gestion des congés, absences et plannings d'equipe" },
+  { icon: MessageSquare, name: "Agent Engagement", desc: "Mesure le climat social et propose des actions pour améliorer le bien-être" },
+  { icon: PieChart, name: "Agent Analytics", desc: "Tableaux de bord intelligents et prédictions sur le turnover et la rétention" },
+  { icon: Award, name: "Agent Talents", desc: "Cartographie les talents, détecte les hauts potentiels via la matrice 9-Box" },
 ];
 
 const capabilities = [
   {
     category: "Administration du Personnel",
     items: [
-      "Gestion complete des dossiers employes",
+      "Gestion complète des dossiers employés",
       "Generation automatique de documents RH (attestations, certificats)",
-      "Suivi des contrats, periodes d'essai et echeances",
-      "Gestion des conges et absences avec validation multi-niveaux",
+      "Suivi des contrats, périodes d'essai et échéances",
+      "Gestion des congés et absences avec validation multi-niveaux",
       "Organigramme dynamique et interactif"
     ]
   },
@@ -74,19 +74,19 @@ const capabilities = [
     category: "Performance & OKR",
     items: [
       "Objectifs et Key Results (OKR) en cascade",
-      "Evaluations de performance 360\u00b0 avec campagnes automatisees",
+      "Évaluations de performance 360\u00b0 avec campagnes automatisées",
       "Entretiens one-on-one structures avec suivi",
       "Daily Checklist connectee aux KRs",
       "Calibrage et classement des performances"
     ]
   },
   {
-    category: "Talents & Developpement",
+    category: "Talents & Développement",
     items: [
       "Matrice 9-Box pour cartographier les talents",
-      "Plans de succession et mobilite interne",
-      "Parcours de formation personnalises par l'IA",
-      "Analyse des ecarts de competences",
+      "Plans de succession et mobilité interne",
+      "Parcours de formation personnalisés par l'IA",
+      "Analyse des écarts de compétences",
       "Suivi des certifications et habilitations"
     ]
   },
@@ -94,21 +94,21 @@ const capabilities = [
     category: "Pilotage & Intelligence RH",
     items: [
       "Tableaux de bord RH en temps reel",
-      "Predictions IA sur le turnover et la retention",
+      "Prédictions IA sur le turnover et la rétention",
       "Analyse du climat social et de l'engagement",
-      "Rapports automatises pour la direction",
-      "Benchmarks et indicateurs cles de performance RH"
+      "Rapports automatisés pour la direction",
+      "Benchmarks et indicateurs clés de performance RH"
     ]
   }
 ];
 
 const differentiators = [
-  { icon: Cpu, title: "IA Generative Integree", desc: "Pas un simple chatbot : de vrais agents IA qui executent des actions RH complexes de bout en bout." },
-  { icon: Shield, title: "Securite de Niveau Entreprise", desc: "Chiffrement des donnees, controle d'acces granulaire par role et conformite aux normes de protection des donnees." },
-  { icon: Zap, title: "Deploiement Rapide", desc: "Operationnel en quelques jours, pas en mois. Integration facile avec vos outils existants via API ouverte." },
-  { icon: Settings, title: "SIRH Integreable", desc: "S'adapte a votre ecosysteme existant. Connectez Targetym AI a vos outils de paie, comptabilite et communication." },
-  { icon: Clock, title: "ROI Immediat", desc: "Reduction mesurable de la charge administrative des la premiere semaine d'utilisation." },
-  { icon: Users, title: "Concu pour l'Afrique et le Monde", desc: "Multi-devises, multi-langues, adapte aux reglementations locales et aux realites des entreprises africaines." },
+  { icon: Cpu, title: "IA Générative Intégrée", desc: "Pas un simple chatbot : de vrais agents IA qui exécutent des actions RH complexes de bout en bout." },
+  { icon: Shield, title: "Sécurité de Niveau Entreprise", desc: "Chiffrement des données, contrôle d'accès granulaire par rôle et conformité aux normes de protection des données." },
+  { icon: Zap, title: "Déploiement Rapide", desc: "Operationnel en quelques jours, pas en mois. Intégration facile avec vos outils existants via API ouverte." },
+  { icon: Settings, title: "SIRH Intégrable", desc: "S'adapte à votre écosystème existant. Connectez Targetym AI à vos outils de paie, comptabilite et communication." },
+  { icon: Clock, title: "ROI Immédiat", desc: "Réduction mesurable de la charge administrative dès la première semaine d'utilisation." },
+  { icon: Users, title: "Conçu pour l'Afrique et le Monde", desc: "Multi-devises, multi-langues, adapté aux réglementations locales et aux réalités des entreprises africaines." },
 ];
 
 export default function HomePage() {
@@ -120,24 +120,24 @@ export default function HomePage() {
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
           <div className="inline-flex items-center px-4 py-2 bg-white/15 text-white rounded-full text-sm font-medium mb-8 backdrop-blur-sm border border-white/20">
             <Bot className="w-4 h-4 mr-2" />
-            Jusqu&apos;a 30 Agents IA RH Integres
+            Jusqu&apos;à 30 Agents IA RH Intégrés
           </div>
 
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-6 leading-tight">
-            Le SIRH optimise IA qui fait{' '}
+            Le SIRH optimisé IA qui fait{' '}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-yellow-100">
               50% du travail du DRH
             </span>
           </h1>
 
           <p className="text-lg sm:text-xl text-white/85 max-w-4xl mx-auto mb-4">
-            Targetym AI : la suite SIRH la plus complete au monde avec jusqu&apos;a 30 agents IA RH integres.
+            Targetym AI : la suite SIRH la plus complète au monde avec jusqu&apos;à 30 agents IA RH intégrés.
             Passez de l&apos;administration du personnel au pilotage de la performance humaine.
           </p>
 
           <p className="text-base text-white/65 max-w-3xl mx-auto mb-10">
-            Recrutement, gestion des talents, evaluations 360&deg;, OKR, formation, documents RH...
-            Tout est automatise, intelligent et integrable a votre ecosysteme.
+            Recrutement, gestion des talents, évaluations 360&deg;, OKR, formation, documents RH...
+            Tout est automatisé, intelligent et intégrable a votre ecosysteme.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -145,14 +145,14 @@ export default function HomePage() {
               href="/login?tab=register"
               className="inline-flex items-center justify-center px-8 py-4 text-base font-semibold text-primary-600 bg-white rounded-lg hover:bg-gray-100 transition-colors shadow-lg"
             >
-              Demarrer l&apos;Essai Gratuit
+              Démarrer l&apos;Essai Gratuit
               <ArrowRight className="ml-2 w-5 h-5" />
             </Link>
             <Link
               href="/solutions"
               className="inline-flex items-center justify-center px-8 py-4 text-base font-semibold text-white border-2 border-white/30 rounded-lg hover:bg-white/10 transition-colors"
             >
-              Decouvrir les Solutions
+              Découvrir les Solutions
             </Link>
           </div>
         </div>
@@ -205,10 +205,10 @@ export default function HomePage() {
               Intelligence Artificielle
             </div>
             <h2 className="text-3xl sm:text-4xl font-bold mb-4">
-              30 Agents IA RH a Votre Service
+              30 Agents IA RH à Votre Service
             </h2>
             <p className="text-lg text-gray-400 max-w-3xl mx-auto">
-              Chaque agent est specialise dans un domaine RH precis. Ils travaillent ensemble,
+              Chaque agent est spécialisé dans un domaine RH précis. Ils travaillent ensemble,
               24h/24, pour automatiser, analyser et optimiser vos processus.
             </p>
           </div>
@@ -233,7 +233,7 @@ export default function HomePage() {
           </div>
 
           <p className="text-center text-gray-500 text-sm mt-8">
-            Et bien d&apos;autres agents specialises : bien-etre, onboarding, offboarding, audit RH...
+            Et bien d&apos;autres agents spécialisés : bien-être, onboarding, offboarding, audit RH...
           </p>
         </div>
       </section>
@@ -247,7 +247,7 @@ export default function HomePage() {
             </h2>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
               Une suite SIRH complete qui couvre l&apos;ensemble du cycle de vie de vos collaborateurs,
-              de l&apos;embauche au depart
+              de l&apos;embauche au départ
             </p>
           </div>
 
@@ -285,7 +285,7 @@ export default function HomePage() {
               Ce qui rend Targetym AI unique
             </h2>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              Pas un SIRH de plus. Une revolution dans la facon de gerer le capital humain.
+              Pas un SIRH de plus. Une révolution dans la façon de gérer le capital humain.
             </p>
           </div>
 
@@ -315,11 +315,11 @@ export default function HomePage() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="bg-gradient-to-r from-primary-500 to-secondary-500 rounded-3xl p-12 md:p-16 text-white text-center">
             <h2 className="text-3xl sm:text-4xl font-bold mb-6">
-              Passez de l&apos;administration au pilotage strategique
+              Passez de l&apos;administration au pilotage stratégique
             </h2>
             <p className="text-lg text-white/80 max-w-3xl mx-auto mb-8">
-              Targetym AI transforme votre DRH en centre de decision strategique.
-              Fini les taches repetitives, place a l&apos;intelligence collective et a la performance humaine.
+              Targetym AI transforme votre DRH en centre de décision stratégique.
+              Fini les tâches répétitives, place à l&apos;intelligence collective et à la performance humaine.
             </p>
 
             <div className="grid sm:grid-cols-3 gap-6 mb-10 max-w-3xl mx-auto">
@@ -329,11 +329,11 @@ export default function HomePage() {
               </div>
               <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
                 <div className="text-3xl font-black mb-2">30+</div>
-                <div className="text-sm text-white/70">agents IA specialises</div>
+                <div className="text-sm text-white/70">agents IA spécialisés</div>
               </div>
               <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
                 <div className="text-3xl font-black mb-2">100%</div>
-                <div className="text-sm text-white/70">SIRH integreable</div>
+                <div className="text-sm text-white/70">SIRH intégrable</div>
               </div>
             </div>
 
@@ -349,7 +349,7 @@ export default function HomePage() {
                 href="/contact"
                 className="inline-flex items-center justify-center px-8 py-4 text-base font-semibold text-white border-2 border-white/30 rounded-lg hover:bg-white/10 transition-colors"
               >
-                Demander une Demo
+                Demander une Démo
               </Link>
             </div>
           </div>

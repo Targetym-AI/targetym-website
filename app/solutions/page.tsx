@@ -23,13 +23,13 @@ const modules = [
     title: "Administration du Personnel",
     description: "Centralisez la gestion de vos collaborateurs en un seul endroit.",
     features: [
-      "Dossiers employes complets",
+      "Dossiers employés complets",
       "Organigramme dynamique",
-      "Suivi des contrats et echeances",
+      "Suivi des contrats et échéances",
       "Historique des promotions",
       "Gestion multi-sites"
     ],
-    aiFeature: "Detection automatique des echeances critiques et alertes proactives.",
+    aiFeature: "Détection automatique des échéances critiques et alertes proactives.",
     color: "from-blue-500 to-blue-600",
     bgLight: "bg-blue-50",
     textColor: "text-blue-600",
@@ -40,13 +40,13 @@ const modules = [
     title: "Performance",
     description: "Evaluations structurees et feedback continu pour piloter la performance.",
     features: [
-      "Evaluations 360\u00b0",
-      "Campagnes automatisees",
+      "Évaluations 360\u00b0",
+      "Campagnes automatisées",
       "Entretiens one-on-one",
       "Calibrage des notes",
-      "Plans de developpement"
+      "Plans de développement"
     ],
-    aiFeature: "Analyse des tendances et recommandations de developpement personnalisees.",
+    aiFeature: "Analyse des tendances et recommandations de développement personnalisées.",
     color: "from-emerald-500 to-emerald-600",
     bgLight: "bg-emerald-50",
     textColor: "text-emerald-600",
@@ -59,11 +59,11 @@ const modules = [
     features: [
       "OKR en cascade",
       "Suivi temps reel des KR",
-      "Daily Checklist connectee",
+      "Daily Checklist connectée",
       "Tableaux de bord visuels",
-      "Alertes sur les ecarts"
+      "Alertes sur les écarts"
     ],
-    aiFeature: "Identification des objectifs a risque et suggestions d'actions correctives.",
+    aiFeature: "Identification des objectifs à risque et suggestions d'actions correctives.",
     color: "from-violet-500 to-violet-600",
     bgLight: "bg-violet-50",
     textColor: "text-violet-600",
@@ -72,13 +72,13 @@ const modules = [
   {
     icon: UserPlus,
     title: "Recrutement",
-    description: "Attirez et integrez les meilleurs talents avec un processus intelligent.",
+    description: "Attirez et intégrez les meilleurs talents avec un processus intelligent.",
     features: [
       "Offres multi-canaux",
       "Scoring IA des candidats",
       "Pipeline visuel",
       "Grilles collaboratives",
-      "Onboarding structure"
+      "Onboarding structuré"
     ],
     aiFeature: "Analyse automatique des CV et classement des meilleurs profils.",
     color: "from-orange-500 to-orange-600",
@@ -93,11 +93,11 @@ const modules = [
     features: [
       "Matrice 9-Box",
       "Plans de succession",
-      "Parcours de carriere",
-      "Analyse des competences",
-      "Mobilite interne"
+      "Parcours de carrière",
+      "Analyse des compétences",
+      "Mobilité interne"
     ],
-    aiFeature: "Detection des hauts potentiels et prediction des risques de depart.",
+    aiFeature: "Détection des hauts potentiels et prédiction des risques de départ.",
     color: "from-rose-500 to-rose-600",
     bgLight: "bg-rose-50",
     textColor: "text-rose-600",
@@ -106,7 +106,7 @@ const modules = [
   {
     icon: GraduationCap,
     title: "Formation",
-    description: "Developpez les competences avec des parcours intelligents et adaptatifs.",
+    description: "Développez les compétences avec des parcours intelligents et adaptatifs.",
     features: [
       "Catalogue personnalisable",
       "Parcours adaptatifs",
@@ -114,7 +114,7 @@ const modules = [
       "Budget et ROI formation",
       "Plans individuels"
     ],
-    aiFeature: "Recommandations de formations basees sur les ecarts de competences.",
+    aiFeature: "Recommandations de formations basées sur les écarts de compétences.",
     color: "from-cyan-500 to-cyan-600",
     bgLight: "bg-cyan-50",
     textColor: "text-cyan-600",
@@ -122,16 +122,16 @@ const modules = [
   },
   {
     icon: CalendarCheck,
-    title: "Conges & Absences",
-    description: "Simplifiez la gestion des conges avec des workflows automatiques.",
+    title: "Congés & Absences",
+    description: "Simplifiez la gestion des congés avec des workflows automatiques.",
     features: [
       "Demandes en un clic",
       "Validation multi-niveaux",
-      "Calendrier d'equipe",
+      "Calendrier d'équipe",
       "Soldes temps reel",
-      "Rapports d'absenteisme"
+      "Rapports d'absentéisme"
     ],
-    aiFeature: "Anticipation des periodes de forte absence pour eviter les sous-effectifs.",
+    aiFeature: "Anticipation des périodes de forte absence pour éviter les sous-effectifs.",
     color: "from-amber-500 to-amber-600",
     bgLight: "bg-amber-50",
     textColor: "text-amber-600",
@@ -140,15 +140,15 @@ const modules = [
   {
     icon: FileText,
     title: "Documents RH",
-    description: "Generez tous vos documents RH officiels en quelques secondes.",
+    description: "Générez tous vos documents RH officiels en quelques secondes.",
     features: [
       "Attestations automatiques",
       "Certificats de travail",
-      "Modeles personnalisables",
-      "Signature electronique",
+      "Modèles personnalisables",
+      "Signature électronique",
       "Archivage securise"
     ],
-    aiFeature: "Generation automatique a partir des donnees employe, zero saisie manuelle.",
+    aiFeature: "Génération automatique à partir des données employé, zéro saisie manuelle.",
     color: "from-indigo-500 to-indigo-600",
     bgLight: "bg-indigo-50",
     textColor: "text-indigo-600",
@@ -159,18 +159,18 @@ const modules = [
 const aiHighlights = [
   {
     icon: Bot,
-    title: "Agents IA Specialises",
-    description: "Jusqu'a 30 agents IA experts dans chaque domaine RH"
+    title: "Agents IA Spécialisés",
+    description: "Jusqu'à 30 agents IA experts dans chaque domaine RH"
   },
   {
     icon: Sparkles,
     title: "Automatisation Intelligente",
-    description: "L'IA agit : generation de documents, alertes, recommandations"
+    description: "L'IA agit : génération de documents, alertes, recommandations"
   },
   {
     icon: LayoutDashboard,
-    title: "Dashboards Predictifs",
-    description: "Des tableaux de bord qui predisent les tendances futures"
+    title: "Dashboards Prédictifs",
+    description: "Des tableaux de bord qui prédisent les tendances futures"
   },
   {
     icon: MessageSquare,
@@ -187,31 +187,31 @@ export default function SolutionsPage() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
           <div className="inline-flex items-center px-4 py-2 bg-white/15 text-white rounded-full text-sm font-medium mb-8 backdrop-blur-sm border border-white/20">
             <ClipboardList className="w-4 h-4 mr-2" />
-            Suite SIRH Complete
+            Suite SIRH Complète
           </div>
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-6">
-            Une Suite SIRH Complete pour{' '}
+            Une Suite SIRH Complète pour{' '}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-yellow-100">
               Chaque Besoin RH
             </span>
           </h1>
           <p className="text-lg text-white/80 max-w-3xl mx-auto mb-10">
-            Du recrutement au depart, Targetym AI couvre l&apos;ensemble du cycle de vie
-            de vos collaborateurs avec des modules puissants, interconnectes et optimises par l&apos;IA.
+            Du recrutement au départ, Targetym AI couvre l&apos;ensemble du cycle de vie
+            de vos collaborateurs avec des modules puissants, interconnectés et optimisés par l&apos;IA.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               href="/login?tab=register"
               className="inline-flex items-center px-8 py-4 text-base font-semibold text-primary-600 bg-white rounded-lg hover:bg-gray-100 transition-colors shadow-lg"
             >
-              Demarrer l&apos;Essai Gratuit
+              Démarrer l&apos;Essai Gratuit
               <ArrowRight className="ml-2 w-5 h-5" />
             </Link>
             <Link
               href="/contact"
               className="inline-flex items-center px-8 py-4 text-base font-semibold text-white border-2 border-white/30 rounded-lg hover:bg-white/10 transition-colors"
             >
-              Demander une Demo
+              Demander une Démo
             </Link>
           </div>
         </div>
@@ -244,7 +244,7 @@ export default function SolutionsPage() {
               Tous les Modules
             </h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Chaque module fonctionne independamment ou en synergie avec les autres
+              Chaque module fonctionne indépendamment ou en synergie avec les autres
             </p>
           </div>
 
@@ -301,10 +301,10 @@ export default function SolutionsPage() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="bg-gradient-to-r from-primary-500 to-secondary-500 rounded-3xl p-12 md:p-16 text-white text-center">
             <h2 className="text-3xl sm:text-4xl font-bold mb-6">
-              Pret a decouvrir la puissance de Targetym AI ?
+              Prêt à découvrir la puissance de Targetym AI ?
             </h2>
             <p className="text-lg text-white/80 max-w-2xl mx-auto mb-8">
-              Testez gratuitement tous les modules et decouvrez comment l&apos;IA peut
+              Testez gratuitement tous les modules et découvrez comment l&apos;IA peut
               transformer votre gestion des ressources humaines.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -319,7 +319,7 @@ export default function SolutionsPage() {
                 href="/contact"
                 className="inline-flex items-center justify-center px-8 py-4 text-base font-semibold text-white border-2 border-white/30 rounded-lg hover:bg-white/10 transition-colors"
               >
-                Contacter l&apos;Equipe
+                Contacter l&apos;Équipe
               </Link>
             </div>
           </div>
