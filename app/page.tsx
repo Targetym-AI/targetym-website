@@ -41,7 +41,7 @@ const valuePropositions = [
   {
     icon: Layers,
     title: "Du personnel au pilotage de la performance",
-    description: "Passez de la simple administration du personnel au pilotage stratégique de la performance humaine. Un SIRH intégrable qui transforme vos données RH en decisions eclairees.",
+    description: "Passez de la simple administration du personnel au pilotage stratégique de la performance humaine. Un SIRH intégrable qui transforme vos données RH en décisions éclairées.",
     highlight: "360\u00b0",
     highlightLabel: "vision de la performance"
   }
@@ -51,9 +51,9 @@ const aiAgents = [
   { icon: FileText, name: "Agent Documents", desc: "Génère automatiquement attestations, certificats de travail et documents RH" },
   { icon: UserPlus, name: "Agent Recrutement", desc: "Filtre les candidatures, évalue les profils et propose les meilleurs matchs" },
   { icon: TrendingUp, name: "Agent Performance", desc: "Analyse les évaluations 360\u00b0 et recommande des plans de développement" },
-  { icon: Target, name: "Agent OKR", desc: "Suit les objectifs en temps reel et alerte sur les ecarts de performance" },
+  { icon: Target, name: "Agent OKR", desc: "Suit les objectifs en temps réel et alerte sur les écarts de performance" },
   { icon: GraduationCap, name: "Agent Formation", desc: "Identifie les besoins en compétences et propose des parcours personnalisés" },
-  { icon: CalendarCheck, name: "Agent Planning", desc: "Optimise la gestion des congés, absences et plannings d'equipe" },
+  { icon: CalendarCheck, name: "Agent Planning", desc: "Optimise la gestion des congés, absences et plannings d'équipe" },
   { icon: MessageSquare, name: "Agent Engagement", desc: "Mesure le climat social et propose des actions pour améliorer le bien-être" },
   { icon: PieChart, name: "Agent Analytics", desc: "Tableaux de bord intelligents et prédictions sur le turnover et la rétention" },
   { icon: Award, name: "Agent Talents", desc: "Cartographie les talents, détecte les hauts potentiels via la matrice 9-Box" },
