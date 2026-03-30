@@ -14,7 +14,11 @@ import {
   MessageSquare,
   Award,
   ClipboardList,
-  LayoutDashboard
+  LayoutDashboard,
+  Banknote,
+  LogOut,
+  Scale,
+  Gift
 } from 'lucide-react';
 
 const modules = [
@@ -38,7 +42,7 @@ const modules = [
   {
     icon: TrendingUp,
     title: "Performance",
-    description: "Evaluations structurees et feedback continu pour piloter la performance.",
+    description: "Évaluations structurées et feedback continu pour piloter la performance.",
     features: [
       "Évaluations 360\u00b0",
       "Campagnes automatisées",
@@ -58,7 +62,7 @@ const modules = [
     description: "Alignez toute l'organisation avec des objectifs clairs et mesurables.",
     features: [
       "OKR en cascade",
-      "Suivi temps reel des KR",
+      "Suivi temps réel des KR",
       "Daily Checklist connectée",
       "Tableaux de bord visuels",
       "Alertes sur les écarts"
@@ -128,7 +132,7 @@ const modules = [
       "Demandes en un clic",
       "Validation multi-niveaux",
       "Calendrier d'équipe",
-      "Soldes temps reel",
+      "Soldes temps réel",
       "Rapports d'absentéisme"
     ],
     aiFeature: "Anticipation des périodes de forte absence pour éviter les sous-effectifs.",
@@ -146,14 +150,80 @@ const modules = [
       "Certificats de travail",
       "Modèles personnalisables",
       "Signature électronique",
-      "Archivage securise"
+      "Archivage sécurisé"
     ],
     aiFeature: "Génération automatique à partir des données employé, zéro saisie manuelle.",
     color: "from-indigo-500 to-indigo-600",
     bgLight: "bg-indigo-50",
     textColor: "text-indigo-600",
-    borderColor: "border-indigo-200"
-  }
+    borderColor: "border-indigo-200"  },
+  {
+    icon: Banknote,
+    title: "Paie & Rémunération",
+    description: "Gérez les salaires, grilles de rémunération et avances sur paie.",
+    features: [
+      "Grilles salariales",
+      "Avances sur salaire",
+      "Historique des rémunérations",
+      "Révisions salariales",
+      "Exports comptables"
+    ],
+    aiFeature: "Analyse des écarts salariaux et recommandations d'équité de rémunération.",
+    color: "from-teal-500 to-teal-600",
+    bgLight: "bg-teal-50",
+    textColor: "text-teal-600",
+    borderColor: "border-teal-200"
+  },
+  {
+    icon: Gift,
+    title: "Avantages Sociaux",
+    description: "Centralisez et gérez tous les avantages accordés à vos collaborateurs.",
+    features: [
+      "Catalogue des avantages",
+      "Attribution par poste",
+      "Suivi des primes",
+      "Assurances & mutuelles",
+      "Rapports de coûts"
+    ],
+    aiFeature: "Suggestions d'avantages pour améliorer la rétention des talents clés.",
+    color: "from-pink-500 to-pink-600",
+    bgLight: "bg-pink-50",
+    textColor: "text-pink-600",
+    borderColor: "border-pink-200"
+  },
+  {
+    icon: Scale,
+    title: "Sanctions Disciplinaires",
+    description: "Gérez les procédures disciplinaires dans le respect du droit du travail.",
+    features: [
+      "Avertissements & mises en demeure",
+      "Procédures réglementaires",
+      "Suivi des dossiers",
+      "Historique disciplinaire",
+      "Gestion du contentieux"
+    ],
+    aiFeature: "Vérification de la conformité légale des procédures avant notification.",
+    color: "from-slate-500 to-slate-600",
+    bgLight: "bg-slate-50",
+    textColor: "text-slate-600",
+    borderColor: "border-slate-200"
+  },
+  {
+    icon: LogOut,
+    title: "Gestion des Départs",
+    description: "Pilotez l'offboarding et les soldes de tout compte en toute sérénité.",
+    features: [
+      "Entretiens de départ",
+      "Solde de tout compte",
+      "Checklist de départ",
+      "Archivage du dossier",
+      "Analyse des motifs"
+    ],
+    aiFeature: "Identification des tendances de départ pour anticiper les risques de turnover.",
+    color: "from-red-400 to-red-500",
+    bgLight: "bg-red-50",
+    textColor: "text-red-500",
+    borderColor: "border-red-200"  }
 ];
 
 const aiHighlights = [
