@@ -72,14 +72,14 @@ export default function Footer() {
               <h3 className="text-white font-semibold mb-4">Support</h3>
               <ul className="space-y-3">
                 <li>
-                  <Link href="/docs" className="text-gray-400 hover:text-white text-sm transition-colors">
+                  <Link href="/resources" className="text-gray-400 hover:text-white text-sm transition-colors">
                     Documentation
                   </Link>
                 </li>
                 <li>
-                  <Link href="/help" className="text-gray-400 hover:text-white text-sm transition-colors">
+                  <a href="https://dashboard.targetym.ai/help" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white text-sm transition-colors">
                     Centre d&apos;Aide
-                  </Link>
+                  </a>
                 </li>
                 <li>
                   <Link href="/login" className="text-gray-400 hover:text-white text-sm transition-colors">
