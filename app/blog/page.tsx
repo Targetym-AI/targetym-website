@@ -77,41 +77,38 @@ export default async function BlogPage({
     fetchCategories(),
   ]);
 
-  const featuredPost = posts[0] ?? null;
-  const otherPosts = posts.slice(1);
-
   return (
     <div>
       {/* Hero */}
       <section className="bg-gradient-to-b from-primary-50 to-white pt-16 pb-14">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 text-center">
           <div className="inline-flex items-center px-4 py-2 bg-primary-100 text-primary-700 rounded-full text-sm font-medium mb-6">
             <BookOpen className="w-4 h-4 mr-2" />
             Blog Targetym AI
           </div>
-          <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4">
+          <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
             RH, Tech &{' '}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-500 to-secondary-500">
               Management
             </span>
           </h1>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+          <p className="text-gray-600 max-w-2xl mx-auto">
             Conseils pratiques, tendances RH et retours d&apos;expérience pour les équipes africaines.
           </p>
         </div>
       </section>
 
-      <section className="py-12 bg-white">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <section className="py-16 bg-gray-50 min-h-[40vh]">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
           {/* Filtres catégories */}
           {categories.length > 0 && (
-            <div className="flex flex-wrap gap-2 mb-10">
+            <div className="flex flex-wrap gap-2 mb-8">
               <Link
                 href="/blog"
-                className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                className={`px-4 py-1.5 rounded-full text-sm font-medium transition-colors ${
                   !activeCategory
                     ? 'bg-primary-500 text-white'
-                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                    : 'bg-white text-gray-600 border border-gray-200 hover:bg-gray-100'
                 }`}
               >
                 Tous ({total})
@@ -120,10 +117,10 @@ export default async function BlogPage({
                 <Link
                   key={c.category}
                   href={`/blog?category=${encodeURIComponent(c.category)}`}
-                  className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                  className={`px-4 py-1.5 rounded-full text-sm font-medium transition-colors ${
                     activeCategory === c.category
                       ? 'bg-primary-500 text-white'
-                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                      : 'bg-white text-gray-600 border border-gray-200 hover:bg-gray-100'
                   }`}
                 >
                   {c.category} ({c.count})
@@ -139,105 +136,58 @@ export default async function BlogPage({
               <p className="text-sm mt-1">Revenez bientôt !</p>
             </div>
           ) : (
-            <>
-              {/* Article en vedette */}
-              {featuredPost && (
-                <Link href={`/blog/${featuredPost.slug}`} className="block group mb-10">
-                  <div className="grid md:grid-cols-2 gap-6 rounded-2xl border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow">
-                    <div className="bg-gradient-to-br from-primary-50 to-primary-100 min-h-[220px] flex items-center justify-center">
-                      {featuredPost.cover_image_url ? (
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <img
-                          src={mediaUrl(featuredPost.cover_image_url)}
-                          alt={featuredPost.title}
-                          className="w-full h-full object-cover"
-                        />
-                      ) : (
-                        <BookOpen className="w-16 h-16 text-primary-300" />
-                      )}
-                    </div>
-                    <div className="p-8 flex flex-col justify-center">
-                      {featuredPost.category && (
-                        <span className="inline-block mb-3 px-3 py-1 bg-primary-100 text-primary-700 text-xs font-semibold rounded-full w-fit">
-                          {featuredPost.category}
-                        </span>
-                      )}
-                      <h2 className="text-2xl font-bold text-gray-900 mb-3 group-hover:text-primary-600 transition-colors">
-                        {featuredPost.title}
-                      </h2>
-                      {featuredPost.excerpt && (
-                        <p className="text-gray-600 text-sm leading-relaxed mb-4 line-clamp-3">
-                          {featuredPost.excerpt}
-                        </p>
-                      )}
-                      <div className="flex items-center gap-4 text-xs text-gray-400">
-                        {featuredPost.published_at && (
-                          <span className="flex items-center gap-1">
-                            <Calendar className="w-3.5 h-3.5" />
-                            {formatDate(featuredPost.published_at)}
-                          </span>
-                        )}
-                        <span className="flex items-center gap-1 text-primary-600 font-medium">
-                          Lire l&apos;article
-                          <ArrowRight className="w-3.5 h-3.5" />
-                        </span>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {posts.map((post) => (
+                <Link
+                  key={post.id}
+                  href={`/blog/${post.slug}`}
+                  className="group bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-md transition-all"
+                >
+                  {/* Image */}
+                  <div className="relative aspect-video bg-primary-50 overflow-hidden">
+                    {post.cover_image_url ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={mediaUrl(post.cover_image_url)}
+                        alt={post.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center">
+                        <BookOpen className="w-10 h-10 text-primary-200" />
                       </div>
+                    )}
+                  </div>
+
+                  {/* Body */}
+                  <div className="p-5">
+                    {post.category && (
+                      <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-primary-50 text-primary-600 mb-3">
+                        <Tag className="w-3 h-3" />
+                        {post.category}
+                      </span>
+                    )}
+                    <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2 group-hover:text-primary-600 transition-colors">
+                      {post.title}
+                    </h3>
+                    {post.excerpt && (
+                      <p className="text-sm text-gray-500 line-clamp-2 mb-4">{post.excerpt}</p>
+                    )}
+                    <div className="flex items-center justify-between text-xs text-gray-400">
+                      {post.published_at ? (
+                        <span className="flex items-center gap-1">
+                          <Calendar className="w-3.5 h-3.5" />
+                          {formatDate(post.published_at)}
+                        </span>
+                      ) : <span />}
+                      <span className="text-primary-600 font-medium flex items-center gap-1">
+                        Lire <ArrowRight className="w-3 h-3" />
+                      </span>
                     </div>
                   </div>
                 </Link>
-              )}
-
-              {/* Grille des autres articles */}
-              {otherPosts.length > 0 && (
-                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {otherPosts.map((post) => (
-                    <Link
-                      key={post.id}
-                      href={`/blog/${post.slug}`}
-                      className="group flex flex-col rounded-xl border border-gray-200 overflow-hidden hover:shadow-md transition-shadow"
-                    >
-                      <div className="h-44 bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center overflow-hidden">
-                        {post.cover_image_url ? (
-                          // eslint-disable-next-line @next/next/no-img-element
-                          <img
-                            src={mediaUrl(post.cover_image_url)}
-                            alt={post.title}
-                            className="w-full h-full object-cover"
-                          />
-                        ) : (
-                          <BookOpen className="w-10 h-10 text-gray-300" />
-                        )}
-                      </div>
-                      <div className="p-5 flex flex-col flex-1">
-                        {post.category && (
-                          <span className="text-xs font-semibold text-primary-600 mb-2">
-                            <Tag className="w-3 h-3 inline mr-1" />
-                            {post.category}
-                          </span>
-                        )}
-                        <h3 className="text-base font-bold text-gray-900 mb-2 group-hover:text-primary-600 transition-colors line-clamp-2">
-                          {post.title}
-                        </h3>
-                        {post.excerpt && (
-                          <p className="text-sm text-gray-500 line-clamp-2 flex-1">{post.excerpt}</p>
-                        )}
-                        <div className="mt-4 flex items-center justify-between text-xs text-gray-400">
-                          {post.published_at && (
-                            <span className="flex items-center gap-1">
-                              <Calendar className="w-3.5 h-3.5" />
-                              {formatDate(post.published_at)}
-                            </span>
-                          )}
-                          <span className="text-primary-600 font-medium flex items-center gap-1">
-                            Lire <ArrowRight className="w-3 h-3" />
-                          </span>
-                        </div>
-                      </div>
-                    </Link>
-                  ))}
-                </div>
-              )}
-            </>
+              ))}
+            </div>
           )}
         </div>
       </section>
