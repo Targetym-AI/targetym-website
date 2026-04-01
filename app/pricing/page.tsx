@@ -61,6 +61,7 @@ const plans = [
       "Analytique RH avancée",
       "Suivi des départs",
       "Agent IA RH spécialisé",
+      "Module Paie (add-on optionnel)",
     ],
     notIncluded: [],
     cta: "Démarrer l'Essai Gratuit",
@@ -80,7 +81,7 @@ const plans = [
     features: [
       "Tout le plan Premium",
       "ATS — Système de suivi des candidatures",
-      "Module paie add-on",
+      "Module Paie intégré",
       "Agent IA avancé multi-domaines",
       "Certifications RH",
       "Data insights & prédictif",
@@ -113,9 +114,9 @@ const addons = [
   },
   {
     title: "Module Paie",
-    description: "Intégration paie avec votre logiciel existant (Entreprise uniquement)",
+    description: "Bulletins de paie officiels, cotisations IPRES/CSS/IPM/CFCE, IR sénégalais. Inclus dans Entreprise, disponible en add-on pour Premium.",
     price: "Sur devis",
-    priceEntreprise: null,
+    priceEntreprise: "Inclus dans Entreprise",
   },
   {
     title: "Support Premium",

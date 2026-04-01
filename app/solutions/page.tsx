@@ -159,16 +159,18 @@ const modules = [
     borderColor: "border-indigo-200"  },
   {
     icon: Banknote,
-    title: "Paie & Rémunération",
-    description: "Gérez les salaires, grilles de rémunération et avances sur paie.",
+    title: "Module Paie",
+    description: "Gérez la paie de vos employés avec des bulletins officiels et des cotisations légales calculées automatiquement.",
     features: [
-      "Grilles salariales",
-      "Avances sur salaire",
-      "Historique des rémunérations",
-      "Révisions salariales",
-      "Exports comptables"
+      "Runs de paie mensuels",
+      "Bulletins de paie PDF",
+      "IPRES / CSS / IPM / CFCE",
+      "Impôt sur le revenu (IR)",
+      "Rubriques paramétrables",
+      "Profils de paie employés",
+      "Simulation avant validation"
     ],
-    aiFeature: "Analyse des écarts salariaux et recommandations d'équité de rémunération.",
+    aiFeature: "Calcul automatique des cotisations légales sénégalaises et génération des bulletins en un clic.",
     color: "from-teal-500 to-teal-600",
     bgLight: "bg-teal-50",
     textColor: "text-teal-600",
