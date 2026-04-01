@@ -6,7 +6,7 @@ import { useSearchParams } from 'next/navigation';
 import { Lock, Mail, Eye, EyeOff, Loader2, Building2, Phone, CheckCircle, Clock, Users, Shield, ArrowLeft } from 'lucide-react';
 
 // URL de ton API Railway
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.targetym.ai';
+const API_URL = (process.env.NEXT_PUBLIC_API_URL || 'https://api.targetym.ai').replace(/^http:\/\//, 'https://');
 const DASHBOARD_URL = 'https://dashboard.targetym.ai';
 
 // Domaines emails personnels bloqués
