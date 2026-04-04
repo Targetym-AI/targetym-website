@@ -25,7 +25,7 @@ export default function Header() {
           <div className="flex items-center">
             <Link href="/">
               <Image
-                src="/logo-targetym.png"
+                src="/logo-targetym-dark.png"
                 alt="Targetym AI"
                 width={150}
                 height={40}
