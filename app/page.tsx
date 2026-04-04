@@ -63,6 +63,7 @@ const aiAgents = [
 const capabilities = [
   {
     category: "Administration du Personnel",
+    screenshot: "/modules/personnel.png",
     items: [
       "Gestion complète des dossiers employés",
       "Generation automatique de documents RH (attestations, certificats)",
@@ -73,6 +74,7 @@ const capabilities = [
   },
   {
     category: "Performance & OKR",
+    screenshot: "/modules/okr.png",
     items: [
       "Objectifs et Key Results (OKR) en cascade",
       "Évaluations de performance 360\u00b0 avec campagnes automatisées",
@@ -83,6 +85,7 @@ const capabilities = [
   },
   {
     category: "Talents & Développement",
+    screenshot: "/modules/talents.png",
     items: [
       "Matrice 9-Box pour cartographier les talents",
       "Plans de succession et mobilité interne",
@@ -93,6 +96,7 @@ const capabilities = [
   },
   {
     category: "Pilotage & Intelligence RH",
+    screenshot: "/modules/analytics-effectifs.png",
     items: [
       "Tableaux de bord RH en temps reel",
       "Prédictions IA sur le turnover et la rétention",
@@ -370,26 +374,47 @@ export default function HomePage() {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-8">
+          <div className="space-y-8">
             {capabilities.map((cap, index) => (
               <div
                 key={index}
-                className="p-8 bg-gray-50 rounded-2xl border border-gray-100"
+                className={`flex flex-col md:flex-row items-center gap-8 py-12 ${index % 2 !== 0 ? 'md:flex-row-reverse' : ''}`}
               >
-                <h3 className="text-xl font-bold text-gray-900 mb-6 flex items-center">
-                  <span className="w-8 h-8 bg-primary-500 text-white rounded-lg flex items-center justify-center text-sm font-bold mr-3">
-                    {index + 1}
-                  </span>
-                  {cap.category}
-                </h3>
-                <ul className="space-y-3">
-                  {cap.items.map((item, i) => (
-                    <li key={i} className="flex items-start text-gray-600">
-                      <CheckCircle className="w-5 h-5 text-primary-500 mr-3 flex-shrink-0 mt-0.5" />
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
+                {/* Texte */}
+                <div className="flex-1">
+                  <div className="flex items-center gap-3 mb-4">
+                    <span className="w-8 h-8 bg-primary-500 text-white rounded-full flex items-center justify-center text-sm font-bold">
+                      {index + 1}
+                    </span>
+                    <h3 className="text-xl font-bold text-gray-900">{cap.category}</h3>
+                  </div>
+                  <ul className="space-y-3">
+                    {cap.items.map((item, i) => (
+                      <li key={i} className="flex items-start text-gray-600">
+                        <CheckCircle className="w-5 h-5 text-primary-500 mr-3 flex-shrink-0 mt-0.5" />
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* Capture */}
+                <div className="flex-1">
+                  <div className="rounded-xl overflow-hidden border border-gray-200 shadow-lg hover:shadow-xl transition-shadow duration-300">
+                    <div className="bg-gray-100 px-3 py-1.5 flex items-center gap-1.5 border-b border-gray-200">
+                      <div className="w-2.5 h-2.5 rounded-full bg-red-400" />
+                      <div className="w-2.5 h-2.5 rounded-full bg-yellow-400" />
+                      <div className="w-2.5 h-2.5 rounded-full bg-green-400" />
+                    </div>
+                    <Image
+                      src={cap.screenshot}
+                      alt={cap.category}
+                      width={600}
+                      height={350}
+                      className="w-full h-auto"
+                    />
+                  </div>
+                </div>
               </div>
             ))}
           </div>
