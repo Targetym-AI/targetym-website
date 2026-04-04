@@ -83,7 +83,7 @@ function typeLabel(type: string) {
 function typeColor(type: string) {
   if (type === 'video') return 'bg-red-100 text-red-600';
   if (type === 'pdf') return 'bg-orange-100 text-orange-600';
-  return 'bg-blue-100 text-blue-600';
+  return 'bg-primary-100 text-primary-600';
 }
 
 function typeIcon(type: string) {

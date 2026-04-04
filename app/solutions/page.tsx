@@ -34,10 +34,10 @@ const modules = [
       "Gestion multi-sites"
     ],
     aiFeature: "Détection automatique des échéances critiques et alertes proactives.",
-    color: "from-blue-500 to-blue-600",
-    bgLight: "bg-blue-50",
-    textColor: "text-blue-600",
-    borderColor: "border-blue-200"
+    color: "from-primary-500 to-primary-600",
+    bgLight: "bg-primary-50",
+    textColor: "text-primary-600",
+    borderColor: "border-primary-200"
   },
   {
     icon: TrendingUp,

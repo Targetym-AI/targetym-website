@@ -15,6 +15,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="fr">
+      <head>
+        <link rel="icon" href="/favicon.png" type="image/png" />
+      </head>
       <body className="font-sans antialiased">
         <Header />
         <main className="min-h-screen">

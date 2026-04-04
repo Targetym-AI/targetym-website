@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { useState } from 'react';
 import { Menu, X } from 'lucide-react';
 
@@ -22,14 +23,14 @@ export default function Header() {
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
           <div className="flex items-center">
-            <Link href="/" className="flex items-center space-x-2">
-              <div className="w-9 h-9 bg-primary-500 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-lg">T</span>
-              </div>
-              <div className="flex flex-col">
-                <span className="font-bold text-gray-900 text-lg leading-tight">Targetym AI</span>
-                <span className="text-xs text-gray-500 leading-tight">HR Analytics</span>
-              </div>
+            <Link href="/">
+              <Image
+                src="/logo-targetym.png"
+                alt="Targetym AI"
+                width={150}
+                height={40}
+                className="object-contain"
+              />
             </Link>
           </div>
 
