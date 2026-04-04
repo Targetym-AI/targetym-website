@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import {
   Users,
   Target,
@@ -154,6 +155,28 @@ export default function HomePage() {
             >
               Découvrir les Solutions
             </Link>
+          </div>
+
+          {/* Dashboard Screenshot */}
+          <div className="mt-16 max-w-5xl mx-auto perspective-1000">
+            <div className="rounded-xl overflow-hidden shadow-2xl border border-white/20 transform rotate-x-1">
+              <div className="bg-gray-800 px-4 py-2.5 flex items-center gap-2 border-b border-gray-700">
+                <div className="w-3 h-3 rounded-full bg-red-400" />
+                <div className="w-3 h-3 rounded-full bg-yellow-400" />
+                <div className="w-3 h-3 rounded-full bg-green-400" />
+                <div className="ml-4 flex-1 bg-gray-700 rounded-md h-6 flex items-center px-3">
+                  <span className="text-xs text-gray-400">app.targetym.com/dashboard</span>
+                </div>
+              </div>
+              <Image
+                src="/modules/dashboard.png"
+                alt="Tableau de bord Targetym AI"
+                width={1200}
+                height={700}
+                className="w-full h-auto"
+                priority
+              />
+            </div>
           </div>
         </div>
       </section>

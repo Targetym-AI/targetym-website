@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import {
   TrendingUp,
   Target,
@@ -18,7 +19,12 @@ import {
   Banknote,
   LogOut,
   Scale,
-  Gift
+  Gift,
+  BarChart3,
+  Briefcase,
+  Plug,
+  ShieldCheck,
+  UserCircle
 } from 'lucide-react';
 
 const modules = [
@@ -37,14 +43,15 @@ const modules = [
     color: "from-primary-500 to-primary-600",
     bgLight: "bg-primary-50",
     textColor: "text-primary-600",
-    borderColor: "border-primary-200"
+    borderColor: "border-primary-200",
+    screenshot: "/modules/personnel.png"
   },
   {
     icon: TrendingUp,
     title: "Performance",
     description: "Évaluations structurées et feedback continu pour piloter la performance.",
     features: [
-      "Évaluations 360\u00b0",
+      "Évaluations 360°",
       "Campagnes automatisées",
       "Entretiens one-on-one",
       "Calibrage des notes",
@@ -54,7 +61,8 @@ const modules = [
     color: "from-emerald-500 to-emerald-600",
     bgLight: "bg-emerald-50",
     textColor: "text-emerald-600",
-    borderColor: "border-emerald-200"
+    borderColor: "border-emerald-200",
+    screenshot: "/modules/performance.png"
   },
   {
     icon: Target,
@@ -71,7 +79,8 @@ const modules = [
     color: "from-violet-500 to-violet-600",
     bgLight: "bg-violet-50",
     textColor: "text-violet-600",
-    borderColor: "border-violet-200"
+    borderColor: "border-violet-200",
+    screenshot: null
   },
   {
     icon: UserPlus,
@@ -88,7 +97,8 @@ const modules = [
     color: "from-orange-500 to-orange-600",
     bgLight: "bg-orange-50",
     textColor: "text-orange-600",
-    borderColor: "border-orange-200"
+    borderColor: "border-orange-200",
+    screenshot: "/modules/recrutement.png"
   },
   {
     icon: Award,
@@ -105,7 +115,8 @@ const modules = [
     color: "from-rose-500 to-rose-600",
     bgLight: "bg-rose-50",
     textColor: "text-rose-600",
-    borderColor: "border-rose-200"
+    borderColor: "border-rose-200",
+    screenshot: null
   },
   {
     icon: GraduationCap,
@@ -122,7 +133,8 @@ const modules = [
     color: "from-cyan-500 to-cyan-600",
     bgLight: "bg-cyan-50",
     textColor: "text-cyan-600",
-    borderColor: "border-cyan-200"
+    borderColor: "border-cyan-200",
+    screenshot: "/modules/formation.png"
   },
   {
     icon: CalendarCheck,
@@ -139,7 +151,8 @@ const modules = [
     color: "from-amber-500 to-amber-600",
     bgLight: "bg-amber-50",
     textColor: "text-amber-600",
-    borderColor: "border-amber-200"
+    borderColor: "border-amber-200",
+    screenshot: "/modules/conges.png"
   },
   {
     icon: FileText,
@@ -156,7 +169,9 @@ const modules = [
     color: "from-indigo-500 to-indigo-600",
     bgLight: "bg-indigo-50",
     textColor: "text-indigo-600",
-    borderColor: "border-indigo-200"  },
+    borderColor: "border-indigo-200",
+    screenshot: "/modules/documents.png"
+  },
   {
     icon: Banknote,
     title: "Module Paie",
@@ -174,7 +189,8 @@ const modules = [
     color: "from-teal-500 to-teal-600",
     bgLight: "bg-teal-50",
     textColor: "text-teal-600",
-    borderColor: "border-teal-200"
+    borderColor: "border-teal-200",
+    screenshot: null
   },
   {
     icon: Gift,
@@ -191,7 +207,8 @@ const modules = [
     color: "from-pink-500 to-pink-600",
     bgLight: "bg-pink-50",
     textColor: "text-pink-600",
-    borderColor: "border-pink-200"
+    borderColor: "border-pink-200",
+    screenshot: null
   },
   {
     icon: Scale,
@@ -208,7 +225,8 @@ const modules = [
     color: "from-slate-500 to-slate-600",
     bgLight: "bg-slate-50",
     textColor: "text-slate-600",
-    borderColor: "border-slate-200"
+    borderColor: "border-slate-200",
+    screenshot: "/modules/contentieux.png"
   },
   {
     icon: LogOut,
@@ -225,7 +243,99 @@ const modules = [
     color: "from-red-400 to-red-500",
     bgLight: "bg-red-50",
     textColor: "text-red-500",
-    borderColor: "border-red-200"  }
+    borderColor: "border-red-200",
+    screenshot: null
+  },
+  {
+    icon: BarChart3,
+    title: "People Analytics",
+    description: "Exploitez vos données RH pour prendre des décisions stratégiques éclairées.",
+    features: [
+      "Tableaux de bord interactifs",
+      "Analyse du turnover",
+      "Indicateurs de performance",
+      "Rapports automatisés",
+      "Prédictions IA"
+    ],
+    aiFeature: "Prédictions sur le turnover, la rétention et les tendances RH de votre organisation.",
+    color: "from-blue-500 to-blue-600",
+    bgLight: "bg-blue-50",
+    textColor: "text-blue-600",
+    borderColor: "border-blue-200",
+    screenshot: "/modules/analytics.png"
+  },
+  {
+    icon: Briefcase,
+    title: "Gestion des Missions",
+    description: "Planifiez et suivez les missions et déplacements de vos collaborateurs.",
+    features: [
+      "Création de missions",
+      "Ordres de mission",
+      "Suivi des frais",
+      "Validation hiérarchique",
+      "Rapports de mission"
+    ],
+    aiFeature: "Optimisation des plannings de mission et suivi automatique des budgets.",
+    color: "from-lime-500 to-lime-600",
+    bgLight: "bg-lime-50",
+    textColor: "text-lime-600",
+    borderColor: "border-lime-200",
+    screenshot: "/modules/missions.png"
+  },
+  {
+    icon: Plug,
+    title: "Intégrations",
+    description: "Connectez Targetym AI à vos outils existants pour un écosystème unifié.",
+    features: [
+      "API ouverte",
+      "Connecteurs prêts à l'emploi",
+      "Synchronisation temps réel",
+      "Webhooks configurables",
+      "Import/Export de données"
+    ],
+    aiFeature: "Configuration intelligente des intégrations et détection des anomalies de synchronisation.",
+    color: "from-fuchsia-500 to-fuchsia-600",
+    bgLight: "bg-fuchsia-50",
+    textColor: "text-fuchsia-600",
+    borderColor: "border-fuchsia-200",
+    screenshot: "/modules/integrations.png"
+  },
+  {
+    icon: ShieldCheck,
+    title: "Sécurité 2FA",
+    description: "Protégez l'accès à votre SIRH avec une authentification renforcée.",
+    features: [
+      "Authentification à deux facteurs",
+      "Contrôle d'accès par rôle",
+      "Journal d'audit",
+      "Politique de mots de passe",
+      "Sessions sécurisées"
+    ],
+    aiFeature: "Détection des connexions suspectes et alertes de sécurité en temps réel.",
+    color: "from-green-500 to-green-600",
+    bgLight: "bg-green-50",
+    textColor: "text-green-600",
+    borderColor: "border-green-200",
+    screenshot: "/modules/securite.png"
+  },
+  {
+    icon: UserCircle,
+    title: "Mon Espace",
+    description: "Un espace personnel pour chaque collaborateur avec toutes ses informations.",
+    features: [
+      "Profil personnel",
+      "Mes demandes",
+      "Mes documents",
+      "Mes objectifs",
+      "Notifications"
+    ],
+    aiFeature: "Assistant personnel IA pour répondre aux questions RH de chaque collaborateur.",
+    color: "from-sky-500 to-sky-600",
+    bgLight: "bg-sky-50",
+    textColor: "text-sky-600",
+    borderColor: "border-sky-200",
+    screenshot: "/modules/mon-espace.png"
+  }
 ];
 
 const aiHighlights = [
@@ -361,6 +471,24 @@ export default function SolutionsPage() {
                       {module.aiFeature}
                     </p>
                   </div>
+
+                  {/* Screenshot */}
+                  {module.screenshot && (
+                    <div className="mt-4 rounded-lg overflow-hidden border border-gray-200 shadow-lg hover:shadow-xl transition-shadow duration-300">
+                      <div className="bg-gray-100 px-3 py-1.5 flex items-center gap-1.5 border-b border-gray-200">
+                        <div className="w-2.5 h-2.5 rounded-full bg-red-400" />
+                        <div className="w-2.5 h-2.5 rounded-full bg-yellow-400" />
+                        <div className="w-2.5 h-2.5 rounded-full bg-green-400" />
+                      </div>
+                      <Image
+                        src={module.screenshot}
+                        alt={`Capture d'écran du module ${module.title}`}
+                        width={600}
+                        height={350}
+                        className="w-full h-auto"
+                      />
+                    </div>
+                  )}
                 </div>
               </div>
             ))}
