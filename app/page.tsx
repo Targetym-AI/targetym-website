@@ -116,7 +116,7 @@ export default function HomePage() {
   return (
     <div>
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-primary-600 via-primary-500 to-primary-700 pt-16 pb-24 overflow-hidden">
+      <section className="relative bg-gradient-to-br from-primary-600 via-primary-500 to-primary-700 pt-16 pb-64 overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-white/10 via-transparent to-transparent" />
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
           <div className="inline-flex items-center px-4 py-2 bg-white/15 text-white rounded-full text-sm font-medium mb-8 backdrop-blur-sm border border-white/20">
@@ -156,33 +156,33 @@ export default function HomePage() {
               Découvrir les Solutions
             </Link>
           </div>
-
-          {/* Dashboard Screenshot */}
-          <div className="mt-16 max-w-5xl mx-auto perspective-1000">
-            <div className="rounded-xl overflow-hidden shadow-2xl border border-white/20 transform rotate-x-1">
-              <div className="bg-gray-800 px-4 py-2.5 flex items-center gap-2 border-b border-gray-700">
-                <div className="w-3 h-3 rounded-full bg-red-400" />
-                <div className="w-3 h-3 rounded-full bg-yellow-400" />
-                <div className="w-3 h-3 rounded-full bg-green-400" />
-                <div className="ml-4 flex-1 bg-gray-700 rounded-md h-6 flex items-center px-3">
-                  <span className="text-xs text-gray-400">app.targetym.com/dashboard</span>
-                </div>
-              </div>
-              <Image
-                src="/modules/dashboard.png"
-                alt="Tableau de bord Targetym AI"
-                width={1200}
-                height={700}
-                className="w-full h-auto"
-                priority
-              />
-            </div>
-          </div>
         </div>
       </section>
 
+      {/* Dashboard Screenshot - overlaps hero and white section */}
+      <div className="relative z-10 -mt-48 mb-16 mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+        <div className="rounded-xl overflow-hidden shadow-2xl border border-gray-200">
+          <div className="bg-gray-800 px-4 py-2.5 flex items-center gap-2 border-b border-gray-700">
+            <div className="w-3 h-3 rounded-full bg-red-400" />
+            <div className="w-3 h-3 rounded-full bg-yellow-400" />
+            <div className="w-3 h-3 rounded-full bg-green-400" />
+            <div className="ml-4 flex-1 bg-gray-700 rounded-md h-6 flex items-center px-3">
+              <span className="text-xs text-gray-400">app.targetym.com/dashboard</span>
+            </div>
+          </div>
+          <Image
+            src="/modules/dashboard.png"
+            alt="Tableau de bord Targetym AI"
+            width={1200}
+            height={700}
+            className="w-full h-auto"
+            priority
+          />
+        </div>
+      </div>
+
       {/* Value Propositions */}
-      <section className="py-24 bg-white">
+      <section className="pt-8 pb-24 bg-white">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
