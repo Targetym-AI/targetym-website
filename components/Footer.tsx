@@ -37,11 +37,13 @@ export default function Footer() {
                     Tarification
                   </Link>
                 </li>
+                {/* Masqué — réactiver quand les vraies case studies seront prêtes
                 <li>
                   <Link href="/case-studies" className="text-gray-400 hover:text-white text-sm transition-colors">
                     Cas d&apos;Usage
                   </Link>
                 </li>
+                */}
               </ul>
             </div>
 

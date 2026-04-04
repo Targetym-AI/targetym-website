@@ -9,7 +9,7 @@ export default function Header() {
 
   const navigation = [
     { name: 'Solutions', href: '/solutions' },
-    { name: "Cas d'Usage", href: '/case-studies' },
+    // { name: "Cas d'Usage", href: '/case-studies' }, // Masqué — réactiver quand les vraies case studies seront prêtes
     { name: 'Blog', href: '/blog' },
     { name: 'Ressources', href: '/resources' },
     { name: 'Tarification', href: '/pricing' },
