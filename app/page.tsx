@@ -216,6 +216,50 @@ export default function HomePage() {
               </div>
             ))}
           </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-12">
+            {/* Gestion du Personnel */}
+            <div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-3">
+                Gestion du Personnel
+              </h3>
+              <div className="rounded-xl overflow-hidden border border-gray-200 shadow-lg hover:shadow-xl transition-shadow duration-300">
+                <div className="bg-gray-100 px-3 py-1.5 flex items-center gap-1.5 border-b border-gray-200">
+                  <div className="w-2.5 h-2.5 rounded-full bg-red-400" />
+                  <div className="w-2.5 h-2.5 rounded-full bg-yellow-400" />
+                  <div className="w-2.5 h-2.5 rounded-full bg-green-400" />
+                </div>
+                <Image
+                  src="/modules/personnel.png"
+                  alt="Gestion du Personnel"
+                  width={600}
+                  height={350}
+                  className="w-full h-auto"
+                />
+              </div>
+            </div>
+
+            {/* Performance */}
+            <div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-3">
+                Performance & Feedback
+              </h3>
+              <div className="rounded-xl overflow-hidden border border-gray-200 shadow-lg hover:shadow-xl transition-shadow duration-300">
+                <div className="bg-gray-100 px-3 py-1.5 flex items-center gap-1.5 border-b border-gray-200">
+                  <div className="w-2.5 h-2.5 rounded-full bg-red-400" />
+                  <div className="w-2.5 h-2.5 rounded-full bg-yellow-400" />
+                  <div className="w-2.5 h-2.5 rounded-full bg-green-400" />
+                </div>
+                <Image
+                  src="/modules/performance.png"
+                  alt="Performance & Feedback"
+                  width={600}
+                  height={350}
+                  className="w-full h-auto"
+                />
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
