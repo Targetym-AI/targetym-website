@@ -198,7 +198,7 @@ export default function HomePage() {
             </p>
           </div>
 
-          <div className="mt-8 mb-12 max-w-4xl mx-auto">
+          <div className="mt-8 mb-12">
             <div className="rounded-2xl overflow-hidden shadow-xl">
               <Image
                 src="/images/hero-rh.jpg"
