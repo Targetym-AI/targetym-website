@@ -40,7 +40,9 @@ const config: Config = {
         dark: '#1E293B',
       },
       fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
+        heading: ['var(--font-nunito)', 'sans-serif'],
+        body: ['var(--font-inter)', 'sans-serif'],
+        sans: ['var(--font-inter)', 'sans-serif'],
       },
     },
   },

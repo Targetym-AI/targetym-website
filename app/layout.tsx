@@ -1,7 +1,22 @@
 import type { Metadata } from "next";
+import { Nunito, Inter } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+
+const nunito = Nunito({
+  subsets: ["latin"],
+  weight: ["400", "600", "700", "800", "900"],
+  variable: "--font-nunito",
+  display: "swap",
+});
+
+const inter = Inter({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+  variable: "--font-inter",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: "Targetym AI - Plateforme RH & Performance augmentée par l'IA",
@@ -14,11 +29,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="fr">
+    <html lang="fr" className={`${nunito.variable} ${inter.variable}`}>
       <head>
         <link rel="icon" href="/favicon.png" type="image/png" />
       </head>
-      <body className="font-sans antialiased">
+      <body className="font-body antialiased">
         <Header />
         <main className="min-h-screen">
           {children}
