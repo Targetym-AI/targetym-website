@@ -123,9 +123,20 @@ export default function HomePage() {
   return (
     <div>
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-primary-600 via-primary-500 to-primary-700 pt-16 pb-64 overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-white/10 via-transparent to-transparent" />
-        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
+      <section className="relative pt-16 pb-64 overflow-hidden">
+        {/* Background image + overlay */}
+        <div className="absolute inset-0 z-0">
+          <Image
+            src="/images/hero-rh.jpg"
+            alt=""
+            fill
+            className="object-cover"
+            priority
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-primary-900/90 via-primary-800/85 to-primary-900/95" />
+        </div>
+
+        <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
           <div className="inline-flex items-center px-4 py-2 bg-white/15 text-white rounded-full text-sm font-medium mb-8 backdrop-blur-sm border border-white/20">
             <Bot className="w-4 h-4 mr-2" />
             Jusqu&apos;à 30 Agents IA RH Intégrés
@@ -148,7 +159,7 @@ export default function HomePage() {
             Tout est automatisé, intelligent et intégrable a votre ecosysteme.
           </p>
 
-          <div className="flex flex-wrap justify-center gap-8 md:gap-12 mt-10 mb-10">
+          <div className="flex flex-wrap justify-center gap-6 md:gap-10 mt-10 mb-10">
             {[
               { icon: UserPlus, label: "Recrutement & Onboarding" },
               { icon: Users, label: "Administration RH" },
@@ -158,7 +169,7 @@ export default function HomePage() {
               { icon: BarChart3, label: "Pilotage RH" },
               { icon: Scale, label: "Conformité" },
             ].map((m) => (
-              <div key={m.label} className="flex flex-col items-center gap-2">
+              <div key={m.label} className="flex flex-col items-center gap-2 w-20 md:w-24">
                 <div className="w-12 h-12 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center">
                   <m.icon className="w-6 h-6 text-secondary-400" />
                 </div>
