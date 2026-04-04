@@ -198,6 +198,18 @@ export default function HomePage() {
             </p>
           </div>
 
+          <div className="mt-8 mb-12 max-w-4xl mx-auto">
+            <div className="rounded-2xl overflow-hidden shadow-xl">
+              <Image
+                src="/images/hero-rh.jpg"
+                alt="Gestion RH intelligente"
+                width={1200}
+                height={500}
+                className="w-full h-[400px] object-cover"
+              />
+            </div>
+          </div>
+
           <div className="grid lg:grid-cols-3 gap-8">
             {valuePropositions.map((vp, index) => (
               <div
