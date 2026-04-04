@@ -23,7 +23,6 @@ import {
   PieChart,
   Settings,
   BarChart3,
-  Briefcase,
   DollarSign,
   Scale
 } from 'lucide-react';
