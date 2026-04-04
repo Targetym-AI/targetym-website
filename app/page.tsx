@@ -142,20 +142,13 @@ export default function HomePage() {
             Jusqu&apos;à 30 Agents IA RH Intégrés
           </div>
 
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-6 leading-tight">
-            Le SIRH optimisé IA qui fait{' '}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-yellow-100">
-              50% du travail du DRH
-            </span>
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
+            Le SIRH optimisé IA<br />
+            qui fait <span className="text-secondary-400">50%</span> du travail du DRH
           </h1>
 
           <p className="text-lg sm:text-xl text-white/85 max-w-4xl mx-auto mb-4">
             Targetym AI : avec plus de 30 agents IA RH intégrés, libérer son temps pour le pilotage stratégique n&apos;est pas que faisable &mdash; c&apos;est targetymisable.
-          </p>
-
-          <p className="text-base text-white/65 max-w-3xl mx-auto mb-10">
-            Recrutement, gestion des talents, évaluations 360&deg;, OKR, formation, documents RH...
-            Tout est automatisé, intelligent et intégrable a votre ecosysteme.
           </p>
 
           <div className="flex flex-wrap justify-center gap-6 md:gap-10 mt-10 mb-10">
