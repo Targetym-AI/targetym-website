@@ -21,7 +21,10 @@ import {
   Layers,
   Clock,
   PieChart,
-  Settings
+  Settings,
+  BarChart3,
+  Briefcase,
+  DollarSign
 } from 'lucide-react';
 
 const valuePropositions = [
@@ -144,6 +147,27 @@ export default function HomePage() {
             Recrutement, gestion des talents, évaluations 360&deg;, OKR, formation, documents RH...
             Tout est automatisé, intelligent et intégrable a votre ecosysteme.
           </p>
+
+          <div className="flex flex-wrap justify-center gap-8 md:gap-12 mt-10 mb-10">
+            {[
+              { icon: Users, label: "Gestion du Personnel" },
+              { icon: Target, label: "Recrutement" },
+              { icon: GraduationCap, label: "Formation" },
+              { icon: TrendingUp, label: "Performance" },
+              { icon: BarChart3, label: "People Analytics" },
+              { icon: Briefcase, label: "Missions" },
+              { icon: DollarSign, label: "Paie" },
+            ].map((m) => (
+              <div key={m.label} className="flex flex-col items-center gap-2">
+                <div className="w-12 h-12 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center">
+                  <m.icon className="w-6 h-6 text-secondary-400" />
+                </div>
+                <span className="text-xs text-white/70 font-medium text-center max-w-[80px]">
+                  {m.label}
+                </span>
+              </div>
+            ))}
+          </div>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
