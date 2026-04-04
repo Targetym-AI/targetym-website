@@ -302,6 +302,58 @@ export default function HomePage() {
           <p className="text-center text-gray-500 text-sm mt-8">
             Et bien d&apos;autres agents spécialisés : bien-être, onboarding, offboarding, audit RH...
           </p>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-12">
+            {/* Assistant IA — Recherche employé */}
+            <div>
+              <h3 className="text-lg font-semibold text-white mb-2">
+                Recherche intelligente
+              </h3>
+              <p className="text-sm text-gray-400 mb-3">
+                Demandez à l&apos;assistant de trouver un employé,
+                il vous retourne instantanément les informations.
+              </p>
+              <div className="rounded-xl overflow-hidden border border-white/10 shadow-lg hover:shadow-xl transition-shadow duration-300">
+                <div className="bg-gray-700 px-3 py-1.5 flex items-center gap-1.5 border-b border-gray-600">
+                  <div className="w-2.5 h-2.5 rounded-full bg-red-400" />
+                  <div className="w-2.5 h-2.5 rounded-full bg-yellow-400" />
+                  <div className="w-2.5 h-2.5 rounded-full bg-green-400" />
+                </div>
+                <Image
+                  src="/modules/ai-personnel.png"
+                  alt="Assistant IA - Recherche employé"
+                  width={600}
+                  height={350}
+                  className="w-full h-auto"
+                />
+              </div>
+            </div>
+
+            {/* Assistant IA — Mode Agent Missions */}
+            <div>
+              <h3 className="text-lg font-semibold text-white mb-2">
+                Génération automatique
+              </h3>
+              <p className="text-sm text-gray-400 mb-3">
+                L&apos;agent IA génère vos documents et ordres de mission
+                en quelques secondes.
+              </p>
+              <div className="rounded-xl overflow-hidden border border-white/10 shadow-lg hover:shadow-xl transition-shadow duration-300">
+                <div className="bg-gray-700 px-3 py-1.5 flex items-center gap-1.5 border-b border-gray-600">
+                  <div className="w-2.5 h-2.5 rounded-full bg-red-400" />
+                  <div className="w-2.5 h-2.5 rounded-full bg-yellow-400" />
+                  <div className="w-2.5 h-2.5 rounded-full bg-green-400" />
+                </div>
+                <Image
+                  src="/modules/ai-missions.png"
+                  alt="Agent IA - Génération missions"
+                  width={600}
+                  height={350}
+                  className="w-full h-auto"
+                />
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
