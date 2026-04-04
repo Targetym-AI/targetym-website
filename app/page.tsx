@@ -150,8 +150,7 @@ export default function HomePage() {
           </h1>
 
           <p className="text-lg sm:text-xl text-white/85 max-w-4xl mx-auto mb-4">
-            Targetym AI : la suite SIRH la plus complète au monde avec jusqu&apos;à 30 agents IA RH intégrés.
-            Passez de l&apos;administration du personnel au pilotage de la performance humaine.
+            Targetym AI : avec plus de 30 agents IA RH intégrés, libérer son temps pour le pilotage stratégique n&apos;est pas que faisable &mdash; c&apos;est targetymisable.
           </p>
 
           <p className="text-base text-white/65 max-w-3xl mx-auto mb-10">
