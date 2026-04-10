@@ -413,12 +413,12 @@ function LoginForm() {
           <div className="mb-6 p-4 bg-gradient-to-r from-primary-50 to-secondary-50 rounded-xl border border-primary-100">
             <h3 className="font-semibold text-gray-900 mb-3 flex items-center">
               <CheckCircle className="w-5 h-5 text-primary-500 mr-2" />
-              Essai gratuit - 30 jours
+              Essai gratuit - 90 jours
             </h3>
             <ul className="space-y-2 text-sm text-gray-600">
               <li className="flex items-center">
                 <Clock className="w-4 h-4 text-primary-500 mr-2 flex-shrink-0" />
-                30 jours d&apos;accès complet aux fonctionnalités Premium
+                90 jours d&apos;accès complet aux fonctionnalités Premium
               </li>
               <li className="flex items-center">
                 <Users className="w-4 h-4 text-primary-500 mr-2 flex-shrink-0" />
@@ -638,7 +638,7 @@ function LoginForm() {
             <>
               Pas encore de compte ?{' '}
               <button onClick={() => setActiveTab('register')} className="text-primary-600 hover:text-primary-700 font-medium">
-                Essai gratuit 30 jours
+                Essai gratuit 90 jours
               </button>
             </>
           ) : (
