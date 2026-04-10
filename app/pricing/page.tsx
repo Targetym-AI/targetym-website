@@ -151,7 +151,7 @@ const faqs = [
   },
   {
     question: "Y a-t-il un essai gratuit ?",
-    answer: "Oui, nous offrons un essai gratuit de 90 jours avec accès complet au plan Premium (jusqu'à 50 employés). Aucun paiement requis pour commencer.",
+    answer: "Oui, nous offrons un essai gratuit de 90 jours avec accès complet au plan Entreprise (jusqu'à 100 employés). Aucun paiement requis pour commencer.",
   },
   {
     question: "Que se passe-t-il si je dépasse ma limite d'employés ?",

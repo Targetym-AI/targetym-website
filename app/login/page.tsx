@@ -422,7 +422,7 @@ function LoginForm() {
               </li>
               <li className="flex items-center">
                 <Users className="w-4 h-4 text-primary-500 mr-2 flex-shrink-0" />
-                Jusqu&apos;à 50 collaborateurs
+                Jusqu&apos;à 100 collaborateurs
               </li>
               <li className="flex items-center">
                 <CheckCircle className="w-4 h-4 text-primary-500 mr-2 flex-shrink-0" />
