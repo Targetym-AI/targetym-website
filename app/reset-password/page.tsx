@@ -4,6 +4,7 @@ import { useState, Suspense } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { Lock, Loader2, Eye, EyeOff, CheckCircle, ArrowLeft, AlertTriangle } from 'lucide-react';
+import { getAuthErrorMessage } from '@/lib/error-messages';
 
 const API_URL = (process.env.NEXT_PUBLIC_API_URL || 'https://api.targetym.ai').replace(/^http:\/\//, 'https://');
 
@@ -55,6 +56,8 @@ function ResetPasswordForm() {
 
     setIsLoading(true);
 
+    let responseStatus: number | undefined;
+
     try {
       const response = await fetch(`${API_URL}/api/auth/reset-password`, {
         method: 'POST',
@@ -62,6 +65,7 @@ function ResetPasswordForm() {
         body: JSON.stringify({ token, new_password: password }),
       });
 
+      responseStatus = response.status;
       const data = await response.json();
 
       if (!response.ok) {
@@ -70,11 +74,7 @@ function ResetPasswordForm() {
 
       setSuccess(true);
     } catch (err) {
-      if (err instanceof Error) {
-        setError(err.message);
-      } else {
-        setError('Une erreur est survenue');
-      }
+      setError(getAuthErrorMessage(err, responseStatus));
     } finally {
       setIsLoading(false);
     }

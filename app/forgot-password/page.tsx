@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { Mail, Loader2, ArrowLeft, CheckCircle } from 'lucide-react';
+import { getAuthErrorMessage } from '@/lib/error-messages';
 
 const API_URL = (process.env.NEXT_PUBLIC_API_URL || 'https://api.targetym.ai').replace(/^http:\/\//, 'https://');
 
@@ -17,12 +18,16 @@ export default function ForgotPasswordPage() {
     setIsLoading(true);
     setError('');
 
+    let responseStatus: number | undefined;
+
     try {
       const response = await fetch(`${API_URL}/api/auth/forgot-password`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email }),
       });
+
+      responseStatus = response.status;
 
       if (!response.ok) {
         const data = await response.json();
@@ -31,11 +36,7 @@ export default function ForgotPasswordPage() {
 
       setSent(true);
     } catch (err) {
-      if (err instanceof Error) {
-        setError(err.message);
-      } else {
-        setError('Une erreur est survenue');
-      }
+      setError(getAuthErrorMessage(err, responseStatus));
     } finally {
       setIsLoading(false);
     }

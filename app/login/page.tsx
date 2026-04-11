@@ -4,6 +4,7 @@ import { useState, useRef, Suspense, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { Lock, Mail, Eye, EyeOff, Loader2, Building2, Phone, CheckCircle, Clock, Users, Shield, ArrowLeft } from 'lucide-react';
+import { getAuthErrorMessage } from '@/lib/error-messages';
 
 // URL de ton API Railway
 const API_URL = (process.env.NEXT_PUBLIC_API_URL || 'https://api.targetym.ai').replace(/^http:\/\//, 'https://');
@@ -77,8 +78,8 @@ function LoginForm() {
       } else {
         setError('Erreur lors de la configuration 2FA');
       }
-    } catch {
-      setError('Erreur de connexion');
+    } catch (err) {
+      setError(getAuthErrorMessage(err));
     }
   }, []);
 
@@ -133,6 +134,8 @@ function LoginForm() {
     setVerifying2FA(true);
     setError('');
 
+    let responseStatus: number | undefined;
+
     try {
       const res = await fetch(`${API_URL}/api/auth/2fa/verify`, {
         method: 'POST',
@@ -143,6 +146,7 @@ function LoginForm() {
         body: JSON.stringify({ code }),
       });
 
+      responseStatus = res.status;
       const data = await res.json();
 
       if (!res.ok) {
@@ -153,11 +157,7 @@ function LoginForm() {
       const userEncoded = encodeURIComponent(JSON.stringify(data.user));
       window.location.href = `${DASHBOARD_URL}?token=${data.access_token}&refresh=${data.refresh_token}&user=${userEncoded}`;
     } catch (err) {
-      if (err instanceof Error) {
-        setError(err.message);
-      } else {
-        setError('Code invalide ou expiré');
-      }
+      setError(getAuthErrorMessage(err, responseStatus));
       setOtpCode(['', '', '', '', '', '']);
       otpRefs.current[0]?.focus();
     } finally {
@@ -178,6 +178,8 @@ function LoginForm() {
       return;
     }
 
+    let responseStatus: number | undefined;
+
     try {
       if (activeTab === 'login') {
         // LOGIN
@@ -192,6 +194,7 @@ function LoginForm() {
           }),
         });
 
+        responseStatus = response.status;
         const data = await response.json();
 
         if (!response.ok) {
@@ -234,6 +237,7 @@ function LoginForm() {
           }),
         });
 
+        responseStatus = response.status;
         const data = await response.json();
 
         if (!response.ok) {
@@ -244,16 +248,12 @@ function LoginForm() {
         window.location.href = '/pending-activation';
       }
     } catch (err) {
-      if (err instanceof Error) {
-        // Si c'est un 403 "en cours de validation", rediriger
-        if (err.message.includes('en cours de validation')) {
-          window.location.href = '/pending-activation';
-          return;
-        }
-        setError(err.message);
-      } else {
-        setError('Une erreur est survenue');
+      // Si c'est un 403 "en cours de validation", rediriger
+      if (err instanceof Error && err.message.includes('en cours de validation')) {
+        window.location.href = '/pending-activation';
+        return;
       }
+      setError(getAuthErrorMessage(err, responseStatus));
     } finally {
       setIsLoading(false);
     }
