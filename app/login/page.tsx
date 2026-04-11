@@ -179,6 +179,7 @@ function LoginForm() {
     }
 
     let responseStatus: number | undefined;
+    let registerDetail: string | undefined;
 
     try {
       if (activeTab === 'login') {
@@ -239,6 +240,7 @@ function LoginForm() {
 
         responseStatus = response.status;
         const data = await response.json();
+        registerDetail = typeof data.detail === 'string' ? data.detail : undefined;
 
         if (!response.ok) {
           throw new Error(data.detail || "Erreur lors de l'inscription");
@@ -253,7 +255,18 @@ function LoginForm() {
         window.location.href = '/pending-activation';
         return;
       }
-      setError(getAuthErrorMessage(err, responseStatus));
+
+      if (activeTab === 'register') {
+        if (responseStatus === 429) {
+          setError('Trop de tentatives. Veuillez patienter quelques minutes avant de réessayer.');
+        } else if (registerDetail?.includes('existe déjà')) {
+          setError('Un compte existe déjà avec cet email. Essayez de vous connecter ou de réinitialiser votre mot de passe.');
+        } else {
+          setError(getAuthErrorMessage(err, responseStatus));
+        }
+      } else {
+        setError(getAuthErrorMessage(err, responseStatus));
+      }
     } finally {
       setIsLoading(false);
     }
