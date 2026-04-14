@@ -254,7 +254,7 @@ export default function PricingPage() {
                   </ul>
 
                   <Link
-                    href={plan.cta.includes('Contacter') ? '/contact' : '/login?tab=register'}
+                    href={plan.cta.includes('Contacter') ? '/contact' : '/essai-gratuit'}
                     className={`w-full inline-flex items-center justify-center px-4 py-3 text-sm font-semibold rounded-xl transition-colors ${
                       plan.highlighted
                         ? 'bg-primary-500 text-white hover:bg-primary-600'
@@ -362,7 +362,7 @@ export default function PricingPage() {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
-                href="/login?tab=register"
+                href="/essai-gratuit"
                 className="inline-flex items-center justify-center px-8 py-4 text-sm font-semibold text-primary-600 bg-white rounded-xl hover:bg-gray-100 transition-colors"
               >
                 Démarrer l&apos;Essai Gratuit
