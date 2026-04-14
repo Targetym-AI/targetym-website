@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Mail, Phone, MapPin, Send, MessageSquare } from 'lucide-react';
+import { Mail, Phone, MapPin, Send, MessageSquare, Loader2 } from 'lucide-react';
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -13,10 +13,29 @@ export default function ContactPage() {
     message: ''
   });
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
+    setLoading(true);
+    setError('');
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error ?? 'Erreur inconnue');
+      }
+      setSubmitted(true);
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Erreur lors de l\'envoi. Veuillez réessayer.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -55,8 +74,9 @@ export default function ContactPage() {
                   </div>
                   <div className="ml-4">
                     <h3 className="text-lg font-semibold text-gray-900">Email</h3>
-                    <p className="text-gray-600">contact@targetym.ai</p>
-                    <p className="text-gray-600">sales@targetym.ai</p>
+                    <a href="mailto:sales@agiltym.com" className="text-gray-600 hover:text-primary-600 transition-colors">
+                      sales@agiltym.com
+                    </a>
                   </div>
                 </div>
 
@@ -66,8 +86,12 @@ export default function ContactPage() {
                   </div>
                   <div className="ml-4">
                     <h3 className="text-lg font-semibold text-gray-900">Téléphone</h3>
-                    <p className="text-gray-600">+33 1 23 45 67 89</p>
-                    <p className="text-gray-600">+221 33 123 45 67</p>
+                    <a href="tel:+221779043443" className="block text-gray-600 hover:text-primary-600 transition-colors">
+                      +221 77 904 34 43
+                    </a>
+                    <a href="tel:+22548910893" className="block text-gray-600 hover:text-primary-600 transition-colors">
+                      +225 48 91 08 93
+                    </a>
                   </div>
                 </div>
 
@@ -76,9 +100,9 @@ export default function ContactPage() {
                     <MapPin className="w-6 h-6 text-primary-500" />
                   </div>
                   <div className="ml-4">
-                    <h3 className="text-lg font-semibold text-gray-900">Bureaux</h3>
-                    <p className="text-gray-600">Paris, France</p>
-                    <p className="text-gray-600">Dakar, Sénégal</p>
+                    <h3 className="text-lg font-semibold text-gray-900">Adresse</h3>
+                    <p className="text-gray-600">Mermoz VDN, Immeuble Bidaness Building</p>
+                    <p className="text-gray-600">1er étage — Dakar, Sénégal</p>
                   </div>
                 </div>
 
@@ -208,12 +232,28 @@ export default function ContactPage() {
                       />
                     </div>
 
+                    {error && (
+                      <p className="text-red-600 text-sm bg-red-50 border border-red-200 rounded-lg px-4 py-3">
+                        {error}
+                      </p>
+                    )}
+
                     <button
                       type="submit"
-                      className="w-full py-3 px-4 bg-primary-500 text-white font-medium rounded-lg hover:bg-primary-600 transition-colors flex items-center justify-center"
+                      disabled={loading}
+                      className="w-full py-3 px-4 bg-primary-500 text-white font-medium rounded-lg hover:bg-primary-600 transition-colors flex items-center justify-center disabled:opacity-60 disabled:cursor-not-allowed"
                     >
-                      <Send className="w-5 h-5 mr-2" />
-                      Envoyer le message
+                      {loading ? (
+                        <>
+                          <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                          Envoi en cours...
+                        </>
+                      ) : (
+                        <>
+                          <Send className="w-5 h-5 mr-2" />
+                          Envoyer le message
+                        </>
+                      )}
                     </button>
                   </form>
                 </>
