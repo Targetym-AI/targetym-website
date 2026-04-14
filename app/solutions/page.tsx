@@ -225,7 +225,7 @@ export default function SolutionsPage() {
               <ArrowRight className="ml-2 w-5 h-5" />
             </Link>
             <Link
-              href="/contact"
+              href="/essai-gratuit"
               className="inline-flex items-center px-8 py-4 text-base font-semibold text-white border-2 border-white/30 rounded-lg hover:bg-white/10 transition-colors"
             >
               Demander une Demo
