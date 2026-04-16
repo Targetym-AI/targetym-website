@@ -192,20 +192,12 @@ export default function HomePage() {
 
       {/* Dashboard Screenshot - overlaps hero and white section */}
       <div className="relative z-10 -mt-48 mb-16 mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
-        <div className="rounded-xl overflow-hidden shadow-2xl border border-gray-200">
-          <div className="bg-gray-800 px-4 py-2.5 flex items-center gap-2 border-b border-gray-700">
-            <div className="w-3 h-3 rounded-full bg-red-400" />
-            <div className="w-3 h-3 rounded-full bg-yellow-400" />
-            <div className="w-3 h-3 rounded-full bg-green-400" />
-            <div className="ml-4 flex-1 bg-gray-700 rounded-md h-6 flex items-center px-3">
-              <span className="text-xs text-gray-400">app.targetym.com/dashboard</span>
-            </div>
-          </div>
+        <div className="rounded-2xl overflow-hidden shadow-2xl">
           <Image
             src="/modules/dashboard.png"
             alt="Tableau de bord Targetym AI"
-            width={1200}
-            height={700}
+            width={1576}
+            height={889}
             className="w-full h-auto"
             priority
           />
@@ -266,17 +258,12 @@ export default function HomePage() {
               <h3 className="text-lg font-semibold text-gray-900 mb-3">
                 Gestion du Personnel
               </h3>
-              <div className="rounded-xl overflow-hidden border border-gray-200 shadow-lg hover:shadow-xl transition-shadow duration-300">
-                <div className="bg-gray-100 px-3 py-1.5 flex items-center gap-1.5 border-b border-gray-200">
-                  <div className="w-2.5 h-2.5 rounded-full bg-red-400" />
-                  <div className="w-2.5 h-2.5 rounded-full bg-yellow-400" />
-                  <div className="w-2.5 h-2.5 rounded-full bg-green-400" />
-                </div>
+              <div className="rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transition-shadow duration-300">
                 <Image
                   src="/modules/personnel.png"
                   alt="Gestion du Personnel"
-                  width={600}
-                  height={350}
+                  width={1576}
+                  height={889}
                   className="w-full h-auto"
                 />
               </div>
@@ -287,17 +274,12 @@ export default function HomePage() {
               <h3 className="text-lg font-semibold text-gray-900 mb-3">
                 Performance & Feedback
               </h3>
-              <div className="rounded-xl overflow-hidden border border-gray-200 shadow-lg hover:shadow-xl transition-shadow duration-300">
-                <div className="bg-gray-100 px-3 py-1.5 flex items-center gap-1.5 border-b border-gray-200">
-                  <div className="w-2.5 h-2.5 rounded-full bg-red-400" />
-                  <div className="w-2.5 h-2.5 rounded-full bg-yellow-400" />
-                  <div className="w-2.5 h-2.5 rounded-full bg-green-400" />
-                </div>
+              <div className="rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transition-shadow duration-300">
                 <Image
                   src="/modules/performance.png"
                   alt="Performance & Feedback"
-                  width={600}
-                  height={350}
+                  width={1576}
+                  height={889}
                   className="w-full h-auto"
                 />
               </div>
@@ -356,17 +338,12 @@ export default function HomePage() {
                 Demandez à l&apos;assistant de trouver un employé,
                 il vous retourne instantanément les informations.
               </p>
-              <div className="rounded-xl overflow-hidden border border-white/10 shadow-lg hover:shadow-xl transition-shadow duration-300">
-                <div className="bg-gray-700 px-3 py-1.5 flex items-center gap-1.5 border-b border-gray-600">
-                  <div className="w-2.5 h-2.5 rounded-full bg-red-400" />
-                  <div className="w-2.5 h-2.5 rounded-full bg-yellow-400" />
-                  <div className="w-2.5 h-2.5 rounded-full bg-green-400" />
-                </div>
+              <div className="rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transition-shadow duration-300">
                 <Image
                   src="/modules/ai-personnel.png"
                   alt="Assistant IA - Recherche employé"
-                  width={600}
-                  height={350}
+                  width={1576}
+                  height={889}
                   className="w-full h-auto"
                 />
               </div>
@@ -381,17 +358,12 @@ export default function HomePage() {
                 L&apos;agent IA génère vos documents et ordres de mission
                 en quelques secondes.
               </p>
-              <div className="rounded-xl overflow-hidden border border-white/10 shadow-lg hover:shadow-xl transition-shadow duration-300">
-                <div className="bg-gray-700 px-3 py-1.5 flex items-center gap-1.5 border-b border-gray-600">
-                  <div className="w-2.5 h-2.5 rounded-full bg-red-400" />
-                  <div className="w-2.5 h-2.5 rounded-full bg-yellow-400" />
-                  <div className="w-2.5 h-2.5 rounded-full bg-green-400" />
-                </div>
+              <div className="rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transition-shadow duration-300">
                 <Image
                   src="/modules/ai-missions.png"
                   alt="Agent IA - Génération missions"
-                  width={600}
-                  height={350}
+                  width={1576}
+                  height={889}
                   className="w-full h-auto"
                 />
               </div>
@@ -439,17 +411,12 @@ export default function HomePage() {
 
                 {/* Capture */}
                 <div className="flex-1">
-                  <div className="rounded-xl overflow-hidden border border-gray-200 shadow-lg hover:shadow-xl transition-shadow duration-300">
-                    <div className="bg-gray-100 px-3 py-1.5 flex items-center gap-1.5 border-b border-gray-200">
-                      <div className="w-2.5 h-2.5 rounded-full bg-red-400" />
-                      <div className="w-2.5 h-2.5 rounded-full bg-yellow-400" />
-                      <div className="w-2.5 h-2.5 rounded-full bg-green-400" />
-                    </div>
+                  <div className="rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transition-shadow duration-300">
                     <Image
                       src={cap.screenshot}
                       alt={cap.category}
-                      width={600}
-                      height={350}
+                      width={1576}
+                      height={889}
                       className="w-full h-auto"
                     />
                   </div>

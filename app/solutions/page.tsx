@@ -66,7 +66,7 @@ const categories = [
         description: "Pilotez et saisissez votre budget RH avec une nomenclature NRG structurée et des analyses en temps réel.",
         features: ["Saisie budgétaire par catégorie", "Pilotage budget vs réalisé", "Nomenclature NRG standard", "Analyse par employé", "Verrouillage et export"],
         ai: "Comparaison automatique budget prévisionnel vs réalisé issu de la paie.",
-        screenshot: null
+        screenshot: "/modules/budget-rh.png"
       }
     ]
   },
@@ -122,14 +122,14 @@ const categories = [
         description: "Gérez la paie avec des bulletins officiels et des cotisations légales calculées automatiquement.",
         features: ["Runs de paie mensuels", "Bulletins de paie PDF", "IPRES / CSS / IPM / CFCE", "Impôt sur le revenu", "Simulation avant validation"],
         ai: "Calcul automatique des cotisations légales sénégalaises.",
-        screenshot: null
+        screenshot: "/modules/paie.png"
       },
       {
         title: "Compensation & Benefits",
         description: "Optimisez votre politique de rémunération.",
         features: ["Pesées IPE (Mercer)", "Conventions collectives", "Simulateur salarial", "Grilles de mérite", "Workflow d'approbation"],
         ai: "Réconciliation automatique IPE × Convention Collective.",
-        screenshot: null
+        screenshot: "/modules/compensation.png"
       }
     ]
   },
@@ -171,7 +171,7 @@ const categories = [
         description: "Pilotez l'offboarding et les soldes de tout compte en toute sérénité.",
         features: ["Entretiens de départ", "Solde de tout compte", "Checklist de départ", "Archivage du dossier", "Analyse des motifs"],
         ai: "Identification des tendances de départ pour anticiper les risques de turnover.",
-        screenshot: null
+        screenshot: "/modules/departs.png"
       }
     ]
   }
@@ -320,23 +320,18 @@ export default function SolutionsPage() {
                 {/* Screenshot */}
                 <div className="flex-1">
                   {mod.screenshot ? (
-                    <div className="rounded-xl overflow-hidden border border-gray-200 shadow-xl hover:shadow-2xl transition-shadow duration-300">
-                      <div className="bg-gray-100 px-3 py-1.5 flex items-center gap-1.5 border-b border-gray-200">
-                        <div className="w-2.5 h-2.5 rounded-full bg-red-400" />
-                        <div className="w-2.5 h-2.5 rounded-full bg-yellow-400" />
-                        <div className="w-2.5 h-2.5 rounded-full bg-green-400" />
-                      </div>
+                    <div className="rounded-2xl overflow-hidden shadow-2xl hover:shadow-3xl transition-shadow duration-300">
                       <Image
                         src={mod.screenshot}
                         alt={mod.title}
-                        width={600}
-                        height={400}
+                        width={1576}
+                        height={889}
                         className="w-full h-auto"
                       />
                     </div>
                   ) : (
                     <div className="rounded-xl bg-gradient-to-br from-primary-50 to-secondary-50 border border-gray-200 p-12 flex items-center justify-center h-[300px]">
-                      <p className="text-gray-400 text-sm">Capture a venir</p>
+                      <p className="text-gray-400 text-sm">Capture à venir</p>
                     </div>
                   )}
                 </div>
