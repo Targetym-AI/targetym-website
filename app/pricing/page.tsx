@@ -16,7 +16,7 @@ const plans = [
     name: "Basique",
     tagline: "Starter",
     description: "Idéal pour les PME qui démarrent leur digitalisation RH",
-    price: "297 000",
+    price: "197 000",
     priceNote: "FCFA / mois",
     employees: "Jusqu'à 25 employés inclus",
     extraEmployee: "+ 12 500 FCFA / employé supplémentaire",
@@ -89,9 +89,10 @@ const plans = [
       "Support prioritaire 24h/24",
       "Architecture multi-tenant",
       "Déploiement dédié sur demande",
+      "Budget RH — Pilotage & saisie budgétaire",
     ],
     notIncluded: [],
-    cta: "Contacter l'Équipe",
+    cta: "Démarrer l'Essai Gratuit",
     highlighted: false,
     icon: Building2,
     color: "from-violet-500 to-violet-600",
@@ -227,13 +228,9 @@ export default function PricingPage() {
                     <p className="text-sm text-gray-500 mt-1">{plan.description}</p>
                   </div>
 
-                  {/* Price */}
+                  {/* Employees info only — prices hidden */}
                   <div className="mb-5 pb-5 border-b border-gray-100">
-                    <div className="flex items-baseline gap-1">
-                      <span className="text-3xl font-black text-gray-900">{plan.price}</span>
-                      <span className="text-sm text-gray-500">{plan.priceNote}</span>
-                    </div>
-                    <p className="text-sm text-gray-600 mt-1 font-medium">{plan.employees}</p>
+                    <p className="text-sm text-gray-600 font-medium">{plan.employees}</p>
                     <p className="text-xs text-gray-400 mt-0.5">{plan.extraEmployee}</p>
                   </div>
 
@@ -254,7 +251,7 @@ export default function PricingPage() {
                   </ul>
 
                   <Link
-                    href={plan.cta.includes('Contacter') ? '/contact' : '/essai-gratuit'}
+                    href="/essai-gratuit"
                     className={`w-full inline-flex items-center justify-center px-4 py-3 text-sm font-semibold rounded-xl transition-colors ${
                       plan.highlighted
                         ? 'bg-primary-500 text-white hover:bg-primary-600'
