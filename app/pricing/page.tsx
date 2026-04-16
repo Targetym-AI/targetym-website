@@ -131,12 +131,12 @@ const enterpriseFeatures = [
   {
     icon: Shield,
     title: "Sécurité Avancée",
-    description: "Authentification 2FA, journaux d'audit et contrôle d'accès granulaire par rôle.",
+    description: "Authentification 2FA disponible sur tous les plans, journaux d'audit complets et contrôle d'accès granulaire par rôle.",
   },
   {
     icon: Sparkles,
     title: "Agent IA Avancé",
-    description: "Agents IA multi-domaines capables d'exécuter des actions RH complexes de bout en bout.",
+    description: "Agents IA multi-domaines capables d'exécuter des actions RH complexes de bout en bout, en français, anglais, portugais et arabe.",
   },
   {
     icon: HeadphonesIcon,

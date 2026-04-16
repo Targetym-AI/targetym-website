@@ -60,6 +60,13 @@ const categories = [
         features: ["Attestations automatiques", "Certificats de travail", "Modeles personnalisables", "Signature electronique", "Archivage securise"],
         ai: "Generation automatique a partir des donnees employe, zero saisie manuelle.",
         screenshot: "/modules/documents.png"
+      },
+      {
+        title: "Budget RH",
+        description: "Pilotez et saisissez votre budget RH avec une nomenclature NRG structuree et des analyses en temps reel.",
+        features: ["Saisie budgetaire par categorie", "Pilotage budget vs realise", "Nomenclature NRG standard", "Analyse par employe", "Verrouillage et export"],
+        ai: "Comparaison automatique budget previsionnel vs realise issu de la paie.",
+        screenshot: null
       }
     ]
   },
