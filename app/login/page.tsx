@@ -276,7 +276,7 @@ function LoginForm() {
   // RENDU PRINCIPAL — split layout (gauche + droite)
   // ============================================
   return (
-    <div className="min-h-screen bg-white flex overflow-hidden">
+    <div className="h-screen bg-white flex overflow-hidden">
 
       {/* ── Panneau gauche (branding) ── */}
       <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden flex-col justify-between p-12 xl:p-16">
@@ -285,17 +285,6 @@ function LoginForm() {
 
         {/* Contenu */}
         <div className="relative z-10">
-          {/* Logo */}
-          <div className="mb-16 xl:mb-20">
-            <Link href="/">
-              <img
-                src="/logo-targetym.png"
-                alt="Targetym AI"
-                className="h-16 xl:h-20 w-auto object-contain"
-              />
-            </Link>
-          </div>
-
           {/* Titre + features */}
           <div className="space-y-10">
             <h2 className="text-3xl xl:text-4xl font-bold text-white leading-tight">
@@ -361,7 +350,8 @@ function LoginForm() {
       </div>
 
       {/* ── Panneau droit (formulaire) ── */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center p-4 sm:p-6 lg:p-8 bg-white">
+      <div className="w-full lg:w-1/2 overflow-y-auto bg-white">
+        <div className="flex min-h-full items-center justify-center p-4 sm:p-6 lg:p-8">
         <div className="w-full max-w-lg">
 
           {/* Logo mobile */}
@@ -797,6 +787,7 @@ function LoginForm() {
             </>
           )}
 
+        </div>
         </div>
       </div>
     </div>

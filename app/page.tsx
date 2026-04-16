@@ -148,7 +148,7 @@ export default function HomePage() {
           </h1>
 
           <p className="text-lg sm:text-xl text-white/85 max-w-4xl mx-auto mb-4">
-            Targetym AI : avec plus de 30 agents IA RH intégrés, libérer son temps pour le pilotage stratégique n&apos;est pas qu&apos;un objectif &mdash; c&apos;est targetymisable.
+            Targetym AI : avec plus de 30 agents IA RH intégrés, libérer son temps pour le pilotage stratégique n&apos;est pas qu&apos;un objectif – c&apos;est targetymisable.
           </p>
 
           <div className="flex flex-wrap justify-center gap-6 md:gap-10 mt-10 mb-10">
