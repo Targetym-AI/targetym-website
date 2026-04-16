@@ -291,7 +291,7 @@ function LoginForm() {
               <img
                 src="/logo-targetym.png"
                 alt="Targetym AI"
-                className="h-16 xl:h-20 w-auto brightness-0 invert"
+                className="h-16 xl:h-20 w-auto object-contain"
               />
             </Link>
           </div>
@@ -477,8 +477,8 @@ function LoginForm() {
           ) : (
             /* ── FORMULAIRE LOGIN / REGISTER ── */
             <>
-              {/* En-tête */}
-              <div className="mb-8">
+              {/* En-tête animé */}
+              <div key={`header-${activeTab}`} className="mb-8 animate-form-enter">
                 <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 mb-2">
                   {activeTab === 'login' ? 'Bienvenue !' : "Démarrer l'essai gratuit"}
                 </h2>
@@ -489,7 +489,7 @@ function LoginForm() {
                 </p>
               </div>
 
-              <div className="bg-white rounded-xl sm:rounded-2xl shadow-xl border border-slate-200 p-6 sm:p-8">
+              <div key={`form-${activeTab}`} className="bg-white rounded-xl sm:rounded-2xl shadow-xl border border-slate-200 p-6 sm:p-8 animate-form-enter">
 
                 {/* Onglets */}
                 <div className="flex bg-slate-100 rounded-lg p-1 mb-6">
