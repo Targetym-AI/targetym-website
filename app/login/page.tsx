@@ -362,7 +362,7 @@ function LoginForm() {
 
       {/* ── Panneau droit (formulaire) ── */}
       <div className="w-full lg:w-1/2 flex items-center justify-center p-4 sm:p-6 lg:p-8 bg-white">
-        <div className="w-full max-w-md">
+        <div className="w-full max-w-lg">
 
           {/* Logo mobile */}
           <div className="lg:hidden mb-8">
@@ -535,7 +535,7 @@ function LoginForm() {
                       </li>
                       <li className="flex items-center gap-2">
                         <CheckCircle className="w-4 h-4 text-primary-500 flex-shrink-0" />
-                        Frais d&apos;installation : 297 000 FCFA
+                        Frais d&apos;installation et de formation : 197 000 FCFA
                       </li>
                     </ul>
                   </div>

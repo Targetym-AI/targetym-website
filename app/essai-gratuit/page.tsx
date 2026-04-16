@@ -34,7 +34,7 @@ const steps = [
     number: '02',
     icon: CreditCard,
     title: 'Réglez les frais de configuration',
-    duration: '297 000 FCFA',
+    duration: '197 000 FCFA',
     description:
       'Un unique paiement pour couvrir la formation de votre équipe et la configuration sur mesure de votre espace. Aucun abonnement requis pendant les 3 mois d\'essai.',
     color: 'from-secondary-500 to-secondary-600',
