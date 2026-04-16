@@ -28,8 +28,8 @@ const categories = [
     modules: [
       {
         title: "Recrutement",
-        description: "Attirez et integrez les meilleurs talents avec un processus intelligent.",
-        features: ["Offres multi-canaux", "Scoring IA des candidats", "Pipeline visuel", "Grilles collaboratives", "Onboarding structure"],
+        description: "Attirez et intégrez les meilleurs talents avec un processus intelligent.",
+        features: ["Offres multi-canaux", "Scoring IA des candidats", "Pipeline visuel", "Grilles collaboratives", "Onboarding structuré"],
         ai: "Analyse automatique des CV et classement des meilleurs profils.",
         screenshot: "/modules/recrutement.png"
       }
@@ -43,29 +43,29 @@ const categories = [
       {
         title: "Gestion du Personnel",
         description: "Centralisez la gestion de vos collaborateurs en un seul endroit.",
-        features: ["Dossiers employes complets", "Organigramme dynamique", "Suivi des contrats et echeances", "Import CSV/Excel", "Gestion multi-sites"],
-        ai: "Detection automatique des echeances critiques et alertes proactives.",
+        features: ["Dossiers employés complets", "Organigramme dynamique", "Suivi des contrats et échéances", "Import CSV/Excel", "Gestion multi-sites"],
+        ai: "Détection automatique des échéances critiques et alertes proactives.",
         screenshot: "/modules/personnel.png"
       },
       {
-        title: "Conges & Absences",
-        description: "Simplifiez la gestion des conges avec des workflows automatiques.",
-        features: ["Demandes en un clic", "Validation multi-niveaux", "Calendrier d'equipe", "Soldes temps reel", "Rapports d'absenteisme"],
-        ai: "Anticipation des periodes de forte absence.",
+        title: "Congés & Absences",
+        description: "Simplifiez la gestion des congés avec des workflows automatiques.",
+        features: ["Demandes en un clic", "Validation multi-niveaux", "Calendrier d'équipe", "Soldes temps réel", "Rapports d'absentéisme"],
+        ai: "Anticipation des périodes de forte absence.",
         screenshot: "/modules/conges.png"
       },
       {
         title: "Documents RH",
-        description: "Generez tous vos documents RH officiels en quelques secondes.",
-        features: ["Attestations automatiques", "Certificats de travail", "Modeles personnalisables", "Signature electronique", "Archivage securise"],
-        ai: "Generation automatique a partir des donnees employe, zero saisie manuelle.",
+        description: "Générez tous vos documents RH officiels en quelques secondes.",
+        features: ["Attestations automatiques", "Certificats de travail", "Modèles personnalisables", "Signature électronique", "Archivage sécurisé"],
+        ai: "Génération automatique à partir des données employé, zéro saisie manuelle.",
         screenshot: "/modules/documents.png"
       },
       {
         title: "Budget RH",
-        description: "Pilotez et saisissez votre budget RH avec une nomenclature NRG structuree et des analyses en temps reel.",
-        features: ["Saisie budgetaire par categorie", "Pilotage budget vs realise", "Nomenclature NRG standard", "Analyse par employe", "Verrouillage et export"],
-        ai: "Comparaison automatique budget previsionnel vs realise issu de la paie.",
+        description: "Pilotez et saisissez votre budget RH avec une nomenclature NRG structurée et des analyses en temps réel.",
+        features: ["Saisie budgétaire par catégorie", "Pilotage budget vs réalisé", "Nomenclature NRG standard", "Analyse par employé", "Verrouillage et export"],
+        ai: "Comparaison automatique budget prévisionnel vs réalisé issu de la paie.",
         screenshot: null
       }
     ]
@@ -77,16 +77,16 @@ const categories = [
     modules: [
       {
         title: "Performance & Feedback",
-        description: "Evaluations structurees et feedback continu pour piloter la performance.",
-        features: ["Evaluations 360\u00b0", "Campagnes automatisees", "Entretiens one-on-one", "Calibrage des notes", "Feedback continu"],
-        ai: "Analyse des tendances et recommandations de developpement personnalisees.",
+        description: "Évaluations structurées et feedback continu pour piloter la performance.",
+        features: ["Évaluations 360°", "Campagnes automatisées", "Entretiens one-on-one", "Calibrage des notes", "Feedback continu"],
+        ai: "Analyse des tendances et recommandations de développement personnalisées.",
         screenshot: "/modules/performance.png"
       },
       {
         title: "OKR & Objectifs",
         description: "Alignez toute l'organisation avec des objectifs clairs et mesurables.",
-        features: ["OKR en cascade", "Suivi temps reel des KR", "Daily Checklist connectee", "Tableaux de bord visuels", "Alertes sur les ecarts"],
-        ai: "Identification des objectifs a risque et suggestions d'actions correctives.",
+        features: ["OKR en cascade", "Suivi temps réel des KR", "Daily Checklist connectée", "Tableaux de bord visuels", "Alertes sur les écarts"],
+        ai: "Identification des objectifs à risque et suggestions d'actions correctives.",
         screenshot: "/modules/okr.png"
       }
     ]
@@ -99,36 +99,36 @@ const categories = [
       {
         title: "Gestion des Talents",
         description: "Cartographiez vos talents et construisez des plans de succession solides.",
-        features: ["Matrice 9-Box", "Plans de succession", "Parcours de carriere", "Analyse des competences", "Mobilite interne"],
-        ai: "Detection des hauts potentiels et prediction des risques de depart.",
+        features: ["Matrice 9-Box", "Plans de succession", "Parcours de carrière", "Analyse des compétences", "Mobilité interne"],
+        ai: "Détection des hauts potentiels et prédiction des risques de départ.",
         screenshot: "/modules/talents.png"
       },
       {
         title: "Formation",
-        description: "Developpez les competences avec des parcours intelligents et adaptatifs.",
+        description: "Développez les compétences avec des parcours intelligents et adaptatifs.",
         features: ["Catalogue personnalisable", "Parcours adaptatifs", "Suivi des certifications", "Budget et ROI formation", "Plans individuels"],
-        ai: "Recommandations de formations basees sur les ecarts de competences.",
+        ai: "Recommandations de formations basées sur les écarts de compétences.",
         screenshot: "/modules/formation.png"
       }
     ]
   },
   {
     id: "paie",
-    label: "Paie & Remuneration",
+    label: "Paie & Rémunération",
     icon: DollarSign,
     modules: [
       {
         title: "Module Paie",
-        description: "Gerez la paie avec des bulletins officiels et des cotisations legales calculees automatiquement.",
-        features: ["Runs de paie mensuels", "Bulletins de paie PDF", "IPRES / CSS / IPM / CFCE", "Impot sur le revenu", "Simulation avant validation"],
-        ai: "Calcul automatique des cotisations legales senegalaises.",
+        description: "Gérez la paie avec des bulletins officiels et des cotisations légales calculées automatiquement.",
+        features: ["Runs de paie mensuels", "Bulletins de paie PDF", "IPRES / CSS / IPM / CFCE", "Impôt sur le revenu", "Simulation avant validation"],
+        ai: "Calcul automatique des cotisations légales sénégalaises.",
         screenshot: null
       },
       {
         title: "Compensation & Benefits",
-        description: "Optimisez votre politique de remuneration.",
-        features: ["Pesees IPE (Mercer)", "Conventions collectives", "Simulateur salarial", "Grilles de merite", "Workflow d'approbation"],
-        ai: "Reconciliation automatique IPE \u00d7 Convention Collective.",
+        description: "Optimisez votre politique de rémunération.",
+        features: ["Pesées IPE (Mercer)", "Conventions collectives", "Simulateur salarial", "Grilles de mérite", "Workflow d'approbation"],
+        ai: "Réconciliation automatique IPE × Convention Collective.",
         screenshot: null
       }
     ]
@@ -140,15 +140,15 @@ const categories = [
     modules: [
       {
         title: "People Analytics",
-        description: "Exploitez vos donnees RH pour prendre des decisions strategiques eclairees.",
-        features: ["Tableaux de bord interactifs", "Analyse du turnover", "Indicateurs de performance", "Rapports automatises", "Predictions IA"],
-        ai: "Predictions sur le turnover, la retention et les tendances RH.",
+        description: "Exploitez vos données RH pour prendre des décisions stratégiques éclairées.",
+        features: ["Tableaux de bord interactifs", "Analyse du turnover", "Indicateurs de performance", "Rapports automatisés", "Prédictions IA"],
+        ai: "Prédictions sur le turnover, la rétention et les tendances RH.",
         screenshot: "/modules/analytics.png"
       },
       {
         title: "Gestion des Missions",
-        description: "Planifiez et suivez les missions et deplacements de vos collaborateurs.",
-        features: ["Creation de missions", "Ordres de mission", "Suivi des frais", "Validation hierarchique", "Rapports de mission"],
+        description: "Planifiez et suivez les missions et déplacements de vos collaborateurs.",
+        features: ["Création de missions", "Ordres de mission", "Suivi des frais", "Validation hiérarchique", "Rapports de mission"],
         ai: "Optimisation des plannings et suivi automatique des budgets.",
         screenshot: "/modules/missions.png"
       }
@@ -156,21 +156,21 @@ const categories = [
   },
   {
     id: "conformite",
-    label: "Conformite",
+    label: "Conformité",
     icon: Scale,
     modules: [
       {
         title: "Gestion des Contentieux",
-        description: "Gerez les procedures disciplinaires dans le respect du droit du travail.",
-        features: ["Procedures reglementaires", "Suivi des dossiers", "Historique disciplinaire", "Gestion du contentieux"],
-        ai: "Verification de la conformite legale des procedures.",
+        description: "Gérez les procédures disciplinaires dans le respect du droit du travail.",
+        features: ["Procédures réglementaires", "Suivi des dossiers", "Historique disciplinaire", "Gestion du contentieux"],
+        ai: "Vérification de la conformité légale des procédures.",
         screenshot: "/modules/contentieux.png"
       },
       {
-        title: "Gestion des Departs",
-        description: "Pilotez l'offboarding et les soldes de tout compte en toute serenite.",
-        features: ["Entretiens de depart", "Solde de tout compte", "Checklist de depart", "Archivage du dossier", "Analyse des motifs"],
-        ai: "Identification des tendances de depart pour anticiper les risques de turnover.",
+        title: "Gestion des Départs",
+        description: "Pilotez l'offboarding et les soldes de tout compte en toute sérénité.",
+        features: ["Entretiens de départ", "Solde de tout compte", "Checklist de départ", "Archivage du dossier", "Analyse des motifs"],
+        ai: "Identification des tendances de départ pour anticiper les risques de turnover.",
         screenshot: null
       }
     ]
@@ -180,18 +180,18 @@ const categories = [
 const aiHighlights = [
   {
     icon: Bot,
-    title: "Agents IA Specialises",
-    description: "Jusqu'a 30 agents IA experts dans chaque domaine RH"
+    title: "Agents IA Spécialisés",
+    description: "Jusqu'à 30 agents IA experts dans chaque domaine RH"
   },
   {
     icon: Sparkles,
     title: "Automatisation Intelligente",
-    description: "L'IA agit : generation de documents, alertes, recommandations"
+    description: "L'IA agit : génération de documents, alertes, recommandations"
   },
   {
     icon: LayoutDashboard,
-    title: "Dashboards Predictifs",
-    description: "Des tableaux de bord qui predisent les tendances futures"
+    title: "Dashboards Prédictifs",
+    description: "Des tableaux de bord qui prédisent les tendances futures"
   },
   {
     icon: MessageSquare,
