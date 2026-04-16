@@ -13,7 +13,7 @@ const footerLinks = {
   ],
   support: [
     { label: 'Documentation', href: '/resources' },
-    { label: "Centre d'Aide", href: 'https://dashboard.targetym.ai/help', external: true },
+    { label: "Centre d'Aide", href: 'https://help.targetym.ai', external: true },
     { label: 'Panneau Admin', href: '/login' },
   ],
 };
