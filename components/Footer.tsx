@@ -155,6 +155,9 @@ export default function Footer() {
             <Link href="/terms" className="text-gray-500 hover:text-gray-300 text-sm transition-colors duration-150">
               Conditions d&apos;utilisation
             </Link>
+            <Link href="/cgv" className="text-gray-500 hover:text-gray-300 text-sm transition-colors duration-150">
+              CGV
+            </Link>
           </div>
         </div>
       </div>
