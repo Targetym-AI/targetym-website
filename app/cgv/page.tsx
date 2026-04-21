@@ -28,7 +28,7 @@ export default function CgvPage() {
           {/* Préambule */}
           <h2>Préambule</h2>
           <p>
-            La société <strong>AGILTYM SARL</strong>, société à responsabilité limitée de droit sénégalais au capital de <strong>200 000 FCFA</strong>, immatriculée au RCCM de Dakar sous le numéro <strong>SN.DKR.2025.B.42427</strong>, dont le siège social est situé Immeuble Bidaness Building, Mermoz VDN, Dakar, Sénégal (ci-après « la Société »), édite et commercialise la plateforme <strong>TARGETYM AI</strong>, un SIRH de nouvelle génération intégrant plus de <strong>30 Agents d&apos;intelligence artificielle</strong> spécialisés en ressources humaines.
+            La société <strong>AGILTYM SARL</strong>, société à responsabilité limitée de droit sénégalais au capital de <strong>200 000 FCFA</strong>, immatriculée au RCCM de Dakar sous le numéro <strong>SN.DKR.2025.B.42427</strong>, dont le siège social est situé Immeuble Bidaness Building, Mermoz VDN, Dakar, Sénégal (ci-après « la Société »), édite et commercialise la plateforme <strong>TARGETYM AI</strong>, un SIRH de nouvelle génération intégrant plus de <strong>30 Agents d&apos;intelligence artificielle</strong> spécialisés en ressources humaines. La marque <strong>TARGETYM AI</strong> est enregistrée auprès de l&apos;<strong>Organisation Africaine de la Propriété Intellectuelle (OAPI)</strong>.
           </p>
           <p>
             Les présentes Conditions Générales de Vente (CGV) s&apos;appliquent à toute souscription à la plateforme par une personne morale ou physique agissant dans le cadre de son activité professionnelle (ci-après « le Client »). Elles prévalent sur tout document du Client sauf dérogation écrite et signée entre les Parties.

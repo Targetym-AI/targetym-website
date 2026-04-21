@@ -41,6 +41,9 @@ export default function TermsPage() {
             <strong>Site web :</strong> <a href="https://www.targetym.ai/">https://www.targetym.ai/</a>
           </p>
           <p>
+            <strong>Marque :</strong> TARGETYM AI est une marque enregistrée auprès de l&apos;<strong>Organisation Africaine de la Propriété Intellectuelle (OAPI)</strong>.
+          </p>
+          <p>
             <strong>Hébergeur :</strong> Amazon Web Services EMEA SARL — 38 avenue John F. Kennedy, L-1855 Luxembourg
           </p>
 
@@ -186,140 +189,6 @@ export default function TermsPage() {
           </p>
           <p>
             Voir aussi : <a href="/privacy">Politique de Vie Privée</a> — <a href="/cgv">Conditions Générales de Vente (CGV)</a>
-          </p>
-        </div>
-      </section>
-    </div>
-  );
-}
-      </section>
-
-      {/* Content */}
-      <section className="py-12 bg-white">
-        <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 [&_h2]:text-2xl [&_h2]:font-bold [&_h2]:text-gray-900 [&_h2]:mt-10 [&_h2]:mb-4 [&_h3]:text-lg [&_h3]:font-semibold [&_h3]:text-gray-800 [&_h3]:mt-6 [&_h3]:mb-3 [&_p]:text-gray-600 [&_p]:leading-relaxed [&_p]:mb-4 [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:mb-4 [&_li]:text-gray-600 [&_li]:mb-1 [&_a]:text-primary-600 [&_a]:underline [&_strong]:text-gray-800 [&_em]:italic">
-
-          <h2>1. Acceptation des conditions</h2>
-          <p>
-            En accédant à la plateforme Targetym AI (ci-après « la Plateforme ») ou en utilisant ses services, vous acceptez les présentes Conditions Générales d'Utilisation (CGU). Si vous agissez au nom d'une organisation, vous déclarez avoir l'autorité nécessaire pour engager cette organisation.
-          </p>
-          <p>
-            Ces CGU constituent un accord juridiquement contraignant entre vous (ou votre organisation) et <strong>Agiltym</strong>, éditeur de Targetym AI.
-          </p>
-
-          <h2>2. Description du service</h2>
-          <p>
-            Targetym AI est une suite SIRH (Système d'Information des Ressources Humaines) en mode SaaS (Software as a Service) destinée aux entreprises. Elle comprend notamment des modules de gestion des performances, des congés, de la formation, du recrutement, des évaluations et d'automatisation RH par IA.
-          </p>
-          <p>
-            Le service est accessible via le tableau de bord disponible à l'adresse <strong>dashboard.targetym.ai</strong> et l'API à <strong>api.targetym.ai</strong>.
-          </p>
-
-          <h2>3. Compte et accès</h2>
-
-          <h3>3.1 Création de compte</h3>
-          <p>
-            L'accès à la Plateforme nécessite la création d'un compte. Vous vous engagez à fournir des informations exactes et à les maintenir à jour. Chaque compte est strictement personnel et ne peut pas être partagé entre plusieurs utilisateurs sans accord préalable.
-          </p>
-
-          <h3>3.2 Responsabilité du compte</h3>
-          <p>
-            Vous êtes seul responsable de la confidentialité de vos identifiants de connexion et de toutes les actions effectuées depuis votre compte. En cas de compromission suspectée, vous devez nous en informer immédiatement à <a href="mailto:security@targetym.ai" className="text-primary-600 hover:underline">security@targetym.ai</a>.
-          </p>
-
-          <h3>3.3 Comptes multi-utilisateurs (Tenants)</h3>
-          <p>
-            Dans le cadre d'un abonnement entreprise, l'administrateur du tenant est responsable de la gestion des accès des membres de son organisation et du respect des présentes CGU par ces membres.
-          </p>
-
-          <h2>4. Abonnements et facturation</h2>
-
-          <h3>4.1 Plans tarifaires</h3>
-          <p>
-            Targetym AI est proposé selon différents plans tarifaires décrits sur notre page <a href="/pricing" className="text-primary-600 hover:underline">Tarification</a>. Les prix sont exprimés hors taxes et peuvent être facturés en euros (€) ou en francs CFA (XOF) selon votre région.
-          </p>
-
-          <h3>4.2 Essai gratuit</h3>
-          <p>
-            Nous offrons une période d'essai gratuite dont la durée est précisée lors de l'inscription. À l'issue de cette période, l'accès est suspendu sauf souscription à un plan payant.
-          </p>
-
-          <h3>4.3 Renouvellement et résiliation</h3>
-          <p>
-            Les abonnements se renouvellent automatiquement à chaque période de facturation. Vous pouvez résilier à tout moment depuis votre espace d'administration. La résiliation prend effet à la fin de la période en cours ; aucun remboursement n'est accordé pour la période déjà facturée.
-          </p>
-
-          <h3>4.4 Modification tarifaire</h3>
-          <p>
-            Nous nous réservons le droit de modifier nos tarifs avec un préavis de 30 jours communiqué par e-mail. En cas de désaccord, vous pouvez résilier votre abonnement avant l'entrée en vigueur des nouveaux tarifs.
-          </p>
-
-          <h2>5. Propriété intellectuelle</h2>
-
-          <h3>5.1 Droits Agiltym</h3>
-          <p>
-            La Plateforme, son code source, ses algorithmes d'IA, ses marques, logos, designs et toute la documentation associée sont la propriété exclusive d'Agiltym et sont protégés par les lois sur la propriété intellectuelle. Aucune licence n'est accordée au-delà du droit d'usage décrit dans ces CGU.
-          </p>
-
-          <h3>5.2 Vos données</h3>
-          <p>
-            Vous conservez la pleine propriété des données que vous saisissez sur la Plateforme. Vous nous accordez une licence limitée, non exclusive et révocable pour traiter ces données dans le seul but de vous fournir les services.
-          </p>
-
-          <h2>6. Utilisation acceptable</h2>
-          <p>Il vous est interdit d'utiliser la Plateforme pour :</p>
-          <ul>
-            <li>Violer des lois ou réglementations applicables</li>
-            <li>Télécharger, transmettre ou stocker des contenus illicites, diffamatoires ou portant atteinte aux droits de tiers</li>
-            <li>Tenter de contourner les mécanismes de sécurité ou d'accéder à des données d'autres clients</li>
-            <li>Effectuer des tests de charge ou de pénétration non autorisés</li>
-            <li>Utiliser des robots, scrapers ou tout outil automatisé pour collecter des données sans autorisation préalable</li>
-            <li>Revendre ou sublicencier l'accès à la Plateforme à des tiers sans accord écrit d'Agiltym</li>
-          </ul>
-
-          <h2>7. Disponibilité et niveau de service (SLA)</h2>
-          <p>
-            Nous visons un taux de disponibilité de <strong>99,5 %</strong> par mois, hors maintenances planifiées. Les maintenances sont communiquées avec un préavis d'au moins 24 heures, sauf urgence de sécurité. En cas de dépassement du temps d'indisponibilité garanti, des crédits de service peuvent être accordés selon les modalités précisées dans votre contrat d'abonnement.
-          </p>
-
-          <h2>8. Confidentialité et protection des données</h2>
-          <p>
-            Le traitement de vos données personnelles est régi par notre <a href="/privacy" className="text-primary-600 hover:underline">Politique de Confidentialité</a>, intégrée par référence aux présentes CGU. En utilisant la Plateforme, vous acceptez cette politique.
-          </p>
-
-          <h2>9. Limitation de responsabilité</h2>
-          <p>
-            Dans toute la mesure permise par la loi applicable, Agiltym ne pourra être tenu responsable des dommages indirects, incidents, spéciaux ou consécutifs (perte de données, manque à gagner, interruption d'activité) résultant de l'utilisation ou de l'impossibilité d'utiliser la Plateforme.
-          </p>
-          <p>
-            La responsabilité totale d'Agiltym envers vous pour tout incident ne pourra excéder le montant que vous avez payé au cours des 12 mois précédant l'incident.
-          </p>
-
-          <h2>10. Garanties</h2>
-          <p>
-            La Plateforme est fournie « en l'état » (<em>as is</em>). Agiltym ne garantit pas que le service sera ininterrompu, exempt d'erreurs ou adapté à un usage particulier. Nous nous engageons toutefois à déployer tous les efforts raisonnables pour maintenir la qualité et la sécurité du service.
-          </p>
-
-          <h2>11. Résiliation</h2>
-          <p>
-            Agiltym se réserve le droit de suspendre ou résilier votre accès en cas de violation avérée des présentes CGU, avec ou sans préavis selon la gravité de la violation. En cas de résiliation par Agiltym pour faute, aucun remboursement ne sera dû. Vous pouvez exporter vos données pendant un délai de 90 jours suivant la résiliation.
-          </p>
-
-          <h2>12. Droit applicable et juridiction</h2>
-          <p>
-            Les présentes CGU sont régies par le droit de la République de Côte d'Ivoire. En cas de litige, les parties s'engagent à rechercher une solution amiable avant tout recours judiciaire. À défaut, les tribunaux d'Abidjan seront seuls compétents.
-          </p>
-
-          <h2>13. Modifications des CGU</h2>
-          <p>
-            Nous pouvons mettre à jour ces CGU. La date de dernière mise à jour figure en haut du document. Pour les modifications substantielles, un préavis de 30 jours sera communiqué par e-mail. La poursuite de l'utilisation de la Plateforme après cette période vaut acceptation des nouvelles CGU.
-          </p>
-
-          <h2>14. Contact</h2>
-          <p>
-            Pour toute question relative aux présentes CGU :<br />
-            <strong>Agiltym — Targetym AI</strong><br />
-            E-mail : <a href="mailto:legal@targetym.ai" className="text-primary-600 hover:underline">legal@targetym.ai</a><br />
-            Site : <a href="https://targetym.ai" className="text-primary-600 hover:underline">https://targetym.ai</a>
           </p>
         </div>
       </section>
