@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Conditions Générales de Vente (CGV) — Targetym AI',
+  title: 'Conditions Générales de Vente (CGV) - Targetym AI',
   description: 'Conditions Générales de Vente de la plateforme SIRH Targetym AI, éditée par Agiltym SARL. Droit sénégalais, OHADA, Loi n°2008-12.',
 };
 
@@ -13,11 +13,11 @@ export default function CgvPage() {
       {/* Hero */}
       <section className="bg-gradient-to-b from-primary-50 to-white pt-16 pb-16">
         <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
-          <p className="text-xs font-semibold uppercase tracking-widest text-primary-600 mb-3">TARGETYM AI — AGILTYM SARL</p>
+          <p className="text-xs font-semibold uppercase tracking-widest text-primary-600 mb-3">TARGETYM AI - AGILTYM SARL</p>
           <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4">
             Conditions Générales de Vente
           </h1>
-          <p className="text-gray-500 text-sm">Dernière mise à jour : {lastUpdated} — Droit sénégalais &amp; OHADA</p>
+          <p className="text-gray-500 text-sm">Dernière mise à jour : {lastUpdated} - Droit sénégalais &amp; OHADA</p>
         </div>
       </section>
 
@@ -34,7 +34,7 @@ export default function CgvPage() {
             Les présentes Conditions Générales de Vente (CGV) s&apos;appliquent à toute souscription à la plateforme par une personne morale ou physique agissant dans le cadre de son activité professionnelle (ci-après « le Client »). Elles prévalent sur tout document du Client sauf dérogation écrite et signée entre les Parties.
           </p>
 
-          <h2>Article 1 — Définitions</h2>
+          <h2>Article 1 - Définitions</h2>
           <ul>
             <li><strong>Société</strong> : AGILTYM SARL, éditeur de TARGETYM AI</li>
             <li><strong>Client</strong> : toute entité ayant souscrit un abonnement TARGETYM AI</li>
@@ -47,12 +47,12 @@ export default function CgvPage() {
             <li><strong>FCFA / XOF</strong> : monnaie de facturation applicable aux Clients de la zone UEMOA</li>
           </ul>
 
-          <h2>Article 2 — Application, Objet et Opposabilité des CGV</h2>
+          <h2>Article 2 - Application, Objet et Opposabilité des CGV</h2>
           <p>
             Les présentes CGV définissent les droits et obligations de la Société et du Client dans le cadre de la mise à disposition de la Plateforme TARGETYM AI en mode SaaS. Elles sont opposables au Client dès la signature du Bon de Commande ou, à défaut, dès le début d&apos;une période d&apos;essai gratuit de <strong>14 jours</strong>. Le Client déclare avoir pris connaissance des CGV préalablement à toute souscription.
           </p>
 
-          <h2>Article 3 — Souscription et Bon de Commande</h2>
+          <h2>Article 3 - Souscription et Bon de Commande</h2>
           <p>
             La souscription est formalisée par un Bon de Commande précisant le <strong>Plan tarifaire</strong> choisi, le nombre d&apos;Employés gérés, la durée de l&apos;engagement (mensuelle ou annuelle) et le montant en FCFA/XOF. Les Plans disponibles sont :
           </p>
@@ -66,12 +66,12 @@ export default function CgvPage() {
             Le détail des fonctionnalités et la grille tarifaire en vigueur figurent sur le site <a href="https://targetym.ai">targetym.ai</a> ou dans la proposition commerciale remise au Client. Tout dépassement du nombre d&apos;Employés contractuellement prévu donnera lieu à une facturation complémentaire au tarif en vigueur.
           </p>
 
-          <h2>Article 4 — Durée d&apos;engagement</h2>
+          <h2>Article 4 - Durée d&apos;engagement</h2>
           <p>
             Le Contrat prend effet à la date de signature du Bon de Commande ou à la fin de la période d&apos;essai, pour la durée convenue (mensuelle ou annuelle). À l&apos;échéance, il se <strong>renouvelle tacitement</strong> pour une durée équivalente, sauf dénonciation par l&apos;une des Parties dans les conditions prévues à l&apos;article 14.
           </p>
 
-          <h2>Article 5 — Hébergement, Sécurité et Souveraineté des données</h2>
+          <h2>Article 5 - Hébergement, Sécurité et Souveraineté des données</h2>
           <p>
             La Plateforme est hébergée sur des infrastructures certifiées <strong>SOC 2 Type II</strong>, avec des mesures de sécurité techniques comprenant TLS 1.3+, AES-256, MFA, RBAC, journaux d&apos;audit et tests d&apos;intrusion annuels. La Société privilégie un hébergement en Afrique de l&apos;Ouest ou dans des zones offrant un niveau de protection équivalent aux exigences de la Loi n°&nbsp;2008-12.
           </p>
@@ -79,7 +79,7 @@ export default function CgvPage() {
             En cas de changement de localisation d&apos;hébergement, le Client est notifié avec un préavis de <strong>30 jours</strong> et peut s&apos;y opposer dans un délai de 15 jours.
           </p>
 
-          <h2>Article 6 — Obligations de la Société</h2>
+          <h2>Article 6 - Obligations de la Société</h2>
           <h3>6.1 Disponibilité</h3>
           <p>
             La Société garantit un taux de disponibilité mensuelle de <strong>99,5%</strong>, hors maintenances planifiées (notifiées 48h à l&apos;avance) et événements de force majeure. En cas de dépassement, des crédits de service sont accordés selon les modalités du SLA.
@@ -88,7 +88,7 @@ export default function CgvPage() {
           <p>
             La Société fournit un support technique réactif selon le Plan souscrit. Les délais d&apos;intervention (GTI) et de résolution (GTR) sont définis dans le SLA annexé.
           </p>
-          <h3>6.3 Agents IA — Principes éthiques</h3>
+          <h3>6.3 Agents IA - Principes éthiques</h3>
           <p>Les 30+ Agents IA de TARGETYM AI respectent les principes suivants :</p>
           <ul>
             <li><strong>Transparence</strong> : documentation explicative des critères fournie sur demande</li>
@@ -97,7 +97,7 @@ export default function CgvPage() {
             <li><strong>Droit à l&apos;explication</strong> : toute décision assistée par IA peut faire l&apos;objet d&apos;une demande d&apos;explication</li>
           </ul>
 
-          <h2>Article 7 — Obligations du Client</h2>
+          <h2>Article 7 - Obligations du Client</h2>
           <p>Le Client s&apos;engage à :</p>
           <ul>
             <li>Désigner un référent TARGETYM AI responsable de la gestion des accès</li>
@@ -108,7 +108,7 @@ export default function CgvPage() {
             <li>Maintenir la confidentialité de ses identifiants de connexion</li>
           </ul>
 
-          <h2>Article 8 — Conditions financières</h2>
+          <h2>Article 8 - Conditions financières</h2>
           <h3>8.1 Devise et facturation</h3>
           <p>
             Les prix sont exprimés en <strong>FCFA/XOF</strong> pour les Clients de la zone UEMOA. La facturation intervient selon la périodicité convenue (mensuelle ou annuelle), à terme échu ou à terme à échoir selon le Plan.
@@ -122,32 +122,32 @@ export default function CgvPage() {
             La Société se réserve le droit de réviser ses tarifs avec un préavis de <strong>60 jours</strong>. En cas de désaccord, le Client peut résilier dans les conditions de l&apos;article 14.
           </p>
 
-          <h2>Article 9 — Propriété intellectuelle</h2>
+          <h2>Article 9 - Propriété intellectuelle</h2>
           <p>
             La souscription confère au Client un droit d&apos;accès non exclusif, non cessible et limité à la durée du Contrat. Toute reproduction, décompilation ou tentative d&apos;ingénierie inverse est formellement interdite. Les données RH saisies par le Client restent <strong>sa propriété exclusive</strong>. La Société ne les utilise jamais pour entraîner ses modèles IA ou les vendre à des tiers.
           </p>
 
-          <h2>Article 10 — Confidentialité</h2>
+          <h2>Article 10 - Confidentialité</h2>
           <p>
             Chaque Partie s&apos;engage à traiter comme strictement confidentielles les Informations Confidentielles de l&apos;autre Partie pendant toute la durée du Contrat et pour une période de <strong>3 ans</strong> après sa cessation, quelle qu&apos;en soit la cause.
           </p>
 
-          <h2>Article 11 — Responsabilité</h2>
+          <h2>Article 11 - Responsabilité</h2>
           <p>
             La responsabilité de la Société est plafonnée au montant des sommes effectivement payées par le Client au cours des <strong>12 mois</strong> précédant le fait générateur. La Société ne saurait être tenue responsable des dommages indirects, de la perte de données, de la perte d&apos;exploitation, ni des décisions RH prises sur la base des Outputs des Agents IA. La Société n&apos;est pas responsable des usages non conformes aux présentes CGV.
           </p>
 
-          <h2>Article 12 — Assurance</h2>
+          <h2>Article 12 - Assurance</h2>
           <p>
             La Société déclare être couverte par une assurance Responsabilité Civile Professionnelle (RC Pro) auprès d&apos;un assureur reconnu. Une attestation peut être fournie sur demande écrite.
           </p>
 
-          <h2>Article 13 — Force majeure</h2>
+          <h2>Article 13 - Force majeure</h2>
           <p>
             Aucune Partie ne sera responsable d&apos;un manquement causé par un événement de force majeure (catastrophe naturelle, conflit armé, pandémie, décision gouvernementale, cyberattaque d&apos;ampleur nationale). La Partie affectée doit en informer l&apos;autre dans les <strong>48 heures</strong>. Si la force majeure se prolonge au-delà de <strong>60 jours</strong>, chaque Partie peut résilier le Contrat sans indemnité.
           </p>
 
-          <h2>Article 14 — Résiliation</h2>
+          <h2>Article 14 - Résiliation</h2>
           <h3>14.1 Résiliation à l&apos;échéance</h3>
           <p>
             Chaque Partie peut s&apos;opposer au renouvellement tacite par notification écrite avec un préavis de <strong>60 jours</strong> avant la date d&apos;échéance.
@@ -165,28 +165,28 @@ export default function CgvPage() {
             En cas de résiliation, le Client peut demander l&apos;export de ses données dans un format standard (CSV ou JSON) dans un délai de <strong>30 jours</strong> suivant la date de fin d&apos;accès. Passé ce délai, la Société procède à la destruction sécurisée et irréversible des données et délivre une <strong>attestation de suppression</strong> sur demande, dans un délai de 15 jours ouvrés.
           </p>
 
-          <h2>Article 15 — Protection des données personnelles et DPA</h2>
+          <h2>Article 15 - Protection des données personnelles et DPA</h2>
           <p>
             Dans le cadre des présentes CGV, le Client agit en qualité de <strong>Responsable de Traitement</strong> et la Société en qualité de <strong>Sous-traitant</strong>, conformément à la Loi n°&nbsp;2008-12 du 25 janvier 2008 sur la Protection des données personnelles au Sénégal. Un DPA (Accord de Traitement des Données) encadrant les obligations respectives est conclu séparément. Les mesures techniques incluent TLS 1.3+, AES-256, MFA, RBAC, journaux d&apos;audit et tests d&apos;intrusion annuels. Conformité SOC 2 Type II certifiée.
           </p>
 
-          <h2>Article 16 — Droit applicable et juridiction</h2>
+          <h2>Article 16 - Droit applicable et juridiction</h2>
           <p>
             Les présentes CGV sont régies par le <strong>droit sénégalais</strong>, complété par les Actes uniformes de l&apos;OHADA. En cas de litige, les Parties s&apos;engagent à rechercher une résolution amiable dans un délai de <strong>45 jours</strong> à compter de la notification. À défaut de règlement amiable, les juridictions compétentes du ressort de <strong>Dakar (Sénégal)</strong> seront exclusivement compétentes.
           </p>
 
-          <h2>Article 17 — Cession</h2>
+          <h2>Article 17 - Cession</h2>
           <p>
             La Société peut céder le présent Contrat à toute entité du même groupe ou dans le cadre d&apos;une opération de fusion-acquisition, avec notification préalable de <strong>30 jours</strong>. Le Client ne peut céder ses droits et obligations sans accord écrit préalable de la Société.
           </p>
 
-          <h2>Article 18 — Dispositions diverses</h2>
+          <h2>Article 18 - Dispositions diverses</h2>
           <p>
             Si une clause est déclarée nulle ou inapplicable, les autres dispositions restent en vigueur. La renonciation à se prévaloir d&apos;une clause ne vaut pas renonciation définitive. Les présentes CGV, le Bon de Commande, le DPA, le SLA et le cas échéant la Politique de Vie Privée constituent l&apos;intégralité de l&apos;accord entre les Parties et remplacent tout accord antérieur.
           </p>
 
           {/* Annexe DPA */}
-          <h2>Annexe I — Accord de Traitement des Données (DPA)</h2>
+          <h2>Annexe I - Accord de Traitement des Données (DPA)</h2>
           <p>
             Conformément à la Loi n°&nbsp;2008-12, la Société met en œuvre les mesures suivantes pour le compte du Client Responsable de Traitement :
           </p>
@@ -209,13 +209,13 @@ export default function CgvPage() {
           {/* Contact */}
           <h2>Contact</h2>
           <p>
-            <strong>AGILTYM SARL — Targetym AI</strong><br />
+            <strong>AGILTYM SARL - Targetym AI</strong><br />
             E-mail : <a href="mailto:support@agiltym.com">support@agiltym.com</a><br />
             Immeuble Bidaness Building, Mermoz VDN, Dakar, Sénégal<br />
             Tél. : +221 76 523 57 94
           </p>
           <p>
-            Voir aussi : <a href="/privacy">Politique de Vie Privée</a> — <a href="/terms">Mentions Légales &amp; CGU</a>
+            Voir aussi : <a href="/privacy">Politique de Vie Privée</a> - <a href="/terms">Mentions Légales &amp; CGU</a>
           </p>
         </div>
       </section>
