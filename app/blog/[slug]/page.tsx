@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Calendar, Tag, ArrowLeft, Eye } from 'lucide-react';
+import DOMPurify from 'isomorphic-dompurify';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.targetym.ai';
 
@@ -129,7 +130,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
             prose-strong:text-gray-900
             prose-ul:text-gray-700 prose-ol:text-gray-700
             prose-blockquote:border-primary-300 prose-blockquote:text-gray-600"
-          dangerouslySetInnerHTML={{ __html: post.content }}
+          dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(post.content) }}
         />
 
         {/* Tags */}
