@@ -42,6 +42,11 @@ export default function RootLayout({
             gtag('config', 'G-V7K9V9VJ9V');
           `}
         </Script>
+        <Script
+          id="hs-script-loader"
+          src="//js-eu1.hs-scripts.com/148317292.js"
+          strategy="afterInteractive"
+        />
       </head>
       <body className="font-body antialiased">
         <Header />

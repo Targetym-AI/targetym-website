@@ -1,6 +1,5 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import Script from 'next/script';
 import {
   Users,
   Target,
@@ -507,12 +506,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* HubSpot Embed Code */}
-      <Script
-        id="hs-script-loader"
-        src="//js-eu1.hs-scripts.com/148317292.js"
-        strategy="afterInteractive"
-      />
     </div>
   );
 }
