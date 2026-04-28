@@ -84,7 +84,7 @@ export default function WebinarsSection({ webinars }: { webinars: Webinar[] }) {
             <div className="p-5 flex-1 flex flex-col">
               <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2 text-base">{w.title}</h3>
               {w.description && (
-                <p className="text-sm text-gray-500 line-clamp-2 mb-3">{w.description}</p>
+                <p className="text-sm text-gray-500 mb-3 leading-relaxed">{w.description}</p>
               )}
 
               <div className="flex flex-col gap-1.5 text-xs text-gray-500 mt-auto mb-4">
