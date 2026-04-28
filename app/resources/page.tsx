@@ -164,16 +164,6 @@ export default async function ResourcesPage({
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
           <nav className="flex gap-0 overflow-x-auto scrollbar-hide">
             <Link
-              href="/resources"
-              className={`flex items-center gap-2 flex-none px-5 py-4 text-sm font-medium border-b-2 transition-colors whitespace-nowrap ${
-                activeMainTab === 'resources'
-                  ? 'border-primary-600 text-primary-700'
-                  : 'border-transparent text-gray-500 hover:text-gray-800'
-              }`}
-            >
-              <BookOpen className="w-4 h-4" /> Ressources
-            </Link>
-            <Link
               href="/resources?tab=formations"
               className={`flex items-center gap-2 flex-none px-5 py-4 text-sm font-medium border-b-2 transition-colors whitespace-nowrap ${
                 activeMainTab === 'formations'
@@ -185,6 +175,16 @@ export default async function ResourcesPage({
               {webinars.length > 0 && (
                 <span className="ml-1 px-1.5 py-0.5 bg-primary-100 text-primary-700 text-xs rounded-full">{webinars.length}</span>
               )}
+            </Link>
+            <Link
+              href="/resources"
+              className={`flex items-center gap-2 flex-none px-5 py-4 text-sm font-medium border-b-2 transition-colors whitespace-nowrap ${
+                activeMainTab === 'resources'
+                  ? 'border-primary-600 text-primary-700'
+                  : 'border-transparent text-gray-500 hover:text-gray-800'
+              }`}
+            >
+              <BookOpen className="w-4 h-4" /> Ressources
             </Link>
           </nav>
         </div>
