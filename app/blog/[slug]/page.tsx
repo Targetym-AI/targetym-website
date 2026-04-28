@@ -114,11 +114,11 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
             {post.category}
           </span>
         )}
-        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 leading-snug mb-3">
+        <h1 className="text-2xl sm:text-[28px] font-bold text-gray-900 leading-snug mb-3 [font-family:var(--font-lora)] tracking-tight">
           {post.title}
         </h1>
         {post.excerpt && (
-          <p className="text-sm text-gray-500 leading-relaxed border-l-2 border-primary-200 pl-4">
+          <p className="text-[15px] text-gray-500 leading-relaxed border-l-2 border-primary-200 pl-4 [font-family:var(--font-lora)] italic">
             {post.excerpt}
           </p>
         )}
@@ -140,15 +140,16 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
       <article className="mx-auto max-w-2xl px-4 sm:px-6 lg:px-8 pb-16">
         <div
           className="
-            prose prose-sm max-w-none
-            prose-headings:font-semibold prose-headings:text-gray-900 prose-headings:mt-6 prose-headings:mb-2
-            prose-h2:text-lg prose-h3:text-base
-            prose-p:text-gray-600 prose-p:leading-7 prose-p:text-[15px] prose-p:my-3
+            prose max-w-none
+            [font-family:var(--font-lora)]
+            prose-headings:[font-family:var(--font-nunito)] prose-headings:font-bold prose-headings:text-gray-900 prose-headings:mt-7 prose-headings:mb-2 prose-headings:tracking-tight
+            prose-h2:text-[17px] prose-h3:text-[15px]
+            prose-p:text-gray-700 prose-p:leading-[1.85] prose-p:text-[15.5px] prose-p:my-4
             prose-a:text-primary-600 prose-a:no-underline hover:prose-a:underline
-            prose-strong:text-gray-800 prose-strong:font-semibold
-            prose-ul:text-gray-600 prose-ul:text-[15px] prose-ol:text-gray-600 prose-ol:text-[15px]
-            prose-li:my-0.5
-            prose-blockquote:border-l-2 prose-blockquote:border-primary-300 prose-blockquote:text-gray-500 prose-blockquote:italic prose-blockquote:pl-4 prose-blockquote:not-italic
+            prose-strong:text-gray-900 prose-strong:font-semibold prose-strong:[font-family:var(--font-inter)]
+            prose-ul:text-gray-700 prose-ul:text-[15px] prose-ol:text-gray-700 prose-ol:text-[15px]
+            prose-li:my-1 prose-li:leading-[1.75]
+            prose-blockquote:border-l-2 prose-blockquote:border-primary-300 prose-blockquote:bg-primary-50/40 prose-blockquote:rounded-r-lg prose-blockquote:text-gray-600 prose-blockquote:italic prose-blockquote:py-1 prose-blockquote:pl-4 prose-blockquote:pr-3 prose-blockquote:not-italic prose-blockquote:text-[15px]
             prose-hr:border-gray-100
           "
           dangerouslySetInnerHTML={{ __html: plainTextToHtml(post.content) }}
