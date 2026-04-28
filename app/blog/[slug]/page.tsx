@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Calendar, Tag, ArrowLeft, Eye, Clock } from 'lucide-react';
 import BlogSidebar from '@/components/BlogSidebar';
-import type { SidebarPost, SidebarCategory } from '@/components/BlogSidebar';
+import type { SidebarPost, SidebarCategory, SidebarAd } from '@/components/BlogSidebar';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.targetym.ai';
 
@@ -44,6 +44,16 @@ async function fetchPostsList(): Promise<SidebarPost[]> {
 async function fetchCategories(): Promise<SidebarCategory[]> {
   try {
     const res = await fetch(`${API_URL}/api/public/blog/categories`, { cache: 'no-store' });
+    if (!res.ok) return [];
+    return res.json();
+  } catch {
+    return [];
+  }
+}
+
+async function fetchBlogAds(): Promise<SidebarAd[]> {
+  try {
+    const res = await fetch(`${API_URL}/api/public/blog-ads`, { cache: 'no-store' });
     if (!res.ok) return [];
     return res.json();
   } catch {
@@ -138,10 +148,11 @@ export async function generateMetadata({ params }: { params: { slug: string } })
 }
 
 export default async function BlogPostPage({ params }: { params: { slug: string } }) {
-  const [post, allPosts, categories] = await Promise.all([
+  const [post, allPosts, categories, ads] = await Promise.all([
     fetchPost(params.slug),
     fetchPostsList(),
     fetchCategories(),
+    fetchBlogAds(),
   ]);
 
   if (!post) notFound();
@@ -270,6 +281,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
               currentSlug={post.slug}
               posts={allPosts}
               categories={categories}
+              ads={ads}
               apiUrl={API_URL}
             />
           </div>

@@ -18,10 +18,23 @@ export interface SidebarCategory {
   count: number;
 }
 
+export interface SidebarAd {
+  id: number;
+  title: string;
+  description: string | null;
+  image_url: string | null;
+  cta_label: string;
+  cta_url: string;
+  style: string;
+  position: number;
+  badge_label: string | null;
+}
+
 interface Props {
   currentSlug: string;
   posts: SidebarPost[];
   categories: SidebarCategory[];
+  ads: SidebarAd[];
   apiUrl: string;
 }
 
@@ -30,7 +43,7 @@ function formatDate(iso: string | null) {
   return new Date(iso).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' });
 }
 
-export default function BlogSidebar({ currentSlug, posts, categories, apiUrl }: Props) {
+export default function BlogSidebar({ currentSlug, posts, categories, ads, apiUrl }: Props) {
   const [search, setSearch] = useState('');
 
   const otherPosts = posts.filter((p) => p.slug !== currentSlug);
@@ -64,20 +77,10 @@ export default function BlogSidebar({ currentSlug, posts, categories, apiUrl }: 
         </div>
       </div>
 
-      {/* ── Publicité / CTA ── */}
-      <div className="bg-gradient-to-br from-primary-500 to-secondary-500 rounded-xl p-5 text-white">
-        <p className="text-[10px] font-semibold uppercase tracking-widest mb-2 opacity-60">Sponsorisé</p>
-        <h3 className="text-sm font-bold leading-snug mb-1.5">Gérez vos RH avec l&apos;IA</h3>
-        <p className="text-[12px] text-white/75 leading-relaxed mb-4">
-          Targetym AI — 90 jours gratuits, sans carte bancaire.
-        </p>
-        <Link
-          href="https://dashboard.targetym.ai"
-          className="inline-flex items-center gap-1 px-3.5 py-1.5 bg-white text-primary-700 text-xs font-semibold rounded-lg hover:bg-primary-50 transition-colors"
-        >
-          Essayer gratuitement <ChevronRight className="w-3 h-3" />
-        </Link>
-      </div>
+      {/* ── Publicités dynamiques (position 1 et 2) ── */}
+      {ads.filter((a) => a.position <= 2).map((ad) => (
+        <BlogAdCard key={ad.id} ad={ad} apiUrl={apiUrl} />
+      ))}
 
       {/* ── Catégories ── */}
       {categories.length > 0 && (
@@ -158,5 +161,72 @@ export default function BlogSidebar({ currentSlug, posts, categories, apiUrl }: 
         )}
       </div>
     </aside>
+  );
+}
+
+// ── Composant carte publicitaire ──────────────────────────────────────────────
+
+function BlogAdCard({ ad, apiUrl }: { ad: SidebarAd; apiUrl: string }) {
+  const badge = ad.badge_label ?? 'Sponsorisé';
+
+  if (ad.style === 'image' && ad.image_url) {
+    const imgSrc = ad.image_url.startsWith('/') ? `${apiUrl}${ad.image_url}` : ad.image_url;
+    return (
+      <div className="rounded-xl overflow-hidden relative">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={imgSrc} alt={ad.title} className="w-full h-36 object-cover" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex flex-col justify-end p-4">
+          <p className="text-[10px] font-semibold uppercase tracking-widest mb-1 text-white/60">{badge}</p>
+          <h3 className="text-sm font-bold leading-snug text-white mb-2">{ad.title}</h3>
+          <Link
+            href={ad.cta_url}
+            target={ad.cta_url.startsWith('http') ? '_blank' : undefined}
+            rel={ad.cta_url.startsWith('http') ? 'noopener noreferrer' : undefined}
+            className="inline-flex items-center gap-1 px-3 py-1.5 bg-white text-gray-900 text-xs font-semibold rounded-lg hover:bg-gray-100 transition-colors self-start"
+          >
+            {ad.cta_label} <ChevronRight className="w-3 h-3" />
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
+  if (ad.style === 'minimal') {
+    return (
+      <div className="border border-primary-100 rounded-xl p-4 bg-primary-50/30">
+        <p className="text-[10px] font-semibold uppercase tracking-widest mb-2 text-primary-400">{badge}</p>
+        <h3 className="text-sm font-bold text-gray-800 leading-snug mb-1.5">{ad.title}</h3>
+        {ad.description && (
+          <p className="text-[12px] text-gray-500 leading-relaxed mb-3">{ad.description}</p>
+        )}
+        <Link
+          href={ad.cta_url}
+          target={ad.cta_url.startsWith('http') ? '_blank' : undefined}
+          rel={ad.cta_url.startsWith('http') ? 'noopener noreferrer' : undefined}
+          className="inline-flex items-center gap-1 px-3.5 py-1.5 bg-primary-600 text-white text-xs font-semibold rounded-lg hover:bg-primary-700 transition-colors"
+        >
+          {ad.cta_label} <ChevronRight className="w-3 h-3" />
+        </Link>
+      </div>
+    );
+  }
+
+  // Default: gradient
+  return (
+    <div className="bg-gradient-to-br from-primary-500 to-secondary-500 rounded-xl p-5 text-white">
+      <p className="text-[10px] font-semibold uppercase tracking-widest mb-2 opacity-60">{badge}</p>
+      <h3 className="text-sm font-bold leading-snug mb-1.5">{ad.title}</h3>
+      {ad.description && (
+        <p className="text-[12px] text-white/75 leading-relaxed mb-4">{ad.description}</p>
+      )}
+      <Link
+        href={ad.cta_url}
+        target={ad.cta_url.startsWith('http') ? '_blank' : undefined}
+        rel={ad.cta_url.startsWith('http') ? 'noopener noreferrer' : undefined}
+        className="inline-flex items-center gap-1 px-3.5 py-1.5 bg-white text-primary-700 text-xs font-semibold rounded-lg hover:bg-primary-50 transition-colors"
+      >
+        {ad.cta_label} <ChevronRight className="w-3 h-3" />
+      </Link>
+    </div>
   );
 }
