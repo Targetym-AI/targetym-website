@@ -12,7 +12,7 @@ export default function Header() {
     { name: 'Solutions', href: '/solutions' },
     // { name: "Cas d'Usage", href: '/case-studies' }, // Masqué — réactiver quand les vraies case studies seront prêtes
     { name: 'Blog', href: '/blog' },
-    { name: 'Ressources', href: '/resources' },
+    { name: 'Vidéos tutorielles', href: '/resources' },
     { name: 'Tarification', href: '/pricing' },
     { name: 'Contact', href: '/contact' },
   ];

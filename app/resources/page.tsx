@@ -25,7 +25,7 @@ interface ResourcesData {
 }
 
 export const metadata = {
-  title: 'Ressources — Targetym AI',
+  title: 'Vidéos tutorielles — Targetym AI',
   description:
     'Guides, vidéos et outils pratiques pour moderniser la gestion des ressources humaines avec Targetym AI.',
 };
@@ -149,7 +149,7 @@ export default async function ResourcesPage({
             Centre de Ressources
           </span>
           <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-5">
-            {activeMainTab === 'formations' ? 'Formations gratuites' : 'Ressources RH'}
+            {activeMainTab === 'formations' ? 'Webinaires gratuits' : 'Vidéos tutorielles'}
           </h1>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
             {activeMainTab === 'formations'
@@ -171,7 +171,7 @@ export default async function ResourcesPage({
                   : 'border-transparent text-gray-500 hover:text-gray-800'
               }`}
             >
-              <GraduationCap className="w-4 h-4" /> Formations gratuites
+              <GraduationCap className="w-4 h-4" /> Webinaires gratuits
               {webinars.length > 0 && (
                 <span className="ml-1 px-1.5 py-0.5 bg-primary-100 text-primary-700 text-xs rounded-full">{webinars.length}</span>
               )}
@@ -184,7 +184,7 @@ export default async function ResourcesPage({
                   : 'border-transparent text-gray-500 hover:text-gray-800'
               }`}
             >
-              <BookOpen className="w-4 h-4" /> Ressources
+              <BookOpen className="w-4 h-4" /> Vidéos tutorielles
             </Link>
           </nav>
         </div>
@@ -215,7 +215,7 @@ export default async function ResourcesPage({
                     : 'text-gray-500 hover:text-gray-800 hover:bg-gray-100'
                 }`}
               >
-                Toutes les ressources
+                Toutes les vidéos
               </Link>
               {categories.map((cat) => (
                 <Link
@@ -242,7 +242,7 @@ export default async function ResourcesPage({
             <div className="text-center py-20">
               <Layers className="mx-auto w-14 h-14 text-gray-300 mb-5" />
               <h3 className="text-xl font-semibold text-gray-500 mb-2">
-                Ressources bientôt disponibles
+                Vidéos tutorielles bientôt disponibles
               </h3>
               <p className="text-gray-400 text-sm">
                 Notre équipe prépare des contenus de qualité pour vous.
@@ -251,12 +251,12 @@ export default async function ResourcesPage({
           ) : filtered.length === 0 ? (
             <div className="text-center py-20">
               <BookOpen className="mx-auto w-14 h-14 text-gray-300 mb-5" />
-              <p className="text-gray-400">Aucune ressource dans cette catégorie.</p>
+              <p className="text-gray-400">Aucune vidéo dans cette catégorie.</p>
               <Link
                 href="/resources"
                 className="mt-4 inline-block text-sm text-primary-600 hover:underline"
               >
-                Voir toutes les ressources
+                Voir toutes les vidéos
               </Link>
             </div>
           ) : (
