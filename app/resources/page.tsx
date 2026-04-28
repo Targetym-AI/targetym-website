@@ -1,6 +1,7 @@
 import Link from 'next/link';
-import { FileText, ExternalLink, BookOpen, Layers, Play } from 'lucide-react';
+import { FileText, ExternalLink, BookOpen, Layers, Play, GraduationCap } from 'lucide-react';
 import VideoCard from '@/components/VideoCard';
+import WebinarsSection from '@/components/WebinarsSection';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.targetym.ai';
 
@@ -38,6 +39,30 @@ async function fetchResources(): Promise<ResourcesData> {
     return res.json();
   } catch {
     return { categories: [], resources: [], total: 0 };
+  }
+}
+
+interface PublicWebinar {
+  id: number;
+  title: string;
+  description: string | null;
+  cover_image_url: string | null;
+  presenter_name: string | null;
+  webinar_date: string | null;
+  duration_minutes: number | null;
+  replay_url: string | null;
+  max_attendees: number | null;
+  status: string;
+  registrations_count: number;
+}
+
+async function fetchWebinars(): Promise<PublicWebinar[]> {
+  try {
+    const res = await fetch(`${API_URL}/api/public/webinars`, { cache: 'no-store' });
+    if (!res.ok) return [];
+    return res.json();
+  } catch {
+    return [];
   }
 }
 
@@ -99,10 +124,11 @@ function resourceHref(resource: Resource) {
 export default async function ResourcesPage({
   searchParams,
 }: {
-  searchParams: { category?: string };
+  searchParams: { category?: string; tab?: string };
 }) {
-  const data = await fetchResources();
+  const [data, webinars] = await Promise.all([fetchResources(), fetchWebinars()]);
   const { categories, resources } = data;
+  const activeMainTab = searchParams.tab === 'formations' ? 'formations' : 'resources';
 
   const activeCategory = searchParams.category
     ? Number(searchParams.category)
@@ -123,18 +149,62 @@ export default async function ResourcesPage({
             Centre de Ressources
           </span>
           <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-5">
-            Ressources RH
+            {activeMainTab === 'formations' ? 'Formations gratuites' : 'Ressources RH'}
           </h1>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Vidéos, guides PDF et liens utiles pour maximiser votre usage de&nbsp;Targetym&nbsp;AI
-            et rester à la pointe des pratiques RH.
+            {activeMainTab === 'formations'
+              ? 'Webinaires et formations gratuits animés par l\u2019équipe Targetym AI pour booster vos pratiques RH.'
+              : 'Vidéos, guides PDF et liens utiles pour maximiser votre usage de\u00a0Targetym\u00a0AI et rester à la pointe des pratiques RH.'}
           </p>
         </div>
       </section>
 
-      {/* Category Tabs */}
+      {/* Navigation onglets principaux */}
+      <div className="border-b border-gray-200 bg-white sticky top-0 z-10 shadow-sm">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+          <nav className="flex gap-0 overflow-x-auto scrollbar-hide">
+            <Link
+              href="/resources"
+              className={`flex items-center gap-2 flex-none px-5 py-4 text-sm font-medium border-b-2 transition-colors whitespace-nowrap ${
+                activeMainTab === 'resources'
+                  ? 'border-primary-600 text-primary-700'
+                  : 'border-transparent text-gray-500 hover:text-gray-800'
+              }`}
+            >
+              <BookOpen className="w-4 h-4" /> Ressources
+            </Link>
+            <Link
+              href="/resources?tab=formations"
+              className={`flex items-center gap-2 flex-none px-5 py-4 text-sm font-medium border-b-2 transition-colors whitespace-nowrap ${
+                activeMainTab === 'formations'
+                  ? 'border-primary-600 text-primary-700'
+                  : 'border-transparent text-gray-500 hover:text-gray-800'
+              }`}
+            >
+              <GraduationCap className="w-4 h-4" /> Formations gratuites
+              {webinars.length > 0 && (
+                <span className="ml-1 px-1.5 py-0.5 bg-primary-100 text-primary-700 text-xs rounded-full">{webinars.length}</span>
+              )}
+            </Link>
+          </nav>
+        </div>
+      </div>
+
+      {/* ─── ONGLET FORMATIONS GRATUITES ─── */}
+      {activeMainTab === 'formations' && (
+        <section className="py-16 bg-gray-50 min-h-[40vh]">
+          <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+            <WebinarsSection webinars={webinars} />
+          </div>
+        </section>
+      )}
+
+      {/* ─── ONGLET RESSOURCES ─── */}
+      {activeMainTab === 'resources' && (<>
+
+      {/* Sous-onglets catégories */}
       {categories.length > 0 && (
-        <div className="border-b border-gray-100 bg-white sticky top-0 z-10 shadow-sm">
+        <div className="border-b border-gray-100 bg-white">
           <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
             <nav className="flex gap-1 overflow-x-auto scrollbar-hide py-3">
               <Link
@@ -274,6 +344,8 @@ export default async function ResourcesPage({
           )}
         </div>
       </section>
+
+      </>)}
 
       {/* CTA */}
       <section className="py-20 bg-white">
