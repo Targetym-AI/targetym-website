@@ -263,7 +263,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
               <div className="mt-10 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-xl p-6 text-white text-center">
                 <h3 className="text-base font-bold mb-1">Prêt à transformer vos RH ?</h3>
                 <p className="text-white/75 text-xs mb-4">
-                  Essayez Targetym AI gratuitement pendant 90 jours. Sans carte bancaire.
+                  Essayez Targetym AI gratuitement pendant 30 jours. Sans carte bancaire.
                 </p>
                 <Link
                   href="https://dashboard.targetym.ai"

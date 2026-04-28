@@ -152,7 +152,7 @@ const faqs = [
   },
   {
     question: "Y a-t-il un essai gratuit ?",
-    answer: "Oui, nous offrons un essai gratuit de 90 jours avec accès complet au plan Entreprise (jusqu'à 100 employés). Aucun paiement requis pour commencer.",
+    answer: "Oui, nous offrons un essai gratuit de 30 jours avec accès complet au plan Entreprise (jusqu'à 100 employés). Aucun paiement requis pour commencer.",
   },
   {
     question: "Que se passe-t-il si je dépasse ma limite d'employés ?",
@@ -179,7 +179,7 @@ export default function PricingPage() {
       <section className="bg-gradient-to-b from-primary-50 to-white pt-16 pb-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
           <div className="inline-flex items-center px-4 py-2 bg-primary-100 text-primary-700 rounded-full text-sm font-medium mb-6">
-            Essai gratuit 90 jours — aucune carte bancaire requise
+            Essai gratuit 30 jours — aucune carte bancaire requise
           </div>
           <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-6">
             Des tarifs clairs,{' '}
