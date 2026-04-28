@@ -51,9 +51,9 @@ interface PublicWebinar {
   webinar_date: string | null;
   duration_minutes: number | null;
   replay_url: string | null;
+  registration_url: string | null;
   max_attendees: number | null;
   status: string;
-  registrations_count: number;
 }
 
 async function fetchWebinars(): Promise<PublicWebinar[]> {
