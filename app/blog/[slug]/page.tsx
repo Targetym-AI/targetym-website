@@ -1,7 +1,6 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Calendar, Tag, ArrowLeft, Eye } from 'lucide-react';
-import DOMPurify from 'isomorphic-dompurify';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.targetym.ai';
 
@@ -44,6 +43,19 @@ function formatDate(iso: string | null) {
     month: 'long',
     year: 'numeric',
   });
+}
+
+/** Convertit du texte brut (avec \n) en HTML — échappe les caractères dangereux */
+function plainTextToHtml(text: string): string {
+  const escaped = text
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+  return escaped
+    .split(/\n\n+/)
+    .map(para => `<p>${para.replace(/\n/g, '<br />')}</p>`)
+    .join('');
 }
 
 export async function generateMetadata({ params }: { params: { slug: string } }) {
@@ -130,7 +142,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
             prose-strong:text-gray-900
             prose-ul:text-gray-700 prose-ol:text-gray-700
             prose-blockquote:border-primary-300 prose-blockquote:text-gray-600"
-          dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(post.content) }}
+          dangerouslySetInnerHTML={{ __html: plainTextToHtml(post.content) }}
         />
 
         {/* Tags */}
