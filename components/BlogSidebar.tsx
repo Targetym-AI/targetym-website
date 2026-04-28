@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Search, Calendar, Tag, ChevronRight } from 'lucide-react';
 
@@ -45,25 +46,32 @@ function formatDate(iso: string | null) {
 
 export default function BlogSidebar({ currentSlug, posts, categories, ads, apiUrl }: Props) {
   const [search, setSearch] = useState('');
+  const router = useRouter();
 
   const otherPosts = posts.filter((p) => p.slug !== currentSlug);
-  const filtered = search.trim()
-    ? otherPosts.filter(
-        (p) =>
-          p.title.toLowerCase().includes(search.toLowerCase()) ||
-          (p.category ?? '').toLowerCase().includes(search.toLowerCase()),
-      )
-    : otherPosts;
 
   function mediaUrl(url?: string | null) {
     if (!url) return '';
     return url.startsWith('/') ? `${apiUrl}${url}` : url;
   }
 
+  // 3 articles les plus récents (hors article courant), triés par date décroissante
+  const recentPosts = [...otherPosts]
+    .sort((a, b) => {
+      if (!a.published_at && !b.published_at) return 0;
+      if (!a.published_at) return 1;
+      if (!b.published_at) return -1;
+      return new Date(b.published_at).getTime() - new Date(a.published_at).getTime();
+    })
+    .slice(0, 3);
+
   return (
     <aside className="space-y-6">
       {/* ── Recherche ── */}
-      <div className="bg-gray-50 rounded-xl p-4">
+      <form
+        onSubmit={(e) => { e.preventDefault(); if (search.trim()) router.push(`/blog?q=${encodeURIComponent(search.trim())}`); }}
+        className="bg-gray-50 rounded-xl p-4"
+      >
         <h3 className="text-xs font-bold text-gray-600 uppercase tracking-wider mb-3">Rechercher</h3>
         <div className="relative">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400 pointer-events-none" />
@@ -75,12 +83,7 @@ export default function BlogSidebar({ currentSlug, posts, categories, ads, apiUr
             className="w-full pl-8 pr-3 py-2 text-sm bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-transparent placeholder:text-gray-400"
           />
         </div>
-      </div>
-
-      {/* ── Publicités dynamiques (position 1 et 2) ── */}
-      {ads.filter((a) => a.position <= 2).map((ad) => (
-        <BlogAdCard key={ad.id} ad={ad} apiUrl={apiUrl} />
-      ))}
+      </form>
 
       {/* ── Catégories ── */}
       {categories.length > 0 && (
@@ -106,16 +109,12 @@ export default function BlogSidebar({ currentSlug, posts, categories, ads, apiUr
         </div>
       )}
 
-      {/* ── Autres articles ── */}
-      <div>
-        <h3 className="text-xs font-bold text-gray-600 uppercase tracking-wider mb-3">
-          {search.trim() ? `Résultats (${filtered.length})` : 'Autres articles'}
-        </h3>
-        {filtered.length === 0 ? (
-          <p className="text-xs text-gray-400 px-2">Aucun article trouvé.</p>
-        ) : (
+      {/* ── Articles récents ── */}
+      {recentPosts.length > 0 && (
+        <div>
+          <h3 className="text-xs font-bold text-gray-600 uppercase tracking-wider mb-3">Articles récents</h3>
           <div className="space-y-2">
-            {filtered.slice(0, 8).map((p) => (
+            {recentPosts.map((p) => (
               <Link
                 key={p.id}
                 href={`/blog/${p.slug}`}
@@ -149,17 +148,20 @@ export default function BlogSidebar({ currentSlug, posts, categories, ads, apiUr
                 </div>
               </Link>
             ))}
-            {filtered.length > 8 && (
-              <Link
-                href="/blog"
-                className="block text-center text-xs text-primary-600 hover:text-primary-700 font-medium py-2 hover:bg-gray-50 rounded-lg transition-colors"
-              >
-                Voir tous les articles →
-              </Link>
-            )}
+            <Link
+              href="/blog"
+              className="block text-center text-xs text-primary-600 hover:text-primary-700 font-medium py-2 hover:bg-gray-50 rounded-lg transition-colors"
+            >
+              Voir tous les articles →
+            </Link>
           </div>
-        )}
-      </div>
+        </div>
+      )}
+
+      {/* ── Publicités ── */}
+      {ads.map((ad) => (
+        <BlogAdCard key={ad.id} ad={ad} apiUrl={apiUrl} />
+      ))}
     </aside>
   );
 }
