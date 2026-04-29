@@ -128,8 +128,10 @@ export default function HomePage() {
         <div className="absolute inset-0 z-0">
           <Image
             src="/images/hero-rh.jpg"
-            alt=""
+            alt="Équipe RH africaine utilisant la plateforme SIRH IA Targetym AI"
             fill
+            sizes="100vw"
+            quality={70}
             className="object-cover"
             priority
           />
@@ -198,6 +200,8 @@ export default function HomePage() {
             alt="Tableau de bord Targetym AI"
             width={1576}
             height={889}
+            sizes="(max-width: 1024px) 100vw, 1024px"
+            quality={75}
             className="w-full h-auto"
             priority
           />
@@ -221,9 +225,11 @@ export default function HomePage() {
             <div className="rounded-2xl overflow-hidden shadow-xl">
               <Image
                 src="/images/hero-rh.jpg"
-                alt="Gestion RH intelligente"
+                alt="Plateforme SIRH IA Targetym AI pour la gestion RH en Afrique"
                 width={1200}
                 height={500}
+                sizes="(max-width: 1280px) 100vw, 1280px"
+                quality={70}
                 className="w-full h-[400px] object-cover"
               />
             </div>

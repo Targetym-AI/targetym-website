@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Politique de Protection de la Vie Privée - Targetym AI',
-  description: "Politique de confidentialité de Targetym AI. Conditions dans lesquelles AGILTYM SARL collecte, traite, conserve et protège vos données personnelles, conformément à la Loi n°2008-12 du Sénégal.",
+  description: "Politique de confidentialité Targetym AI : collecte, traitement et protection de vos données personnelles selon la Loi n°2008-12 du Sénégal.",
 };
 
 const lastUpdated = 'Avril 2026';

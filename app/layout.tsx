@@ -29,7 +29,10 @@ const lora = Lora({
 
 export const metadata: Metadata = {
   title: "Targetym AI - Plateforme RH & Performance augmentée par l'IA",
-  description: "Transformez vos RH avec l'analytique people alimentée par l'IA. Targetym AI fournit des insights complets, un suivi des performances et des recommandations intelligentes.",
+  description: "Targetym AI : plateforme SIRH augmentée par l'IA pour l'Afrique. Automatisez paie, performance, talents et people analytics avec 30+ agents IA RH.",
+  verification: {
+    google: 'B3q06AfiZvuiDmt8keNE14E5bilSXNjaidDJefTsZII',
+  },
 };
 
 export default function RootLayout({
@@ -41,8 +44,15 @@ export default function RootLayout({
     <html lang="fr" className={`${nunito.variable} ${inter.variable} ${lora.variable}`}>
       <head>
         <link rel="icon" href="/favicon.png" type="image/png" />
-        <Script async src="https://www.googletagmanager.com/gtag/js?id=G-V7K9V9VJ9V" />
-        <Script id="google-analytics">
+        <link rel="preconnect" href="https://www.googletagmanager.com" />
+        <link rel="dns-prefetch" href="https://www.google-analytics.com" />
+        <link rel="dns-prefetch" href="https://js-eu1.hs-scripts.com" />
+        <link rel="dns-prefetch" href="https://js-eu1.hubspot.com" />
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-V7K9V9VJ9V"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
           {`
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
@@ -53,7 +63,7 @@ export default function RootLayout({
         <Script
           id="hs-script-loader"
           src="//js-eu1.hs-scripts.com/148317292.js"
-          strategy="afterInteractive"
+          strategy="lazyOnload"
         />
       </head>
       <body className="font-body antialiased">

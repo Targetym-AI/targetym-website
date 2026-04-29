@@ -1,5 +1,3 @@
-'use client';
-
 import { CalendarDays, Clock, Mic, Play, ExternalLink } from 'lucide-react';
 
 interface Webinar {

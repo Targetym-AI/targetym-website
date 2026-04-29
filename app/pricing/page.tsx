@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import {
   CheckCircle,
@@ -10,6 +11,11 @@ import {
   Users,
   Building2
 } from 'lucide-react';
+
+export const metadata: Metadata = {
+  title: 'Tarifs SIRH IA en Afrique – Plans Targetym AI',
+  description: "Tarifs SIRH IA Targetym AI pour l'Afrique : forfaits flexibles PME et grands groupes. Paie, performance, talents — prix par employé.",
+};
 
 const plans = [
   {

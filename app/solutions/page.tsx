@@ -326,6 +326,8 @@ export default function SolutionsPage() {
                         alt={mod.title}
                         width={1576}
                         height={889}
+                        sizes="(max-width: 1024px) 100vw, 50vw"
+                        quality={75}
                         className="w-full h-auto"
                       />
                     </div>
