@@ -128,7 +128,7 @@ export default function WebinarsSection({ webinars }: { webinars: Webinar[] }) {
                   rel="noopener noreferrer"
                   className="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-primary-600 text-white text-sm font-semibold rounded-xl hover:bg-primary-700 transition-colors"
                 >
-                  Je m&apos;inscris - Gratuit <ExternalLink className="w-3.5 h-3.5" />
+                  Je m&apos;inscris <ExternalLink className="w-3.5 h-3.5" />
                 </a>
               ) : null}
             </div>

@@ -149,11 +149,11 @@ export default async function ResourcesPage({
             Centre de Ressources
           </span>
           <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-5">
-            {activeMainTab === 'formations' ? 'Webinaires gratuits' : 'Vidéos tutorielles'}
+            {activeMainTab === 'formations' ? 'Webinaires live' : 'Vidéos tutorielles'}
           </h1>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
             {activeMainTab === 'formations'
-              ? 'Webinaires et formations gratuits animés par l\u2019équipe Targetym AI pour booster vos pratiques RH.'
+              ? 'Webinaires live animés par l\u2019équipe Targetym AI pour booster vos pratiques RH.'
               : 'Vidéos, guides PDF et liens utiles pour maximiser votre usage de\u00a0Targetym\u00a0AI et rester à la pointe des pratiques RH.'}
           </p>
         </div>
@@ -171,7 +171,7 @@ export default async function ResourcesPage({
                   : 'border-transparent text-gray-500 hover:text-gray-800'
               }`}
             >
-              <GraduationCap className="w-4 h-4" /> Webinaires gratuits
+              <GraduationCap className="w-4 h-4" /> Webinaires live
               {webinars.length > 0 && (
                 <span className="ml-1 px-1.5 py-0.5 bg-primary-100 text-primary-700 text-xs rounded-full">{webinars.length}</span>
               )}
