@@ -45,7 +45,7 @@ export default function WebinarsSection({ webinars }: { webinars: Webinar[] }) {
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
       {webinars.map((w) => {
         const isCompleted = w.status === 'completed';
-        const hasRegistrationLink = !!w.registration_url;
+        const hasRegistrationLink = !isCompleted && !!w.registration_url;
         const hasReplay = isCompleted && !!w.replay_url;
 
         return (
@@ -71,6 +71,10 @@ export default function WebinarsSection({ webinars }: { webinars: Webinar[] }) {
                 {hasReplay ? (
                   <span className="px-2.5 py-1 bg-blue-600 text-white text-xs font-semibold rounded-full flex items-center gap-1">
                     <Play className="w-3 h-3" /> Replay disponible
+                  </span>
+                ) : isCompleted ? (
+                  <span className="px-2.5 py-1 bg-gray-400 text-white text-xs font-semibold rounded-full">
+                    Terminé
                   </span>
                 ) : hasRegistrationLink ? (
                   <span className="px-2.5 py-1 bg-green-500 text-white text-xs font-semibold rounded-full">
