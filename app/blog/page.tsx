@@ -59,10 +59,23 @@ function readTime(excerpt: string | null): string {
   return `${Math.max(1, Math.round(words / 200 * 5))} min`;
 }
 
-export const metadata = {
-  title: 'Blog — Targetym AI',
-  description: "Actualités RH, conseils pratiques et retours d'expérience de l'équipe Targetym AI.",
-};
+export async function generateMetadata({
+  searchParams,
+}: {
+  searchParams: { category?: string };
+}) {
+  const category = searchParams.category;
+  if (category) {
+    return {
+      title: `Articles ${category} | Blog Targetym AI`,
+      description: `Découvrez nos articles ${category} : conseils RH, IA et SIRH pour les entreprises en Afrique.`,
+    };
+  }
+  return {
+    title: 'Blog SIRH & IA RH en Afrique | Targetym AI',
+    description: "Actualités RH, conseils pratiques et retours d'expérience SIRH et IA pour les entreprises africaines.",
+  };
+}
 
 export default async function BlogPage({ searchParams }: { searchParams: { category?: string } }) {
   const activeCategory = searchParams.category;

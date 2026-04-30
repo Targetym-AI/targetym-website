@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Calendar, Tag, ArrowLeft, Eye, Clock } from 'lucide-react';
@@ -81,6 +82,10 @@ function estimateReadTime(text: string): string {
  * Supporte : ## titres, **gras**, *italique*, `code`,
  *            - listes, 1. listes numérotées, > citations, ---, [lien](url)
  */
+function optimizedImageUrl(src: string, width = 1200, quality = 75): string {
+  return `/_next/image?url=${encodeURIComponent(src)}&w=${width}&q=${quality}`;
+}
+
 function parseMarkdown(text: string): string {
   function inline(s: string): string {
     let r = s
@@ -90,7 +95,7 @@ function parseMarkdown(text: string): string {
     r = r
       .replace(
         /!\[([^\]]*)\]\((https?:\/\/[^)]+)\)/g,
-        '<img src="$2" alt="$1" loading="lazy" decoding="async" class="w-full rounded-lg my-4" />',
+        (_, alt, url) => `<img src="${optimizedImageUrl(url)}" alt="${alt}" loading="lazy" decoding="async" class="w-full rounded-lg my-4" />`,
       )
       .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
       .replace(/\*(.+?)\*/g, '<em>$1</em>')
@@ -239,13 +244,14 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
             {/* Image de couverture */}
             {post.cover_image_url && (
               <div className="mb-8">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
+                <Image
                   src={mediaUrl(post.cover_image_url)}
                   alt={post.title}
-                  loading="eager"
-                  fetchPriority="high"
-                  decoding="async"
+                  width={1200}
+                  height={400}
+                  priority
+                  sizes="(max-width: 1024px) 100vw, 1024px"
+                  quality={75}
                   className="w-full rounded-xl object-cover max-h-72 shadow-sm"
                 />
               </div>
