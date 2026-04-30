@@ -88,6 +88,10 @@ function parseMarkdown(text: string): string {
       .replace(/</g, '&lt;')
       .replace(/>/g, '&gt;');
     r = r
+      .replace(
+        /!\[([^\]]*)\]\((https?:\/\/[^)]+)\)/g,
+        '<img src="$2" alt="$1" loading="lazy" decoding="async" class="w-full rounded-lg my-4" />',
+      )
       .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
       .replace(/\*(.+?)\*/g, '<em>$1</em>')
       .replace(/_(.+?)_/g, '<em>$1</em>')
@@ -133,15 +137,33 @@ function parseMarkdown(text: string): string {
   return html.join('\n');
 }
 
+function buildBlogTitle(postTitle: string): string {
+  const suffix = ' | Targetym AI';
+  const maxLength = 70;
+  const available = maxLength - suffix.length;
+  if (postTitle.length <= available) {
+    return `${postTitle}${suffix}`;
+  }
+  return `${postTitle.slice(0, available - 1).trimEnd()}…${suffix}`;
+}
+
+function truncateDescription(text: string | null | undefined): string | undefined {
+  if (!text) return undefined;
+  const maxLength = 155;
+  if (text.length <= maxLength) return text;
+  return text.slice(0, maxLength - 1).trimEnd() + '…';
+}
+
 export async function generateMetadata({ params }: { params: { slug: string } }) {
   const post = await fetchPost(params.slug);
-  if (!post) return { title: 'Article introuvable — Targetym AI' };
+  if (!post) return { title: 'Article introuvable | Targetym AI' };
+  const description = truncateDescription(post.excerpt);
   return {
-    title: `${post.title} — Blog Targetym AI`,
-    description: post.excerpt ?? undefined,
+    title: buildBlogTitle(post.title),
+    description,
     openGraph: {
       title: post.title,
-      description: post.excerpt ?? undefined,
+      description,
       images: post.cover_image_url ? [post.cover_image_url] : [],
     },
   };
@@ -221,6 +243,9 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
                 <img
                   src={mediaUrl(post.cover_image_url)}
                   alt={post.title}
+                  loading="eager"
+                  fetchPriority="high"
+                  decoding="async"
                   className="w-full rounded-xl object-cover max-h-72 shadow-sm"
                 />
               </div>
