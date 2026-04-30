@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { CalendarDays, Clock, Mic, Play, ExternalLink } from 'lucide-react';
 
 interface Webinar {
@@ -54,11 +55,13 @@ export default function WebinarsSection({ webinars }: { webinars: Webinar[] }) {
             {/* Cover */}
             <div className="relative aspect-video bg-gradient-to-br from-primary-50 to-indigo-50 overflow-hidden">
               {w.cover_image_url ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
+                <Image
                   src={w.cover_image_url}
                   alt={w.title}
-                  className="w-full h-full object-cover"
+                  fill
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  quality={75}
+                  className="object-cover"
                 />
               ) : (
                 <div className="w-full h-full flex items-center justify-center">

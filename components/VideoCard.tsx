@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { useState } from 'react';
 import { Play, Clock } from 'lucide-react';
 
@@ -51,11 +52,13 @@ export default function VideoCard({
             aria-label={`Lire la vidéo : ${title}`}
           >
             {thumbnailUrl ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
+              <Image
                 src={thumbnailUrl}
                 alt={title}
-                className="w-full h-full object-cover"
+                fill
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                quality={75}
+                className="object-cover"
               />
             ) : (
               <div className="w-full h-full bg-gray-800 flex items-center justify-center">
