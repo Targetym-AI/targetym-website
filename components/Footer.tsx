@@ -157,7 +157,7 @@ export default function Footer() {
                 <img
                   src="/images/google-play-badge.png"
                   alt="Disponible sur Google Play"
-                  className="h-11 w-auto"
+                  className="h-12 w-auto"
                 />
               </a>
               <a
@@ -169,7 +169,7 @@ export default function Footer() {
                 <img
                   src="/images/app-store-badge.svg"
                   alt="Télécharger dans l'App Store"
-                  className="h-11 w-auto"
+                  className="h-9 w-auto"
                 />
               </a>
             </div>
