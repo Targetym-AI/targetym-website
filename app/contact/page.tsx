@@ -74,8 +74,11 @@ export default function ContactPage() {
                   </div>
                   <div className="ml-4">
                     <h3 className="text-lg font-semibold text-gray-900">Email</h3>
-                    <a href="mailto:sales@agiltym.com" className="text-gray-600 hover:text-primary-600 transition-colors">
+                    <a href="mailto:sales@agiltym.com" className="block text-gray-600 hover:text-primary-600 transition-colors">
                       sales@agiltym.com
+                    </a>
+                    <a href="mailto:support@agiltym.com" className="block text-gray-600 hover:text-primary-600 transition-colors">
+                      support@agiltym.com
                     </a>
                   </div>
                 </div>

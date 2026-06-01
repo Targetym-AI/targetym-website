@@ -10,6 +10,9 @@ const footerLinks = {
     { label: 'À Propos', href: '/about' },
     { label: 'Carrières', href: '/careers' },
     { label: 'Contact', href: '/contact' },
+    { label: 'Confidentialité', href: '/privacy' },
+    { label: "Conditions d'utilisation", href: '/terms' },
+    { label: 'CGV', href: '/cgv' },
   ],
   support: [
     { label: 'Documentation', href: '/resources' },
@@ -138,16 +141,38 @@ export default function Footer() {
           <p className="text-gray-500 text-sm">
             © {new Date().getFullYear()} Targetym AI. Tous droits réservés.
           </p>
-          <div className="flex items-center gap-6">
-            <Link href="/privacy" className="text-gray-500 hover:text-gray-300 text-sm transition-colors duration-150">
-              Confidentialité
-            </Link>
-            <Link href="/terms" className="text-gray-500 hover:text-gray-300 text-sm transition-colors duration-150">
-              Conditions d&apos;utilisation
-            </Link>
-            <Link href="/cgv" className="text-gray-500 hover:text-gray-300 text-sm transition-colors duration-150">
-              CGV
-            </Link>
+          <div className="flex flex-col sm:flex-row items-center gap-4">
+            <span className="text-gray-400 text-sm">
+              Téléchargez l&apos;application Targetym AI&nbsp;:
+            </span>
+            <div className="flex items-center gap-3">
+              <a
+                href="https://play.google.com/store/apps/details?id=com.targetym.app"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Disponible sur Google Play"
+                className="transition-opacity duration-150 hover:opacity-80"
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/images/google-play-badge.png"
+                  alt="Disponible sur Google Play"
+                  className="h-11 w-auto"
+                />
+              </a>
+              <a
+                href="#"
+                aria-label="Bientôt disponible sur l'App Store"
+                className="transition-opacity duration-150 hover:opacity-80"
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/images/app-store-badge.svg"
+                  alt="Télécharger dans l'App Store"
+                  className="h-11 w-auto"
+                />
+              </a>
+            </div>
           </div>
         </div>
       </div>
