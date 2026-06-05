@@ -34,14 +34,14 @@ export default function VideoCard({
               title={title}
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
-              className="w-full h-full"
+              className="absolute inset-0 w-full h-full"
             />
           ) : (
             <video
               src={embed.src}
               controls
               autoPlay
-              className="w-full h-full"
+              className="absolute inset-0 w-full h-full"
               poster={thumbnailUrl ?? undefined}
             />
           )
