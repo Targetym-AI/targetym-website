@@ -30,7 +30,7 @@ export async function POST(req: NextRequest) {
 
     await transporter.sendMail({
       from: `"Targetym Website" <${process.env.SMTP_USER}>`,
-      to: 'sales@agiltym.com',
+      to: 'sales@agiltym.com, h.cakpo@hcexecutive.net',
       replyTo: email,
       subject: `[Contact Targetym] ${subjectLabels[subject] ?? subject}`,
       html: `
