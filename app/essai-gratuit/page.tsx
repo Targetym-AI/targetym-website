@@ -286,7 +286,7 @@ export default function EssaiGratuitPage() {
               <div className="relative rounded-2xl overflow-hidden shadow-xl aspect-video">
                 <iframe
                   className="absolute inset-0 w-full h-full"
-                  src="https://www.youtube.com/embed/iucfJrrW1HI"
+                  src="https://www.youtube-nocookie.com/embed/iucfJrrW1HI"
                   title="Targetym AI — Présentation"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   allowFullScreen
