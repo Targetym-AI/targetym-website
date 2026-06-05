@@ -126,6 +126,7 @@ export default function EssaiGratuitPage() {
   const [error, setError] = useState('');
 
   const toggleArray = (field: 'mainChallenges' | 'mainObjectives', value: string) => {
+    setForm((prev) => {
       const arr = prev[field];
       return {
         ...prev,
