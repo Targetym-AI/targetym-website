@@ -35,9 +35,9 @@ const steps = [
     number: '02',
     icon: Gift,
     title: 'Demandez l\'essai gratuit',
-    duration: '14 jours gratuits',
+    duration: '15 jours gratuits',
     description:
-      'Accédez immédiatement à toutes les fonctionnalités de la plateforme. Profitez de 14 jours d\'essai complet, sans carte bancaire et sans engagement.',
+      'Accédez immédiatement à toutes les fonctionnalités de la plateforme. Profitez de 15 jours d\'essai complet, sans carte bancaire et sans engagement.',
     color: 'from-secondary-500 to-secondary-600',
     bgLight: 'bg-secondary-50',
     textColor: 'text-secondary-600',

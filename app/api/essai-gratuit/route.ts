@@ -79,7 +79,8 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ success: true });
   } catch (err) {
-    console.error('[essai-gratuit route]', err);
-    return NextResponse.json({ error: 'Erreur lors de l\'envoi.' }, { status: 500 });
+    const message = err instanceof Error ? err.message : String(err);
+    console.error('[essai-gratuit route]', message);
+    return NextResponse.json({ error: `Erreur envoi email: ${message}` }, { status: 500 });
   }
 }
