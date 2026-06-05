@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { Resend } from 'resend';
+import nodemailer from 'nodemailer';
 
 export async function POST(req: NextRequest) {
   try {
@@ -10,7 +10,15 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Champs requis manquants.' }, { status: 400 });
     }
 
-    const resend = new Resend(process.env.RESEND_API_KEY);
+    const transporter = nodemailer.createTransport({
+      host: process.env.SMTP_HOST,
+      port: Number(process.env.SMTP_PORT ?? 587),
+      secure: process.env.SMTP_SECURE === 'true',
+      auth: {
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASS,
+      },
+    });
 
     const subjectLabels: Record<string, string> = {
       demo: 'Demande de démonstration',
@@ -20,9 +28,9 @@ export async function POST(req: NextRequest) {
       other: 'Autre',
     };
 
-    await resend.emails.send({
-      from: 'Targetym AI <onboarding@resend.dev>',
-      to: ['sales@agiltym.com', 'h.cakpo@hcexecutive.net'],
+    await transporter.sendMail({
+      from: `"Targetym AI" <${process.env.SMTP_USER}>`,
+      to: 'sales@agiltym.com, h.cakpo@hcexecutive.net',
       replyTo: email,
       subject: `[Contact Targetym] ${subjectLabels[subject] ?? subject}`,
       html: `
@@ -43,9 +51,11 @@ export async function POST(req: NextRequest) {
       `,
     });
 
+    console.log('[contact route] Email envoyé avec succès');
     return NextResponse.json({ success: true });
   } catch (err) {
-    console.error('[contact route]', err);
-    return NextResponse.json({ error: 'Erreur lors de l\'envoi du message.' }, { status: 500 });
+    const message = err instanceof Error ? err.message : String(err);
+    console.error('[contact route] Exception:', message);
+    return NextResponse.json({ error: `Erreur envoi email: ${message}` }, { status: 500 });
   }
 }
