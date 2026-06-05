@@ -361,10 +361,10 @@ export default async function ResourcesPage({
             avec Targetym AI.
           </p>
           <Link
-            href="https://dashboard.targetym.ai"
+            href="/essai-gratuit"
             className="inline-flex items-center px-8 py-4 bg-primary-600 text-white font-semibold rounded-xl hover:bg-primary-700 transition-colors shadow-lg"
           >
-            Essai Gratuit 30 Jours
+            Essai Gratuit 15 Jours
           </Link>
         </div>
       </section>

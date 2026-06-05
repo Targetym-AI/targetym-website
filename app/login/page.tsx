@@ -475,7 +475,7 @@ function LoginForm() {
                 <p className="text-slate-600 text-base sm:text-lg">
                   {activeTab === 'login'
                     ? 'Accédez à votre espace RH'
-                    : "30 jours d'accès complet à toutes les fonctionnalités"}
+                    : "15 jours d'accès complet à toutes les fonctionnalités"}
                 </p>
               </div>
 
@@ -512,12 +512,12 @@ function LoginForm() {
                   <div className="mb-6 p-4 bg-primary-50 rounded-xl border border-primary-100">
                     <h3 className="font-semibold text-slate-900 mb-3 flex items-center gap-2">
                       <CheckCircle className="w-5 h-5 text-primary-500 flex-shrink-0" />
-                      Essai gratuit - 30 jours
+                      Essai gratuit - 15 jours
                     </h3>
                     <ul className="space-y-2 text-sm text-slate-600">
                       <li className="flex items-center gap-2">
                         <Clock className="w-4 h-4 text-primary-500 flex-shrink-0" />
-                        30 jours d&apos;accès complet aux fonctionnalités Premium
+                        15 jours d&apos;accès complet aux fonctionnalités Premium
                       </li>
                       <li className="flex items-center gap-2">
                         <Users className="w-4 h-4 text-primary-500 flex-shrink-0" />
@@ -766,7 +766,7 @@ function LoginForm() {
                           onClick={() => setActiveTab('register')}
                           className="font-semibold text-primary-600 hover:text-primary-700 transition-colors"
                         >
-                          Essai gratuit 30 jours
+                          Essai gratuit 15 jours
                         </button>
                       </>
                     ) : (

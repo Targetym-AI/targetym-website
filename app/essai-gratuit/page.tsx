@@ -237,12 +237,12 @@ export default function EssaiGratuitPage() {
             <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 text-center">
               <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary-100 text-primary-700 rounded-full text-sm font-medium mb-6">
                 <Star className="w-4 h-4" />
-                Essai gratuit · 30 jours · Aucun abonnement
+                Essai gratuit · 15 jours · Aucun abonnement
               </div>
               <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-5 leading-tight">
                 Démarrez votre essai gratuit<br />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-500 to-secondary-500">
-                  de 30 jours en 3 étapes !
+                  de 15 jours en 3 étapes !
                 </span>
               </h1>
               <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-6">

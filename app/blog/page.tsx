@@ -327,10 +327,10 @@ export default async function BlogPage({ searchParams }: { searchParams: { categ
               Rejoignez des centaines d&apos;entreprises africaines qui utilisent Targetym AI.
             </p>
             <Link
-              href="https://dashboard.targetym.ai"
+              href="/essai-gratuit"
               className="inline-flex items-center gap-2 px-6 py-2.5 bg-primary-600 text-white text-sm font-semibold rounded-lg hover:bg-primary-700 transition-colors"
             >
-              Essai Gratuit 30 Jours <ArrowRight className="w-4 h-4" />
+              Essai Gratuit 15 Jours <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
         </section>
