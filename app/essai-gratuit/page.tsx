@@ -326,7 +326,7 @@ export default function EssaiGratuitPage() {
                 onClick={() => { setCurrentStep(2); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
                 className="inline-flex items-center gap-3 px-10 py-4 bg-gradient-to-r from-primary-500 to-secondary-500 text-white text-lg font-semibold rounded-2xl hover:from-primary-600 hover:to-secondary-600 transition-all shadow-xl shadow-primary-500/25"
               >
-                Déposer ma demande
+                Prendre mon rendez-vous
                 <ArrowRight className="w-5 h-5" />
               </button>
             </div>
@@ -341,7 +341,7 @@ export default function EssaiGratuitPage() {
             {/* Header */}
             <div className="text-center mb-10">
               <h2 className="text-3xl font-bold text-gray-900 mb-3">
-                Déposez votre demande
+                Prendre mon rendez-vous
               </h2>
               <p className="text-gray-500">
                 Remplissez ce formulaire et notre équipe commerciale vous contactera sous 24h.
