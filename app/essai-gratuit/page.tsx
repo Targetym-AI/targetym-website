@@ -292,7 +292,8 @@ export default function EssaiGratuitPage() {
                     className="absolute inset-0 w-full h-full"
                     src="https://www.youtube-nocookie.com/embed/iucfJrrW1HI?autoplay=1"
                     title="Targetym AI — Présentation"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerPolicy="strict-origin-when-cross-origin"
                     allowFullScreen
                   />
                 ) : (

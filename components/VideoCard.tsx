@@ -32,7 +32,8 @@ export default function VideoCard({
             <iframe
               src={`${embed.src}?autoplay=1`}
               title={title}
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerPolicy="strict-origin-when-cross-origin"
               allowFullScreen
               className="absolute inset-0 w-full h-full"
             />
