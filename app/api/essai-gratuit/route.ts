@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import nodemailer from 'nodemailer';
+import { Resend } from 'resend';
 
 export async function POST(req: NextRequest) {
   try {
@@ -14,20 +14,12 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Champs requis manquants.' }, { status: 400 });
     }
 
-    const transporter = nodemailer.createTransport({
-      host: process.env.SMTP_HOST,
-      port: Number(process.env.SMTP_PORT ?? 587),
-      secure: process.env.SMTP_SECURE === 'true',
-      auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS,
-      },
-    });
+    const resend = new Resend(process.env.RESEND_API_KEY);
 
-    await transporter.sendMail({
-      from: `"Targetym Website" <${process.env.SMTP_USER}>`,
-      to: 'sales@agiltym.com, h.cakpo@hcexecutive.net',
-      replyTo: email,
+    await resend.emails.send({
+      from: 'Targetym AI <onboarding@resend.dev>',
+      to: ['sales@agiltym.com', 'h.cakpo@hcexecutive.net'],
+      reply_to: email,
       subject: `[Essai Gratuit] ${firstName} ${lastName} — ${company}`,
       html: `
         <div style="font-family:sans-serif;max-width:700px;margin:0 auto;">
