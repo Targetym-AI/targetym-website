@@ -15,6 +15,7 @@ import {
   Bot,
   BarChart3,
   Clock,
+  Play,
 } from 'lucide-react';
 
 const steps = [
@@ -118,12 +119,13 @@ export default function EssaiGratuitPage() {
     message: '',
     consent: false,
   });
+  const [videoPlaying, setVideoPlaying] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
+
   const [error, setError] = useState('');
 
   const toggleArray = (field: 'mainChallenges' | 'mainObjectives', value: string) => {
-    setForm((prev) => {
       const arr = prev[field];
       return {
         ...prev,
@@ -283,19 +285,38 @@ export default function EssaiGratuitPage() {
               <h2 className="text-2xl font-bold text-gray-900 text-center mb-6">
                 Découvrez Targetym AI en action
               </h2>
-              <div className="relative rounded-2xl overflow-hidden shadow-xl aspect-video">
-                <iframe
-                  className="absolute inset-0 w-full h-full"
-                  src="https://www.youtube-nocookie.com/embed/iucfJrrW1HI"
-                  title="Targetym AI — Présentation"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                />
+              <div className="relative rounded-2xl overflow-hidden shadow-xl aspect-video bg-gray-900">
+                {videoPlaying ? (
+                  <iframe
+                    className="absolute inset-0 w-full h-full"
+                    src="https://www.youtube-nocookie.com/embed/iucfJrrW1HI?autoplay=1"
+                    title="Targetym AI — Présentation"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                  />
+                ) : (
+                  <button
+                    onClick={() => setVideoPlaying(true)}
+                    className="group absolute inset-0 w-full h-full focus:outline-none"
+                    aria-label="Lire la vidéo de présentation Targetym AI"
+                  >
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src="https://img.youtube.com/vi/iucfJrrW1HI/maxresdefault.jpg"
+                      alt="Targetym AI — Présentation"
+                      className="w-full h-full object-cover"
+                    />
+                    <span className="absolute inset-0 bg-black/30 group-hover:bg-black/40 transition-colors" />
+                    <span className="absolute inset-0 flex items-center justify-center">
+                      <span className="w-20 h-20 rounded-full bg-white/90 shadow-2xl flex items-center justify-center group-hover:scale-110 transition-transform">
+                        <Play className="w-8 h-8 text-primary-600 translate-x-0.5" fill="currentColor" />
+                      </span>
+                    </span>
+                  </button>
+                )}
               </div>
             </div>
           </section>
-
-          {/* Stats strip */}
           <section className="py-8 bg-white border-y border-gray-100">
             <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
               <div className="grid sm:grid-cols-3 gap-6 text-center">
