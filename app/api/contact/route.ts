@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
     await resend.emails.send({
       from: 'Targetym AI <onboarding@resend.dev>',
       to: ['sales@agiltym.com', 'h.cakpo@hcexecutive.net'],
-      reply_to: email,
+      replyTo: email,
       subject: `[Contact Targetym] ${subjectLabels[subject] ?? subject}`,
       html: `
         <div style="font-family:sans-serif;max-width:600px;margin:0 auto;">
