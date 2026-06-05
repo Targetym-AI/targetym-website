@@ -88,7 +88,15 @@ function optimizedImageUrl(src: string, width = 1200, quality = 75): string {
 
 function parseMarkdown(text: string): string {
   function inline(s: string): string {
-    let r = s
+    // Extraire les images AVANT l'échappement HTML pour préserver les URLs
+    const imgs: string[] = [];
+    let r = s.replace(/!\[([^\]]*)\]\(([^\s)]+)\)/g, (_, alt, src) => {
+      const fullSrc = src.startsWith('/') ? `${API_URL}${src}` : src;
+      const idx = imgs.length;
+      imgs.push(`<img src="${fullSrc}" alt="${alt}" class="max-w-full h-auto rounded-lg my-3 shadow-sm" />`);
+      return `\x00IMG${idx}\x00`;
+    });
+    r = r
       .replace(/&/g, '&amp;')
       .replace(/</g, '&lt;')
       .replace(/>/g, '&gt;');
@@ -105,6 +113,8 @@ function parseMarkdown(text: string): string {
         /\[([^\]]+)\]\((https?:\/\/[^)]+)\)/g,
         '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>',
       );
+    // Rétablir les images
+    r = r.replace(/\x00IMG(\d+)\x00/g, (_, idx) => imgs[parseInt(idx)]);
     return r;
   }
 
@@ -294,7 +304,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
               <div className="mt-10 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-xl p-6 text-white text-center">
                 <h3 className="text-base font-bold mb-1">Prêt à transformer vos RH ?</h3>
                 <p className="text-white/75 text-xs mb-4">
-                  Essayez Targetym AI gratuitement pendant 30 jours. Sans carte bancaire.
+                  Essayez Targetym AI gratuitement pendant 14 jours. Sans carte bancaire.
                 </p>
                 <Link
                   href="https://dashboard.targetym.ai"

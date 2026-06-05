@@ -7,7 +7,7 @@ import {
   ArrowRight,
   ArrowLeft,
   Phone,
-  CreditCard,
+  Gift,
   Rocket,
   Send,
   Loader2,
@@ -32,11 +32,11 @@ const steps = [
   },
   {
     number: '02',
-    icon: CreditCard,
-    title: 'Réglez les frais de configuration',
-    duration: '197 000 FCFA',
+    icon: Gift,
+    title: 'Demandez l\'essai gratuit',
+    duration: '14 jours gratuits',
     description:
-      'Un unique paiement pour couvrir la formation de votre équipe et la configuration sur mesure de votre espace. Aucun abonnement requis pendant les 30 jours d\'essai.',
+      'Accédez immédiatement à toutes les fonctionnalités de la plateforme. Profitez de 14 jours d\'essai complet, sans carte bancaire et sans engagement.',
     color: 'from-secondary-500 to-secondary-600',
     bgLight: 'bg-secondary-50',
     textColor: 'text-secondary-600',
@@ -285,7 +285,7 @@ export default function EssaiGratuitPage() {
               </h2>
               <div className="relative rounded-2xl overflow-hidden shadow-xl aspect-video">
                 <iframe
-                  className="w-full h-full"
+                  className="absolute inset-0 w-full h-full"
                   src="https://www.youtube.com/embed/iucfJrrW1HI"
                   title="Targetym AI — Présentation"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
