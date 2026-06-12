@@ -225,7 +225,7 @@ export default function SolutionsPage() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
-              href="/login?tab=register"
+              href="/essai-gratuit"
               className="inline-flex items-center px-8 py-4 text-base font-semibold text-primary-600 bg-white rounded-lg hover:bg-gray-100 transition-colors shadow-lg"
             >
               Demarrer l&apos;Essai Gratuit
@@ -356,7 +356,7 @@ export default function SolutionsPage() {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
-                href="/login?tab=register"
+                href="/essai-gratuit"
                 className="inline-flex items-center justify-center px-8 py-4 text-base font-semibold text-primary-600 bg-white rounded-lg hover:bg-gray-100 transition-colors"
               >
                 Commencer Gratuitement
