@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import {
   CheckCircle,
@@ -17,6 +18,7 @@ import {
   Clock,
   Play,
 } from 'lucide-react';
+
 
 const steps = [
   {
@@ -108,6 +110,7 @@ const sources = [
 ];
 
 export default function EssaiGratuitPage() {
+  const router = useRouter();
   const [currentStep, setCurrentStep] = useState<1 | 2>(1);
   const [form, setForm] = useState({
     firstName: '', lastName: '', email: '', phone: '', jobTitle: '',
@@ -120,7 +123,6 @@ export default function EssaiGratuitPage() {
     consent: false,
   });
   const [videoPlaying, setVideoPlaying] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const [error, setError] = useState('');
@@ -153,47 +155,13 @@ export default function EssaiGratuitPage() {
         const data = await res.json();
         throw new Error(data.error ?? 'Erreur inconnue');
       }
-      setSubmitted(true);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      router.push('/essai-gratuit/confirmation');
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : 'Erreur lors de l\'envoi. Veuillez réessayer.');
     } finally {
       setLoading(false);
     }
   };
-
-  if (submitted) {
-    return (
-      <div className="min-h-screen bg-gradient-to-b from-primary-50 to-white flex items-center justify-center px-4 py-24">
-        <div className="max-w-lg w-full text-center">
-          <div className="w-20 h-20 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-6">
-            <CheckCircle className="w-10 h-10 text-primary-500" />
-          </div>
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">Demande envoyée !</h2>
-          <p className="text-lg text-gray-600 mb-2">
-            Merci <strong>{form.firstName}</strong> ! Notre équipe vous contactera dans les <strong>24 heures</strong> pour planifier votre présentation.
-          </p>
-          <p className="text-gray-500 mb-8">
-            Vérifiez votre boîte mail <span className="font-medium text-primary-600">{form.email}</span>.
-          </p>
-          <div className="bg-white border border-primary-100 rounded-2xl p-6 text-left mb-8">
-            <p className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-3">Rappel des étapes</p>
-            {steps.map((s) => (
-              <div key={s.number} className="flex items-center gap-3 mb-3 last:mb-0">
-                <div className={`w-8 h-8 rounded-full bg-gradient-to-br ${s.color} flex items-center justify-center flex-shrink-0`}>
-                  <s.icon className="w-4 h-4 text-white" />
-                </div>
-                <span className="text-sm text-gray-700">{s.title}</span>
-              </div>
-            ))}
-          </div>
-          <Link href="/" className="inline-flex items-center text-primary-600 font-medium hover:text-primary-700">
-            Retour à l&apos;accueil <ArrowRight className="ml-2 w-4 h-4" />
-          </Link>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div>
