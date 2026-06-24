@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import Script from 'next/script';
 import { CheckCircle, ArrowRight, Phone, Gift, Rocket } from 'lucide-react';
 
 export const metadata: Metadata = {
@@ -34,6 +35,10 @@ const steps = [
 
 export default function ConfirmationPage() {
   return (
+    <>
+      <Script id="ga-conversion" strategy="afterInteractive">
+        {`gtag('event', 'file_download', {});`}
+      </Script>
     <div className="min-h-screen bg-gradient-to-b from-primary-50 to-white flex items-center justify-center px-4 py-24">
       <div className="max-w-lg w-full text-center">
 
@@ -79,5 +84,6 @@ export default function ConfirmationPage() {
         </Link>
       </div>
     </div>
+    </>
   );
 }
