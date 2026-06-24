@@ -49,7 +49,7 @@ export default function RootLayout({
         <link rel="dns-prefetch" href="https://js-eu1.hs-scripts.com" />
         <link rel="dns-prefetch" href="https://js-eu1.hubspot.com" />
         <Script
-          src="https://www.googletagmanager.com/gtag/js?id=G-V7K9V9VJ9V"
+          src="https://www.googletagmanager.com/gtag/js?id=G-4DC8KXH4C1"
           strategy="afterInteractive"
         />
         <Script id="google-analytics" strategy="afterInteractive">
@@ -57,7 +57,7 @@ export default function RootLayout({
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
-            gtag('config', 'G-V7K9V9VJ9V');
+            gtag('config', 'G-4DC8KXH4C1');
           `}
         </Script>
         <Script
