@@ -39,6 +39,9 @@ export default function ConfirmationPage() {
       <Script id="ga-conversion" strategy="afterInteractive">
         {`gtag('event', 'file_download', {});`}
       </Script>
+      <Script id="ads-conversion" strategy="afterInteractive">
+        {`gtag('event', 'conversion', { 'send_to': 'AW-17108802870/inscription' });`}
+      </Script>
     <div className="min-h-screen bg-gradient-to-b from-primary-50 to-white flex items-center justify-center px-4 py-24">
       <div className="max-w-lg w-full text-center">
 
