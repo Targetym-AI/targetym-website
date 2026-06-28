@@ -60,11 +60,13 @@ export default function RootLayout({
             gtag('config', 'G-4DC8KXH4C1');
           `}
         </Script>
+        {/* HubSpot chat désactivé temporairement
         <Script
           id="hs-script-loader"
           src="//js-eu1.hs-scripts.com/148317292.js"
           strategy="lazyOnload"
         />
+        */}
       </head>
       <body className="font-body antialiased">
         <Header />
