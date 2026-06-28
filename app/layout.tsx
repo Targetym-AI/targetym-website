@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Nunito, Inter, Lora } from "next/font/google";
-import Script from "next/script";
+
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -48,24 +48,21 @@ export default function RootLayout({
         <link rel="dns-prefetch" href="https://www.google-analytics.com" />
         <link rel="dns-prefetch" href="https://js-eu1.hs-scripts.com" />
         <link rel="dns-prefetch" href="https://js-eu1.hubspot.com" />
-        <Script
-          src="https://www.googletagmanager.com/gtag/js?id=G-4DC8KXH4C1"
-          strategy="afterInteractive"
+        {/* eslint-disable-next-line @next/next/no-sync-scripts */}
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-4DC8KXH4C1" />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-4DC8KXH4C1');
+              gtag('config', 'AW-17108802870');
+            `,
+          }}
         />
-        <Script id="google-analytics" strategy="afterInteractive">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-4DC8KXH4C1');
-          `}
-        </Script>
         {/* HubSpot chat désactivé temporairement
-        <Script
-          id="hs-script-loader"
-          src="//js-eu1.hs-scripts.com/148317292.js"
-          strategy="lazyOnload"
-        />
+        <script src="//js-eu1.hs-scripts.com/148317292.js" async></script>
         */}
       </head>
       <body className="font-body antialiased">
