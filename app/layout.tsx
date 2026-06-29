@@ -49,15 +49,15 @@ export default function RootLayout({
         <link rel="dns-prefetch" href="https://js-eu1.hs-scripts.com" />
         <link rel="dns-prefetch" href="https://js-eu1.hubspot.com" />
         {/* eslint-disable-next-line @next/next/no-sync-scripts */}
-        <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17108802870" />
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-V7K9V9VJ9V" />
         <script
           dangerouslySetInnerHTML={{
             __html: `
               window.dataLayer = window.dataLayer || [];
               function gtag(){dataLayer.push(arguments);}
               gtag('js', new Date());
-              gtag('config', 'AW-17108802870');
               gtag('config', 'G-V7K9V9VJ9V');
+              gtag('config', 'AW-17108802870');
             `,
           }}
         />
