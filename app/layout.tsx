@@ -44,10 +44,6 @@ export default function RootLayout({
     <html lang="fr" className={`${nunito.variable} ${inter.variable} ${lora.variable}`}>
       <head>
         <link rel="icon" href="/favicon.png" type="image/png" />
-        <link rel="preconnect" href="https://www.googletagmanager.com" />
-        <link rel="dns-prefetch" href="https://www.google-analytics.com" />
-        <link rel="dns-prefetch" href="https://js-eu1.hs-scripts.com" />
-        <link rel="dns-prefetch" href="https://js-eu1.hubspot.com" />
         {/* eslint-disable-next-line @next/next/no-sync-scripts */}
         <script async src="https://www.googletagmanager.com/gtag/js?id=G-V7K9V9VJ9V" />
         <script
@@ -61,9 +57,6 @@ export default function RootLayout({
             `,
           }}
         />
-        {/* HubSpot chat désactivé temporairement
-        <script src="//js-eu1.hs-scripts.com/148317292.js" async></script>
-        */}
       </head>
       <body className="font-body antialiased">
         <Header />
