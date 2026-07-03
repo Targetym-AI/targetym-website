@@ -45,7 +45,6 @@ export default function RootLayout({
       <head>
         <link rel="icon" href="/favicon.png" type="image/png" />
         {/* eslint-disable-next-line @next/next/no-sync-scripts */}
-        {/* eslint-disable-next-line @next/next/no-sync-scripts */}
         <script async src="https://www.googletagmanager.com/gtag/js?id=GT-K8K3SHQQ" />
         <script
           dangerouslySetInnerHTML={{
