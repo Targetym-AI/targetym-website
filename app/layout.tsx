@@ -45,14 +45,15 @@ export default function RootLayout({
       <head>
         <link rel="icon" href="/favicon.png" type="image/png" />
         {/* eslint-disable-next-line @next/next/no-sync-scripts */}
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-V7K9V9VJ9V" />
+        {/* eslint-disable-next-line @next/next/no-sync-scripts */}
+        <script async src="https://www.googletagmanager.com/gtag/js?id=GT-K8K3SHQQ" />
         <script
           dangerouslySetInnerHTML={{
             __html: `
               window.dataLayer = window.dataLayer || [];
               function gtag(){dataLayer.push(arguments);}
               gtag('js', new Date());
-              gtag('config', 'G-V7K9V9VJ9V');
+              gtag('config', 'GT-K8K3SHQQ');
               gtag('config', 'AW-17108802870');
             `,
           }}
