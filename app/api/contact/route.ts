@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
+import { escapeHtml } from '../../../lib/sanitize';
 
 export async function POST(req: NextRequest) {
   try {
@@ -37,15 +38,15 @@ export async function POST(req: NextRequest) {
         <div style="font-family:sans-serif;max-width:600px;margin:0 auto;">
           <h2 style="color:#4f46e5;">Nouveau message depuis le site Targetym</h2>
           <table style="width:100%;border-collapse:collapse;">
-            <tr><td style="padding:8px;font-weight:bold;width:140px;">Nom</td><td style="padding:8px;">${name}</td></tr>
-            <tr style="background:#f9fafb;"><td style="padding:8px;font-weight:bold;">Email</td><td style="padding:8px;"><a href="mailto:${email}">${email}</a></td></tr>
-            <tr><td style="padding:8px;font-weight:bold;">Entreprise</td><td style="padding:8px;">${company || '—'}</td></tr>
-            <tr style="background:#f9fafb;"><td style="padding:8px;font-weight:bold;">Téléphone</td><td style="padding:8px;">${phone || '—'}</td></tr>
-            <tr><td style="padding:8px;font-weight:bold;">Sujet</td><td style="padding:8px;">${subjectLabels[subject] ?? subject}</td></tr>
+            <tr><td style="padding:8px;font-weight:bold;width:140px;">Nom</td><td style="padding:8px;">${escapeHtml(name)}</td></tr>
+            <tr style="background:#f9fafb;"><td style="padding:8px;font-weight:bold;">Email</td><td style="padding:8px;"><a href="mailto:${escapeHtml(email)}">${escapeHtml(email)}</a></td></tr>
+            <tr><td style="padding:8px;font-weight:bold;">Entreprise</td><td style="padding:8px;">${escapeHtml(company || '—')}</td></tr>
+            <tr style="background:#f9fafb;"><td style="padding:8px;font-weight:bold;">Téléphone</td><td style="padding:8px;">${escapeHtml(phone || '—')}</td></tr>
+            <tr><td style="padding:8px;font-weight:bold;">Sujet</td><td style="padding:8px;">${escapeHtml(subjectLabels[subject] ?? subject)}</td></tr>
           </table>
           <div style="margin-top:16px;padding:16px;background:#f9fafb;border-radius:8px;">
             <p style="font-weight:bold;margin-bottom:8px;">Message :</p>
-            <p style="white-space:pre-wrap;margin:0;">${message}</p>
+            <p style="white-space:pre-wrap;margin:0;">${escapeHtml(message)}</p>
           </div>
         </div>
       `,
