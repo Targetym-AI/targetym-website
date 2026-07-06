@@ -59,6 +59,46 @@ function readTime(excerpt: string | null): string {
   return `${Math.max(1, Math.round(words / 200 * 5))} min`;
 }
 
+const CATEGORY_META: Record<string, { title: string; description: string }> = {
+  RH: {
+    title: 'Articles RH | Blog Targetym AI',
+    description: "Conseils RH pratiques, gestion des talents, paie et performance pour les équipes africaines. Blog Targetym AI.",
+  },
+  DIGITALISATION: {
+    title: 'Digitalisation RH en Afrique | Blog Targetym AI',
+    description: "Transformation digitale des RH en Afrique : SIRH IA, automatisation des processus et conduite du changement.",
+  },
+  PERFORMANCE: {
+    title: 'Performance & OKR RH | Blog Targetym AI',
+    description: "Pilotez la performance de vos équipes : OKR, feedback continu, évaluations et indicateurs RH adaptés à l'Afrique.",
+  },
+  RECRUTEMENT: {
+    title: 'Recrutement & Talents | Blog Targetym AI',
+    description: "Stratégies de recrutement, scoring IA des candidats et gestion des talents pour les entreprises africaines.",
+  },
+  PAIE: {
+    title: 'Paie & Conformité RH | Blog Targetym AI',
+    description: "Module Paie, conformité réglementaire OHADA et bonnes pratiques de gestion administrative RH en Afrique.",
+  },
+  IA: {
+    title: 'IA & Agents RH | Blog Targetym AI',
+    description: "Intelligence artificielle appliquée aux RH : agents IA spécialisés, automatisation et analytics pour l'Afrique.",
+  },
+  MANAGEMENT: {
+    title: 'Management & Leadership RH | Blog Targetym AI',
+    description: "Conseils en management, leadership et culture d'entreprise adaptés aux réalités des organisations africaines.",
+  },
+  FORMATION: {
+    title: 'Formation & Développement RH | Blog Targetym AI',
+    description: "Plans de formation, montée en compétences et développement des collaborateurs en entreprise africaine.",
+  },
+};
+
+function getCategoryMeta(category: string) {
+  const upper = category.toUpperCase();
+  return CATEGORY_META[upper] ?? CATEGORY_META[category] ?? null;
+}
+
 export async function generateMetadata({
   searchParams,
 }: {
@@ -66,9 +106,11 @@ export async function generateMetadata({
 }) {
   const category = searchParams.category;
   if (category) {
+    const known = getCategoryMeta(category);
+    if (known) return known;
     return {
       title: `Articles ${category} | Blog Targetym AI`,
-      description: `Découvrez nos articles ${category} : conseils RH, IA et SIRH pour les entreprises en Afrique.`,
+      description: `Retrouvez tous nos articles sur le thème "${category}" : analyses, conseils et bonnes pratiques RH pour l'Afrique.`,
     };
   }
   return {
@@ -285,10 +327,10 @@ export default async function BlogPage({ searchParams }: { searchParams: { categ
               Rejoignez des centaines d&apos;entreprises africaines qui utilisent Targetym AI.
             </p>
             <Link
-              href="https://dashboard.targetym.ai"
+              href="/essai-gratuit"
               className="inline-flex items-center gap-2 px-6 py-2.5 bg-primary-600 text-white text-sm font-semibold rounded-lg hover:bg-primary-700 transition-colors"
             >
-              Essai Gratuit 30 Jours <ArrowRight className="w-4 h-4" />
+              Essai Gratuit 15 Jours <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
         </section>

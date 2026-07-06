@@ -56,7 +56,7 @@ export default function Header() {
               Connexion
             </Link>
             <Link
-              href="/login?tab=register"
+              href="/essai-gratuit"
               className="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-primary-500 rounded-lg hover:bg-primary-600 transition-colors"
             >
               Essai Gratuit
@@ -131,7 +131,7 @@ export default function Header() {
             Connexion
           </Link>
           <Link
-            href="/login?tab=register"
+            href="/essai-gratuit"
             onClick={() => setMobileMenuOpen(false)}
             className="block text-center py-2.5 bg-primary-500 text-white rounded-lg font-medium text-sm hover:bg-primary-600 transition-colors"
           >

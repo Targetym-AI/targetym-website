@@ -1,13 +1,13 @@
 'use client';
 
 import { useState } from 'react';
-import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import {
   CheckCircle,
   ArrowRight,
   ArrowLeft,
   Phone,
-  CreditCard,
+  Gift,
   Rocket,
   Send,
   Loader2,
@@ -15,7 +15,9 @@ import {
   Bot,
   BarChart3,
   Clock,
+  Play,
 } from 'lucide-react';
+
 
 const steps = [
   {
@@ -32,11 +34,11 @@ const steps = [
   },
   {
     number: '02',
-    icon: CreditCard,
-    title: 'Réglez les frais de configuration',
-    duration: '197 000 FCFA',
+    icon: Gift,
+    title: 'Demandez l\'essai gratuit',
+    duration: '15 jours gratuits',
     description:
-      'Un unique paiement pour couvrir la formation de votre équipe et la configuration sur mesure de votre espace. Aucun abonnement requis pendant les 30 jours d\'essai.',
+      'Accédez immédiatement à toutes les fonctionnalités de la plateforme. Profitez de 15 jours d\'essai complet, sans carte bancaire et sans engagement.',
     color: 'from-secondary-500 to-secondary-600',
     bgLight: 'bg-secondary-50',
     textColor: 'text-secondary-600',
@@ -107,6 +109,7 @@ const sources = [
 ];
 
 export default function EssaiGratuitPage() {
+  const router = useRouter();
   const [currentStep, setCurrentStep] = useState<1 | 2>(1);
   const [form, setForm] = useState({
     firstName: '', lastName: '', email: '', phone: '', jobTitle: '',
@@ -118,8 +121,9 @@ export default function EssaiGratuitPage() {
     message: '',
     consent: false,
   });
-  const [submitted, setSubmitted] = useState(false);
+  const [videoPlaying, setVideoPlaying] = useState(false);
   const [loading, setLoading] = useState(false);
+
   const [error, setError] = useState('');
 
   const toggleArray = (field: 'mainChallenges' | 'mainObjectives', value: string) => {
@@ -150,47 +154,13 @@ export default function EssaiGratuitPage() {
         const data = await res.json();
         throw new Error(data.error ?? 'Erreur inconnue');
       }
-      setSubmitted(true);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      router.push('/essai-gratuit/confirmation');
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : 'Erreur lors de l\'envoi. Veuillez réessayer.');
     } finally {
       setLoading(false);
     }
   };
-
-  if (submitted) {
-    return (
-      <div className="min-h-screen bg-gradient-to-b from-primary-50 to-white flex items-center justify-center px-4 py-24">
-        <div className="max-w-lg w-full text-center">
-          <div className="w-20 h-20 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-6">
-            <CheckCircle className="w-10 h-10 text-primary-500" />
-          </div>
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">Demande envoyée !</h2>
-          <p className="text-lg text-gray-600 mb-2">
-            Merci <strong>{form.firstName}</strong> ! Notre équipe vous contactera dans les <strong>24 heures</strong> pour planifier votre présentation.
-          </p>
-          <p className="text-gray-500 mb-8">
-            Vérifiez votre boîte mail <span className="font-medium text-primary-600">{form.email}</span>.
-          </p>
-          <div className="bg-white border border-primary-100 rounded-2xl p-6 text-left mb-8">
-            <p className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-3">Rappel des étapes</p>
-            {steps.map((s) => (
-              <div key={s.number} className="flex items-center gap-3 mb-3 last:mb-0">
-                <div className={`w-8 h-8 rounded-full bg-gradient-to-br ${s.color} flex items-center justify-center flex-shrink-0`}>
-                  <s.icon className="w-4 h-4 text-white" />
-                </div>
-                <span className="text-sm text-gray-700">{s.title}</span>
-              </div>
-            ))}
-          </div>
-          <Link href="/" className="inline-flex items-center text-primary-600 font-medium hover:text-primary-700">
-            Retour à l&apos;accueil <ArrowRight className="ml-2 w-4 h-4" />
-          </Link>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div>
@@ -234,12 +204,12 @@ export default function EssaiGratuitPage() {
             <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 text-center">
               <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary-100 text-primary-700 rounded-full text-sm font-medium mb-6">
                 <Star className="w-4 h-4" />
-                Essai gratuit · 30 jours · Aucun abonnement
+                Essai gratuit · 15 jours · Aucun abonnement
               </div>
               <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-5 leading-tight">
                 Démarrez votre essai gratuit<br />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-500 to-secondary-500">
-                  de 30 jours en 3 étapes !
+                  de 15 jours en 3 étapes !
                 </span>
               </h1>
               <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-6">
@@ -283,19 +253,39 @@ export default function EssaiGratuitPage() {
               <h2 className="text-2xl font-bold text-gray-900 text-center mb-6">
                 Découvrez Targetym AI en action
               </h2>
-              <div className="relative rounded-2xl overflow-hidden shadow-xl aspect-video">
-                <iframe
-                  className="w-full h-full"
-                  src="https://www.youtube.com/embed/iucfJrrW1HI"
-                  title="Targetym AI — Présentation"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                />
+              <div className="relative rounded-2xl overflow-hidden shadow-xl aspect-video bg-gray-900">
+                {videoPlaying ? (
+                  <iframe
+                    className="absolute inset-0 w-full h-full"
+                    src="https://www.youtube-nocookie.com/embed/iucfJrrW1HI?autoplay=1"
+                    title="Targetym AI — Présentation"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerPolicy="strict-origin-when-cross-origin"
+                    allowFullScreen
+                  />
+                ) : (
+                  <button
+                    onClick={() => setVideoPlaying(true)}
+                    className="group absolute inset-0 w-full h-full focus:outline-none"
+                    aria-label="Lire la vidéo de présentation Targetym AI"
+                  >
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src="https://img.youtube.com/vi/iucfJrrW1HI/maxresdefault.jpg"
+                      alt="Targetym AI — Présentation"
+                      className="w-full h-full object-cover"
+                    />
+                    <span className="absolute inset-0 bg-black/30 group-hover:bg-black/40 transition-colors" />
+                    <span className="absolute inset-0 flex items-center justify-center">
+                      <span className="w-20 h-20 rounded-full bg-white/90 shadow-2xl flex items-center justify-center group-hover:scale-110 transition-transform">
+                        <Play className="w-8 h-8 text-primary-600 translate-x-0.5" fill="currentColor" />
+                      </span>
+                    </span>
+                  </button>
+                )}
               </div>
             </div>
           </section>
-
-          {/* Stats strip */}
           <section className="py-8 bg-white border-y border-gray-100">
             <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
               <div className="grid sm:grid-cols-3 gap-6 text-center">
@@ -326,7 +316,7 @@ export default function EssaiGratuitPage() {
                 onClick={() => { setCurrentStep(2); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
                 className="inline-flex items-center gap-3 px-10 py-4 bg-gradient-to-r from-primary-500 to-secondary-500 text-white text-lg font-semibold rounded-2xl hover:from-primary-600 hover:to-secondary-600 transition-all shadow-xl shadow-primary-500/25"
               >
-                Déposer ma demande
+                Prendre mon rendez-vous
                 <ArrowRight className="w-5 h-5" />
               </button>
             </div>
@@ -341,7 +331,7 @@ export default function EssaiGratuitPage() {
             {/* Header */}
             <div className="text-center mb-10">
               <h2 className="text-3xl font-bold text-gray-900 mb-3">
-                Déposez votre demande
+                Prendre mon rendez-vous
               </h2>
               <p className="text-gray-500">
                 Remplissez ce formulaire et notre équipe commerciale vous contactera sous 24h.

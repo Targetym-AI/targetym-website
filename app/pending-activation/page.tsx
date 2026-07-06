@@ -25,7 +25,7 @@ export default function PendingActivationPage() {
             Notre équipe vous contactera sous <strong>24H</strong> pour finaliser
             votre activation. Des frais d&apos;installation de{' '}
             <strong className="text-gray-900">297 000 FCFA</strong> seront
-            requis pour démarrer votre essai gratuit de 30 jours.
+            requis pour démarrer votre essai gratuit de 15 jours.
           </p>
 
           {/* What's included */}
@@ -36,7 +36,7 @@ export default function PendingActivationPage() {
             <ul className="space-y-2 text-sm text-gray-600">
               <li className="flex items-center">
                 <CheckCircle className="w-4 h-4 text-green-500 mr-2 flex-shrink-0" />
-                30 jours d&apos;accès complet aux fonctionnalités Premium
+                15 jours d&apos;accès complet aux fonctionnalités Premium
               </li>
               <li className="flex items-center">
                 <CheckCircle className="w-4 h-4 text-green-500 mr-2 flex-shrink-0" />

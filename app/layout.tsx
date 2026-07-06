@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Nunito, Inter, Lora } from "next/font/google";
-import Script from "next/script";
+
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -44,26 +44,18 @@ export default function RootLayout({
     <html lang="fr" className={`${nunito.variable} ${inter.variable} ${lora.variable}`}>
       <head>
         <link rel="icon" href="/favicon.png" type="image/png" />
-        <link rel="preconnect" href="https://www.googletagmanager.com" />
-        <link rel="dns-prefetch" href="https://www.google-analytics.com" />
-        <link rel="dns-prefetch" href="https://js-eu1.hs-scripts.com" />
-        <link rel="dns-prefetch" href="https://js-eu1.hubspot.com" />
-        <Script
-          src="https://www.googletagmanager.com/gtag/js?id=G-V7K9V9VJ9V"
-          strategy="afterInteractive"
-        />
-        <Script id="google-analytics" strategy="afterInteractive">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-V7K9V9VJ9V');
-          `}
-        </Script>
-        <Script
-          id="hs-script-loader"
-          src="//js-eu1.hs-scripts.com/148317292.js"
-          strategy="lazyOnload"
+        {/* eslint-disable-next-line @next/next/no-sync-scripts */}
+        <script async src="https://www.googletagmanager.com/gtag/js?id=GT-K8K3SHQQ" />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'GT-K8K3SHQQ');
+              gtag('config', 'AW-17108802870');
+            `,
+          }}
         />
       </head>
       <body className="font-body antialiased">

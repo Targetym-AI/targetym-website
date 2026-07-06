@@ -1,8 +1,19 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: "Mentions Légales & Conditions Générales d'Utilisation - Targetym AI",
-  description: "Mentions légales, CGU du site www.targetym.ai et du logiciel SIRH Targetym AI. Conformité droit sénégalais, OHADA et Loi n°2008-12.",
+  title: "Mentions Légales & CGU - Targetym AI | SIRH en Afrique",
+  description:
+    "Mentions légales et conditions d'utilisation de Targetym AI, le SIRH augmenté par l'IA en Afrique (Sénégal, Côte d'Ivoire). Conformité droit sénégalais et OHADA.",
+  keywords: [
+    'SIRH en Afrique',
+    'meilleure SIRH en Afrique',
+    'SIRH au Sénégal',
+    "SIRH en Côte d'Ivoire",
+    'logiciel RH Afrique',
+    'SIRH IA',
+    "conditions d'utilisation SIRH",
+    'Targetym AI',
+  ],
 };
 
 const lastUpdated = 'Avril 2026';
