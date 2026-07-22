@@ -139,6 +139,7 @@ function LoginForm() {
     try {
       const res = await fetch(`${API_URL}/api/auth/2fa/verify`, {
         method: 'POST',
+        credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${tempToken}`,
@@ -155,7 +156,7 @@ function LoginForm() {
 
       // Rediriger vers le dashboard avec les vrais tokens
       const userEncoded = encodeURIComponent(JSON.stringify(data.user));
-      window.location.href = `${DASHBOARD_URL}?token=${data.access_token}&refresh=${data.refresh_token}&user=${userEncoded}`;
+      window.location.href = `${DASHBOARD_URL}?token=${data.access_token}&user=${userEncoded}`;
     } catch (err) {
       setError(getAuthErrorMessage(err, responseStatus));
       setOtpCode(['', '', '', '', '', '']);
@@ -186,6 +187,7 @@ function LoginForm() {
         // LOGIN
         const response = await fetch(`${API_URL}/api/auth/login`, {
           method: 'POST',
+          credentials: 'include',
           headers: {
             'Content-Type': 'application/json',
           },
@@ -218,7 +220,7 @@ function LoginForm() {
 
         // Rediriger vers le dashboard avec les tokens dans l'URL
         const userEncoded = encodeURIComponent(JSON.stringify(data.user));
-        window.location.href = `${DASHBOARD_URL}?token=${data.access_token}&refresh=${data.refresh_token}&user=${userEncoded}`;
+        window.location.href = `${DASHBOARD_URL}?token=${data.access_token}&user=${userEncoded}`;
 
       } else {
         // REGISTER TENANT (nouvelle entreprise)
