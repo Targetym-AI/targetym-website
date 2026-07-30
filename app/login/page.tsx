@@ -10,7 +10,34 @@ import { getAuthErrorMessage } from '@/lib/error-messages';
 const API_URL = (process.env.NEXT_PUBLIC_API_URL || 'https://api.targetym.ai').replace(/^http:\/\//, 'https://');
 const DASHBOARD_URL = 'https://dashboard.targetym.ai';
 
-function getDashboardDestination(role?: string): string {
+function getRequestedDashboardDestination(requestedPath: string | null): string | null {
+  if (!requestedPath || requestedPath.startsWith('//')) {
+    return null;
+  }
+
+  try {
+    const destination = new URL(requestedPath, DASHBOARD_URL);
+    const dashboardOrigin = new URL(DASHBOARD_URL).origin;
+    const isDashboardPath =
+      destination.pathname === '/dashboard' ||
+      destination.pathname.startsWith('/dashboard/');
+
+    if (destination.origin !== dashboardOrigin || !isDashboardPath) {
+      return null;
+    }
+
+    return `${DASHBOARD_URL}${destination.pathname}${destination.search}${destination.hash}`;
+  } catch {
+    return null;
+  }
+}
+
+function getDashboardDestination(role?: string, requestedPath?: string | null): string {
+  const requestedDestination = getRequestedDashboardDestination(requestedPath ?? null);
+  if (requestedDestination) {
+    return requestedDestination;
+  }
+
   const normalized = (role || '').toLowerCase().replace(/[^a-z_]/g, '');
   if (['superadmin', 'super_admin', 'superadmintech', 'platform_admin'].includes(normalized)) {
     return `${DASHBOARD_URL}/dashboard/platform-admin`;
@@ -48,6 +75,7 @@ function isPersonalEmail(email: string): boolean {
 function LoginForm() {
   const searchParams = useSearchParams();
   const defaultTab = searchParams.get('tab') === 'register' ? 'register' : 'login';
+  const requestedDashboardPath = searchParams.get('next');
 
   const [activeTab, setActiveTab] = useState(defaultTab);
   const [showPassword, setShowPassword] = useState(false);
@@ -167,7 +195,7 @@ function LoginForm() {
 
       // Le refresh token reste dans le cookie HTTP-only de l'API. Aucun JWT
       // ne transite dans l'URL ou dans le stockage JavaScript.
-      window.location.href = getDashboardDestination(data.user?.role);
+      window.location.href = getDashboardDestination(data.user?.role, requestedDashboardPath);
     } catch (err) {
       setError(getAuthErrorMessage(err, responseStatus));
       setOtpCode(['', '', '', '', '', '']);
@@ -230,7 +258,7 @@ function LoginForm() {
         }
 
         // Le Dashboard restaurera l'access token via le cookie HTTP-only.
-        window.location.href = getDashboardDestination(data.user?.role);
+        window.location.href = getDashboardDestination(data.user?.role, requestedDashboardPath);
 
       } else {
         // REGISTER TENANT (nouvelle entreprise)
