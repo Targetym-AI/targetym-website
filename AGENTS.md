@@ -34,12 +34,19 @@ Ce dépôt ne possède pas de schéma de base de données. Les données et l'aut
 - 2026-08-04 : fusion locale de `origin/main` dans `staging` sans conflit ; conservation de `NEXT_PUBLIC_DASHBOARD_URL` pour l'environnement staging.
 - 2026-08-04 : suppression du transfert de JWT dans l'URL ; login et vérification 2FA avec cookie HTTP-only et `credentials: 'include'`.
 - 2026-08-04 : `npx tsc --noEmit`, `npm run lint` et `npm run build` réussis ; 23 pages générées.
+- 2026-08-04 : déploiement staging validé dans le navigateur ; connexion
+  administrateur, redirection vers le dashboard et impersonation RH stables,
+  sans jeton dans l'URL.
+- 2026-08-04 : nouvelle gate locale avant production réussie, avec 23 pages.
 
 ## À faire
-- Déployer sur Vercel staging puis revalider le pont de session jusqu'au dashboard.
+- Promouvoir `staging` vers `main` après l'API et le dashboard, puis revalider
+  le pont de session sur les domaines de production.
 
 ## Problèmes résolus
 - Contrat d'authentification localement réaligné avec le dashboard sécurisé, sans réintroduire de JWT dans l'URL ou le stockage JavaScript.
 
 ## Dernière session
-2026-08-04 : intégration et gates locaux terminés ; déploiement Vercel staging et validation navigateur encore en attente.
+2026-08-04 : intégration, gates, déploiement staging et validation navigateur
+terminés. Prochaine étape : PR `staging` vers `main`, déploiement Vercel
+production et contrôle final du pont d'authentification.
