@@ -10,6 +10,44 @@ import { getAuthErrorMessage } from '@/lib/error-messages';
 const API_URL = (process.env.NEXT_PUBLIC_API_URL || 'https://api.targetym.ai').replace(/^http:\/\//, 'https://');
 const DASHBOARD_URL = process.env.NEXT_PUBLIC_DASHBOARD_URL || 'https://dashboard.targetym.ai';
 
+function getRequestedDashboardDestination(requestedPath: string | null): string | null {
+  if (!requestedPath || requestedPath.startsWith('//')) {
+    return null;
+  }
+
+  try {
+    const destination = new URL(requestedPath, DASHBOARD_URL);
+    const dashboardOrigin = new URL(DASHBOARD_URL).origin;
+    const isDashboardPath =
+      destination.pathname === '/dashboard' ||
+      destination.pathname.startsWith('/dashboard/');
+
+    if (destination.origin !== dashboardOrigin || !isDashboardPath) {
+      return null;
+    }
+
+    return `${DASHBOARD_URL}${destination.pathname}${destination.search}${destination.hash}`;
+  } catch {
+    return null;
+  }
+}
+
+function getDashboardDestination(role?: string, requestedPath?: string | null): string {
+  const requestedDestination = getRequestedDashboardDestination(requestedPath ?? null);
+  if (requestedDestination) {
+    return requestedDestination;
+  }
+
+  const normalized = (role || '').toLowerCase().replace(/[^a-z_]/g, '');
+  if (['superadmin', 'super_admin', 'superadmintech', 'platform_admin'].includes(normalized)) {
+    return `${DASHBOARD_URL}/dashboard/platform-admin`;
+  }
+  if (normalized === 'cabinet') {
+    return `${DASHBOARD_URL}/dashboard/cabinet`;
+  }
+  return `${DASHBOARD_URL}/dashboard`;
+}
+
 // Domaines emails personnels bloqués
 const BLOCKED_EMAIL_DOMAINS = [
   'gmail.com', 'googlemail.com',
@@ -37,6 +75,7 @@ function isPersonalEmail(email: string): boolean {
 function LoginForm() {
   const searchParams = useSearchParams();
   const defaultTab = searchParams.get('tab') === 'register' ? 'register' : 'login';
+  const requestedDashboardPath = searchParams.get('next');
 
   const [activeTab, setActiveTab] = useState(defaultTab);
   const [showPassword, setShowPassword] = useState(false);
@@ -139,6 +178,7 @@ function LoginForm() {
     try {
       const res = await fetch(`${API_URL}/api/auth/2fa/verify`, {
         method: 'POST',
+        credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${tempToken}`,
@@ -153,9 +193,9 @@ function LoginForm() {
         throw new Error(data.detail || 'Code invalide');
       }
 
-      // Rediriger vers le dashboard avec les vrais tokens
-      const userEncoded = encodeURIComponent(JSON.stringify(data.user));
-      window.location.href = `${DASHBOARD_URL}?token=${data.access_token}&refresh=${data.refresh_token}&user=${userEncoded}`;
+      // Le refresh token reste dans le cookie HTTP-only de l'API. Aucun JWT
+      // ne transite dans l'URL ou dans le stockage JavaScript.
+      window.location.href = getDashboardDestination(data.user?.role, requestedDashboardPath);
     } catch (err) {
       setError(getAuthErrorMessage(err, responseStatus));
       setOtpCode(['', '', '', '', '', '']);
@@ -186,6 +226,7 @@ function LoginForm() {
         // LOGIN
         const response = await fetch(`${API_URL}/api/auth/login`, {
           method: 'POST',
+          credentials: 'include',
           headers: {
             'Content-Type': 'application/json',
           },
@@ -216,9 +257,8 @@ function LoginForm() {
           return;
         }
 
-        // Rediriger vers le dashboard avec les tokens dans l'URL
-        const userEncoded = encodeURIComponent(JSON.stringify(data.user));
-        window.location.href = `${DASHBOARD_URL}?token=${data.access_token}&refresh=${data.refresh_token}&user=${userEncoded}`;
+        // Le Dashboard restaurera l'access token via le cookie HTTP-only.
+        window.location.href = getDashboardDestination(data.user?.role, requestedDashboardPath);
 
       } else {
         // REGISTER TENANT (nouvelle entreprise)
