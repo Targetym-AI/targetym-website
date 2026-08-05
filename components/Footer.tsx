@@ -1,6 +1,8 @@
 import Link from 'next/link';
 import Image from 'next/image';
 
+const HELP_URL = process.env.NEXT_PUBLIC_HELP_URL || 'https://help.targetym.ai';
+
 const footerLinks = {
   produit: [
     { label: 'Solutions', href: '/solutions' },
@@ -16,7 +18,7 @@ const footerLinks = {
   ],
   support: [
     { label: 'Documentation', href: '/resources' },
-    { label: "Centre d'Aide", href: 'https://help.targetym.ai', external: true },
+    { label: "Centre d'Aide", href: HELP_URL, external: true },
     { label: 'Panneau Admin', href: '/login' },
   ],
 };

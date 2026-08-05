@@ -8,7 +8,7 @@ import { getAuthErrorMessage } from '@/lib/error-messages';
 
 // URL de ton API Railway
 const API_URL = (process.env.NEXT_PUBLIC_API_URL || 'https://api.targetym.ai').replace(/^http:\/\//, 'https://');
-const DASHBOARD_URL = 'https://dashboard.targetym.ai';
+const DASHBOARD_URL = process.env.NEXT_PUBLIC_DASHBOARD_URL || 'https://dashboard.targetym.ai';
 
 function getRequestedDashboardDestination(requestedPath: string | null): string | null {
   if (!requestedPath || requestedPath.startsWith('//')) {
