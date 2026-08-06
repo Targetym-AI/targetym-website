@@ -38,15 +38,37 @@ Ce dépôt ne possède pas de schéma de base de données. Les données et l'aut
   administrateur, redirection vers le dashboard et impersonation RH stables,
   sans jeton dans l'URL.
 - 2026-08-04 : nouvelle gate locale avant production réussie, avec 23 pages.
+- 2026-08-05 : PR #5 fusionnée sur `main` au commit `326b6065`; déploiement
+  Vercel production `Ready` sur `targetym.ai` et `www.targetym.ai`.
+- 2026-08-05 : connexion production validée de bout en bout vers le dashboard,
+  sans jeton dans l'URL, avec accès au Copilote du tenant pilote.
+- 2026-08-06 : refonte locale de `/login` en direction Brume/liquid glass :
+  carte d'authentification flottante, scène RH 3D avec parallaxe, indicateurs,
+  activité, sécurité et Copilote intégré. Les parcours connexion, inscription,
+  2FA et redirection sécurisée restent inchangés.
+- 2026-08-06 : ajout en arrière-plan de douze avatars de modules RH, répartis
+  sur trois profondeurs et animés par des trajectoires désynchronisées. La
+  densité est réduite sur mobile et les mouvements respectent la préférence
+  système de réduction des animations.
 
 ## À faire
-- Promouvoir `staging` vers `main` après l'API et le dashboard, puis revalider
-  le pont de session sur les domaines de production.
+- Aucun blocage de livraison connu ; conserver les tests du pont de session
+  lors des prochaines évolutions d'authentification.
+- Faire valider la nouvelle connexion localement puis sur `staging` avant toute
+  promotion en production.
 
 ## Problèmes résolus
 - Contrat d'authentification localement réaligné avec le dashboard sécurisé, sans réintroduire de JWT dans l'URL ou le stockage JavaScript.
 
 ## Dernière session
-2026-08-04 : intégration, gates, déploiement staging et validation navigateur
-terminés. Prochaine étape : PR `staging` vers `main`, déploiement Vercel
-production et contrôle final du pont d'authentification.
+2026-08-05 : la PR #5 a été fusionnée sur `main`, Vercel sert la nouvelle
+version sur les deux domaines de production et la connexion vers le dashboard
+a été validée avec le compte pilote, sans exposition de jeton.
+
+2026-08-06 : la page de connexion a été recomposée localement autour d'un fond
+continu et d'une carte liquid glass détachée. La scène 3D présente la plateforme
+RH complète — tableau de bord, équipe, congés, tâches, activité et sécurité —
+avec le Copilote visible dans l'orbe et la génération de rapport. Une
+constellation liquid glass des modules flotte désormais sur trois plans en
+arrière-plan. TypeScript, ESLint ciblé, `git diff --check` et le build des 23
+routes passent ; aucun commit ni push n'a été effectué.
