@@ -2,8 +2,7 @@ import type { Metadata } from "next";
 import { Nunito, Inter, Lora } from "next/font/google";
 
 import "./globals.css";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
+import SiteChrome from "@/components/SiteChrome";
 
 const nunito = Nunito({
   subsets: ["latin"],
@@ -59,12 +58,8 @@ export default function RootLayout({
         />
       </head>
       <body className="font-body antialiased">
-        <Header />
-        <main className="min-h-screen">
-          {children}
-        </main>
-        <Footer />
-        </body>
+        <SiteChrome>{children}</SiteChrome>
+      </body>
       </html>
   );
 }
