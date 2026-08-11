@@ -6,6 +6,8 @@ export const metadata: Metadata = {
   description: "Découvrez Targetym AI, la suite SIRH intelligente conçue pour les entreprises africaines. Notre mission, notre vision et notre équipe.",
 };
 
+const DASHBOARD_URL = process.env.NEXT_PUBLIC_DASHBOARD_URL || 'https://dashboard.targetym.ai';
+
 const values = [
   {
     icon: Lightbulb,
@@ -122,7 +124,7 @@ export default function AboutPage() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
-              href="https://dashboard.targetym.ai"
+              href={DASHBOARD_URL}
               className="inline-flex items-center justify-center px-8 py-3 rounded-lg bg-primary-500 text-white font-semibold hover:bg-primary-600 transition-colors"
             >
               Essayer gratuitement
