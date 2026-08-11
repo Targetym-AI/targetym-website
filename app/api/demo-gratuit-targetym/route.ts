@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import nodemailer from 'nodemailer';
+import { Resend } from 'resend';
 import { escapeHtml } from '../../../lib/sanitize';
 
 export async function POST(req: NextRequest) {
@@ -11,18 +11,10 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Champs requis manquants.' }, { status: 400 });
     }
 
-    const transporter = nodemailer.createTransport({
-      host: process.env.SMTP_HOST,
-      port: Number(process.env.SMTP_PORT ?? 587),
-      secure: process.env.SMTP_SECURE === 'true',
-      auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS,
-      },
-    });
+    const resend = new Resend(process.env.RESEND_API_KEY);
 
-    await transporter.sendMail({
-      from: `"Targetym Website" <${process.env.SMTP_USER}>`,
+    const { error } = await resend.emails.send({
+      from: 'Targetym AI <noreply@targetym.ai>',
       to: 'sales@agiltym.com',
       replyTo: email,
       subject: `[Événement Odoo] ${firstName} ${lastName}${company ? ' — ' + company : ''}`,
@@ -50,6 +42,11 @@ export async function POST(req: NextRequest) {
         </div>
       `,
     });
+
+    if (error) {
+      console.error('[demo-gratuit-targetym route] Resend error:', JSON.stringify(error));
+      return NextResponse.json({ error: 'Erreur lors de l\'envoi.' }, { status: 500 });
+    }
 
     return NextResponse.json({ success: true });
   } catch (err) {
