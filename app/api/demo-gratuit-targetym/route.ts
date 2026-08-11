@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { Resend } from 'resend';
+import nodemailer from 'nodemailer';
+import { escapeHtml } from '../../../lib/sanitize';
 
 export async function POST(req: NextRequest) {
   try {
@@ -10,11 +11,19 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Champs requis manquants.' }, { status: 400 });
     }
 
-    const resend = new Resend(process.env.RESEND_API_KEY);
+    const transporter = nodemailer.createTransport({
+      host: process.env.SMTP_HOST,
+      port: Number(process.env.SMTP_PORT ?? 587),
+      secure: process.env.SMTP_SECURE === 'true',
+      auth: {
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASS,
+      },
+    });
 
-    const { data, error } = await resend.emails.send({
-      from: 'Targetym AI <noreply@targetym.ai>',
-      to: ['sales@agiltym.com', 'h.cakpo@hcexecutive.net'],
+    await transporter.sendMail({
+      from: `"Targetym Website" <${process.env.SMTP_USER}>`,
+      to: 'sales@agiltym.com',
       replyTo: email,
       subject: `[Événement Odoo] ${firstName} ${lastName}${company ? ' — ' + company : ''}`,
       html: `
@@ -25,32 +34,26 @@ export async function POST(req: NextRequest) {
           </div>
           <div style="border:1px solid #e5e7eb;border-top:none;border-radius:0 0 12px 12px;padding:24px 32px;">
             <table style="width:100%;border-collapse:collapse;">
-              <tr style="background:#f9fafb;"><td style="padding:10px 12px;font-weight:600;width:200px;color:#374151;">Prénom</td><td style="padding:10px 12px;color:#111827;">${firstName}</td></tr>
-              <tr><td style="padding:10px 12px;font-weight:600;color:#374151;">Nom</td><td style="padding:10px 12px;color:#111827;">${lastName}</td></tr>
-              <tr style="background:#f9fafb;"><td style="padding:10px 12px;font-weight:600;color:#374151;">WhatsApp</td><td style="padding:10px 12px;color:#111827;"><a href="tel:${whatsapp}" style="color:#066C6C;">${whatsapp}</a></td></tr>
-              <tr><td style="padding:10px 12px;font-weight:600;color:#374151;">Email</td><td style="padding:10px 12px;color:#111827;"><a href="mailto:${email}" style="color:#066C6C;">${email}</a></td></tr>
-              <tr style="background:#f9fafb;"><td style="padding:10px 12px;font-weight:600;color:#374151;">Profession</td><td style="padding:10px 12px;color:#111827;">${jobTitle || '—'}</td></tr>
-              <tr><td style="padding:10px 12px;font-weight:600;color:#374151;">Entreprise</td><td style="padding:10px 12px;color:#111827;">${company || '—'}</td></tr>
+              <tr style="background:#f9fafb;"><td style="padding:10px 12px;font-weight:600;width:200px;color:#374151;">Prénom</td><td style="padding:10px 12px;color:#111827;">${escapeHtml(firstName)}</td></tr>
+              <tr><td style="padding:10px 12px;font-weight:600;color:#374151;">Nom</td><td style="padding:10px 12px;color:#111827;">${escapeHtml(lastName)}</td></tr>
+              <tr style="background:#f9fafb;"><td style="padding:10px 12px;font-weight:600;color:#374151;">WhatsApp</td><td style="padding:10px 12px;color:#111827;"><a href="tel:${escapeHtml(whatsapp)}" style="color:#066C6C;">${escapeHtml(whatsapp)}</a></td></tr>
+              <tr><td style="padding:10px 12px;font-weight:600;color:#374151;">Email</td><td style="padding:10px 12px;color:#111827;"><a href="mailto:${escapeHtml(email)}" style="color:#066C6C;">${escapeHtml(email)}</a></td></tr>
+              <tr style="background:#f9fafb;"><td style="padding:10px 12px;font-weight:600;color:#374151;">Profession</td><td style="padding:10px 12px;color:#111827;">${escapeHtml(jobTitle || '—')}</td></tr>
+              <tr><td style="padding:10px 12px;font-weight:600;color:#374151;">Entreprise</td><td style="padding:10px 12px;color:#111827;">${escapeHtml(company || '—')}</td></tr>
             </table>
 
             <div style="margin-top:24px;padding:16px;background:#e6f5f5;border-radius:8px;border-left:4px solid #066C6C;">
               <p style="margin:0;color:#066C6C;font-weight:600;">✅ Action recommandée</p>
-              <p style="margin:6px 0 0;color:#374151;">Recontacter ${firstName} rapidement suite à sa demande lors de l'événement Odoo.</p>
+              <p style="margin:6px 0 0;color:#374151;">Recontacter ${escapeHtml(firstName)} rapidement suite à sa demande lors de l'événement Odoo.</p>
             </div>
           </div>
         </div>
       `,
     });
 
-    if (error) {
-      console.error('[demo-gratuit-targetym route] Resend error:', JSON.stringify(error));
-      return NextResponse.json({ error: `Erreur envoi email: ${error.message}` }, { status: 500 });
-    }
-    console.log('[demo-gratuit-targetym route] Email sent, id:', data?.id);
     return NextResponse.json({ success: true });
   } catch (err) {
-    const message = err instanceof Error ? err.message : String(err);
-    console.error('[demo-gratuit-targetym route] Exception:', message);
-    return NextResponse.json({ error: `Erreur envoi email: ${message}` }, { status: 500 });
+    console.error('[demo-gratuit-targetym route]', err);
+    return NextResponse.json({ error: 'Erreur lors de l\'envoi.' }, { status: 500 });
   }
 }
