@@ -57,7 +57,7 @@ export default function DemoGratuitTargetymPage() {
         <div className="mx-auto max-w-xl px-4 sm:px-6 lg:px-8 text-center">
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary-100 text-primary-700 rounded-full text-sm font-medium mb-6">
             <Sparkles className="w-4 h-4" />
-            Événement Odoo · Démo gratuite
+            Démo gratuite
           </div>
           <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4 leading-tight">
             Ravis de vous rencontrer !<br />
