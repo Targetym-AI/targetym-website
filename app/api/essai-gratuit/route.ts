@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import nodemailer from 'nodemailer';
+import { Resend } from 'resend';
 import { escapeHtml } from '../../../lib/sanitize';
 
 export async function POST(req: NextRequest) {
@@ -15,18 +15,13 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Champs requis manquants.' }, { status: 400 });
     }
 
-    const transporter = nodemailer.createTransport({
-      host: process.env.SMTP_HOST,
-      port: Number(process.env.SMTP_PORT ?? 587),
-      secure: process.env.SMTP_SECURE === 'true',
-      auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS,
-      },
-    });
+    // Les multi-sélections arrivent sous forme de tableaux → présentation lisible
+    const fmtList = (v: unknown) => (Array.isArray(v) ? v.join(', ') : (v || '—'));
 
-    await transporter.sendMail({
-      from: `"Targetym Website" <${process.env.SMTP_USER}>`,
+    const resend = new Resend(process.env.RESEND_API_KEY);
+
+    const { error } = await resend.emails.send({
+      from: 'Targetym AI <noreply@targetym.ai>',
       to: 'sales@agiltym.com',
       replyTo: email,
       subject: `[Essai Gratuit] ${firstName} ${lastName} — ${company}`,
@@ -59,8 +54,8 @@ export async function POST(req: NextRequest) {
             <h3 style="color:#066C6C;font-size:16px;margin:0 0 16px;">🎯 Qualification commerciale</h3>
             <table style="width:100%;border-collapse:collapse;margin-bottom:24px;">
               <tr style="background:#f9fafb;"><td style="padding:10px 12px;font-weight:600;width:200px;color:#374151;">Outils RH actuels</td><td style="padding:10px 12px;color:#111827;">${escapeHtml(currentTools || '—')}</td></tr>
-              <tr><td style="padding:10px 12px;font-weight:600;color:#374151;">Principaux défis RH</td><td style="padding:10px 12px;color:#111827;">${escapeHtml(mainChallenges || '—')}</td></tr>
-              <tr style="background:#f9fafb;"><td style="padding:10px 12px;font-weight:600;color:#374151;">Objectifs principaux</td><td style="padding:10px 12px;color:#111827;">${escapeHtml(mainObjectives || '—')}</td></tr>
+              <tr><td style="padding:10px 12px;font-weight:600;color:#374151;">Principaux défis RH</td><td style="padding:10px 12px;color:#111827;">${escapeHtml(fmtList(mainChallenges))}</td></tr>
+              <tr style="background:#f9fafb;"><td style="padding:10px 12px;font-weight:600;color:#374151;">Objectifs principaux</td><td style="padding:10px 12px;color:#111827;">${escapeHtml(fmtList(mainObjectives))}</td></tr>
               <tr><td style="padding:10px 12px;font-weight:600;color:#374151;">Source / Comment nous a-t-il connu ?</td><td style="padding:10px 12px;color:#111827;">${escapeHtml(howDidYouHear || '—')}</td></tr>
             </table>
 
@@ -77,6 +72,11 @@ export async function POST(req: NextRequest) {
         </div>
       `,
     });
+
+    if (error) {
+      console.error('[essai-gratuit route] Resend error:', JSON.stringify(error));
+      return NextResponse.json({ error: 'Erreur lors de l\'envoi.' }, { status: 500 });
+    }
 
     return NextResponse.json({ success: true });
   } catch (err) {
