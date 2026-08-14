@@ -3,15 +3,17 @@ import type { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'Conditions Générales de Vente - Targetym AI | SIRH Afrique',
   description:
-    "Conditions Générales de Vente de Targetym AI, le SIRH augmenté par l'IA en Afrique (Sénégal, Côte d'Ivoire), édité par Agiltym SARL. Droit sénégalais et OHADA.",
+    "Conditions Générales de Vente de Targetym AI, le SIRH augmenté par l'IA en Afrique (Sénégal, Côte d'Ivoire, Bénin, Cameroun, Mali), édité par Agiltym SARL. Droit sénégalais et OHADA.",
   keywords: [
     'SIRH en Afrique',
+    'logiciel RH Afrique',
     'meilleure SIRH en Afrique',
     'SIRH au Sénégal',
     "SIRH en Côte d'Ivoire",
-    'logiciel RH Afrique',
+    'SIRH au Mali',
     'SIRH IA',
     'CGV logiciel SIRH',
+    'abonnement SIRH Afrique',
     'Targetym AI',
   ],
 };

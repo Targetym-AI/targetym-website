@@ -4,7 +4,15 @@ import Link from 'next/link';
 
 export const metadata: Metadata = {
   title: 'Carrières — Targetym AI',
-  description: "Rejoignez l'équipe Targetym AI. Construisons ensemble l'avenir des RH en Afrique.",
+  description: "Rejoignez l'équipe Targetym AI, le SIRH n°1 en Afrique (Sénégal, Côte d'Ivoire, Bénin, Cameroun, Mali). Construisons ensemble l'avenir des RH africaines.",
+  keywords: [
+    'emploi Targetym AI',
+    'carrières SIRH Afrique',
+    'logiciel RH Afrique',
+    'emploi tech Sénégal',
+    "emploi tech Côte d'Ivoire",
+    'Targetym AI',
+  ],
 };
 
 const perks = [

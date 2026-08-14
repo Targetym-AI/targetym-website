@@ -14,7 +14,18 @@ import {
 
 export const metadata: Metadata = {
   title: 'Tarifs SIRH IA en Afrique – Plans Targetym AI',
-  description: "Tarifs SIRH IA Targetym AI pour l'Afrique : forfaits flexibles PME et grands groupes. Paie, performance, talents — prix par employé.",
+  description: "Tarifs du meilleur logiciel RH en Afrique : forfaits flexibles pour PME et grands groupes au Sénégal, en Côte d'Ivoire, au Bénin, au Cameroun et au Mali. Paie, performance, talents — prix par employé.",
+  keywords: [
+    'tarif SIRH Afrique',
+    'prix logiciel RH Afrique',
+    'SIRH Sénégal',
+    "SIRH Côte d'Ivoire",
+    'SIRH Bénin',
+    'SIRH Cameroun',
+    'SIRH Mali',
+    'abonnement SIRH Afrique',
+    'Targetym AI',
+  ],
 };
 
 const plans = [

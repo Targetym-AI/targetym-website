@@ -3,15 +3,17 @@ import type { Metadata } from 'next';
 export const metadata: Metadata = {
   title: "Mentions Légales & CGU - Targetym AI | SIRH en Afrique",
   description:
-    "Mentions légales et conditions d'utilisation de Targetym AI, le SIRH augmenté par l'IA en Afrique (Sénégal, Côte d'Ivoire). Conformité droit sénégalais et OHADA.",
+    "Mentions légales et conditions d'utilisation de Targetym AI, le SIRH augmenté par l'IA en Afrique (Sénégal, Côte d'Ivoire, Bénin, Cameroun, Mali). Conformité droit sénégalais et OHADA.",
   keywords: [
     'SIRH en Afrique',
-    'meilleure SIRH en Afrique',
+    'logiciel RH Afrique',
+    'meilleur logiciel RH Afrique',
     'SIRH au Sénégal',
     "SIRH en Côte d'Ivoire",
-    'logiciel RH Afrique',
-    'SIRH IA',
+    'SIRH au Bénin',
+    'SIRH au Cameroun',
     "conditions d'utilisation SIRH",
+    'mentions légales Targetym',
     'Targetym AI',
   ],
 };

@@ -3,15 +3,18 @@ import type { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'Politique de Confidentialité - Targetym AI | SIRH en Afrique',
   description:
-    "Politique de confidentialité de Targetym AI, le SIRH augmenté par l'IA en Afrique (Sénégal, Côte d'Ivoire). Protection de vos données conforme à la Loi n°2008-12.",
+    "Politique de confidentialité de Targetym AI, le SIRH augmenté par l'IA en Afrique (Sénégal, Côte d'Ivoire, Bénin, Cameroun, Mali). Protection de vos données conforme à la Loi n°2008-12.",
   keywords: [
     'SIRH en Afrique',
     'meilleure SIRH en Afrique',
+    'logiciel RH Afrique',
     'SIRH au Sénégal',
     "SIRH en Côte d'Ivoire",
-    'logiciel RH Afrique',
-    'SIRH IA',
-    'protection des données RH',
+    'SIRH au Bénin',
+    'SIRH au Cameroun',
+    'SIRH au Mali',
+    'protection des données RH Afrique',
+    'confidentialité SIRH',
     'Targetym AI',
   ],
 };

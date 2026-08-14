@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
 import {
@@ -26,6 +27,30 @@ import {
   DollarSign,
   Scale
 } from 'lucide-react';
+
+export const metadata: Metadata = {
+  title: "Targetym AI — Meilleur Logiciel RH (SIRH) en Afrique augmenté par l'IA",
+  description: "Targetym AI, le SIRH n°1 en Afrique augmenté par l'IA : utilisé au Sénégal, en Côte d'Ivoire, au Bénin, au Cameroun et au Mali. Recrutement, paie, performance et talents avec 30+ agents IA RH.",
+  keywords: [
+    'logiciel RH Afrique',
+    'meilleur logiciel RH Afrique',
+    'SIRH Afrique',
+    'meilleur SIRH en Afrique',
+    'SIRH Sénégal',
+    "SIRH Côte d'Ivoire",
+    'SIRH Bénin',
+    'SIRH Cameroun',
+    'SIRH Mali',
+    'logiciel de gestion RH Afrique',
+    'plateforme RH Afrique',
+    'ERP RH Afrique',
+    'SIRH IA',
+    'Targetym AI',
+  ],
+  alternates: {
+    canonical: '/',
+  },
+};
 
 const valuePropositions = [
   {
@@ -116,7 +141,7 @@ const differentiators = [
   { icon: Zap, title: "Déploiement Rapide", desc: "Operationnel en quelques jours, pas en mois. Intégration facile avec vos outils existants via API ouverte." },
   { icon: Settings, title: "SIRH Intégrable", desc: "S'adapte à votre écosystème existant. Connectez Targetym AI à vos outils de paie, comptabilite et communication." },
   { icon: Clock, title: "ROI Immédiat", desc: "Réduction mesurable de la charge administrative dès la première semaine d'utilisation." },
-  { icon: Users, title: "Conçu pour l'Afrique et le Monde", desc: "Multi-devises, multi-langues, adapté aux réglementations locales et aux réalités des entreprises africaines." },
+  { icon: Users, title: "Conçu pour l'Afrique et le Monde", desc: "Multi-devises (FCFA/XOF), multi-langues, adapté aux réglementations locales du Sénégal, de la Côte d'Ivoire, du Bénin, du Cameroun, du Mali et de toute l'Afrique francophone." },
 ];
 
 export default function HomePage() {
@@ -151,6 +176,10 @@ export default function HomePage() {
 
           <p className="text-lg sm:text-xl text-white/85 max-w-4xl mx-auto mb-4">
             Targetym AI : avec plus de 30 agents IA RH intégrés, libérer son temps pour le pilotage stratégique n&apos;est pas qu&apos;un objectif – c&apos;est targetymisable.
+          </p>
+
+          <p className="text-sm text-white/60 max-w-2xl mx-auto">
+            Le logiciel RH n°1 en Afrique, déjà utilisé par des entreprises au Sénégal, en Côte d&apos;Ivoire, au Bénin, au Cameroun et au Mali.
           </p>
 
           <div className="flex flex-wrap justify-center gap-6 md:gap-10 mt-10 mb-10">

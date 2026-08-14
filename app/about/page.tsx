@@ -2,8 +2,20 @@ import type { Metadata } from 'next';
 import { Target, Users, Globe, TrendingUp, Lightbulb, Shield } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'À Propos — Targetym AI',
-  description: "Découvrez Targetym AI, la suite SIRH intelligente conçue pour les entreprises africaines. Notre mission, notre vision et notre équipe.",
+  title: 'À Propos — Targetym AI, le Logiciel RH n°1 en Afrique',
+  description: "Découvrez Targetym AI, la suite SIRH intelligente conçue pour les entreprises du Sénégal, de la Côte d'Ivoire, du Bénin, du Cameroun et du Mali. Notre mission, notre vision et notre équipe.",
+  keywords: [
+    'Targetym AI',
+    'logiciel RH Afrique',
+    'SIRH Afrique',
+    'SIRH Sénégal',
+    "SIRH Côte d'Ivoire",
+    'SIRH Bénin',
+    'SIRH Cameroun',
+    'SIRH Mali',
+    'plateforme RH Afrique francophone',
+    'à propos Targetym AI',
+  ],
 };
 
 const DASHBOARD_URL = process.env.NEXT_PUBLIC_DASHBOARD_URL || 'https://dashboard.targetym.ai';
@@ -22,7 +34,7 @@ const values = [
   {
     icon: Globe,
     title: "Ancré en Afrique",
-    desc: "Conçu pour les réalités africaines : devise locale (FCFA/XOF), droit du travail, langues et support en français.",
+    desc: "Conçu pour les réalités africaines : devise locale (FCFA/XOF), droit du travail du Sénégal, de la Côte d'Ivoire, du Bénin, du Cameroun et du Mali, langues et support en français.",
   },
   {
     icon: Shield,
@@ -51,7 +63,7 @@ export default function AboutPage() {
             À Propos de Targetym AI
           </h1>
           <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-            Nous construisons la suite SIRH la plus intelligente pour les entreprises d&apos;Afrique francophone — combinant analytique people, IA et automatisation dans une plateforme unifiée.
+            Nous construisons la suite SIRH la plus intelligente pour les entreprises d&apos;Afrique francophone — Sénégal, Côte d&apos;Ivoire, Bénin, Cameroun, Mali — combinant analytique people, IA et automatisation dans une plateforme unifiée.
           </p>
         </div>
       </section>

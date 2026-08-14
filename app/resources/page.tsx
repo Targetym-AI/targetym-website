@@ -26,9 +26,15 @@ interface ResourcesData {
 }
 
 export const metadata = {
-  title: 'Vidéos tutorielles — Targetym AI',
+  title: 'Vidéos tutorielles — Targetym AI, logiciel RH en Afrique',
   description:
-    'Guides, vidéos et outils pratiques pour moderniser la gestion des ressources humaines avec Targetym AI.',
+    "Guides, vidéos et outils pratiques pour moderniser la gestion des ressources humaines avec Targetym AI, le SIRH IA n°1 en Afrique (Sénégal, Côte d'Ivoire, Bénin, Cameroun, Mali).",
+  keywords: [
+    'tutoriel SIRH Afrique',
+    'guide logiciel RH Afrique',
+    'formation SIRH Sénégal',
+    'Targetym AI',
+  ],
 };
 
 async function fetchResources(): Promise<ResourcesData> {
