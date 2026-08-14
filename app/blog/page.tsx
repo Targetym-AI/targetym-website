@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { Calendar, Tag, ArrowRight, BookOpen, Clock } from 'lucide-react';
+import { SERVER_FETCH_HEADERS } from '@/lib/http';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.targetym.ai';
 
@@ -24,7 +25,10 @@ async function fetchPosts(category?: string): Promise<BlogListResponse> {
   try {
     const params = new URLSearchParams({ limit: '50' });
     if (category) params.append('category', category);
-    const res = await fetch(`${API_URL}/api/public/blog?${params}`, { cache: 'no-store' });
+    const res = await fetch(`${API_URL}/api/public/blog?${params}`, {
+      cache: 'no-store',
+      headers: SERVER_FETCH_HEADERS,
+    });
     if (!res.ok) return { items: [], total: 0 };
     return res.json();
   } catch {
@@ -34,7 +38,10 @@ async function fetchPosts(category?: string): Promise<BlogListResponse> {
 
 async function fetchCategories(): Promise<{ category: string; count: number }[]> {
   try {
-    const res = await fetch(`${API_URL}/api/public/blog/categories`, { cache: 'no-store' });
+    const res = await fetch(`${API_URL}/api/public/blog/categories`, {
+      cache: 'no-store',
+      headers: SERVER_FETCH_HEADERS,
+    });
     if (!res.ok) return [];
     return res.json();
   } catch {

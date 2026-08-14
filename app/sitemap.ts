@@ -1,4 +1,5 @@
 import type { MetadataRoute } from 'next';
+import { SERVER_FETCH_HEADERS } from '@/lib/http';
 
 const BASE_URL = 'https://www.targetym.ai';
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.targetym.ai';
@@ -10,7 +11,10 @@ interface BlogPost {
 
 async function fetchBlogSlugs(): Promise<BlogPost[]> {
   try {
-    const res = await fetch(`${API_URL}/api/public/blog?limit=200`, { cache: 'no-store' });
+    const res = await fetch(`${API_URL}/api/public/blog?limit=100`, {
+      cache: 'no-store',
+      headers: SERVER_FETCH_HEADERS,
+    });
     if (!res.ok) return [];
     const data = await res.json();
     return Array.isArray(data.items) ? data.items : [];

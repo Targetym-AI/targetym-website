@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { FileText, ExternalLink, BookOpen, Layers, Play, GraduationCap } from 'lucide-react';
 import VideoCard from '@/components/VideoCard';
 import WebinarsSection from '@/components/WebinarsSection';
+import { SERVER_FETCH_HEADERS } from '@/lib/http';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.targetym.ai';
 
@@ -41,6 +42,7 @@ async function fetchResources(): Promise<ResourcesData> {
   try {
     const res = await fetch(`${API_URL}/api/public/resources`, {
       cache: 'no-store',
+      headers: SERVER_FETCH_HEADERS,
     });
     if (!res.ok) return { categories: [], resources: [], total: 0 };
     return res.json();
@@ -65,7 +67,10 @@ interface PublicWebinar {
 
 async function fetchWebinars(): Promise<PublicWebinar[]> {
   try {
-    const res = await fetch(`${API_URL}/api/public/webinars`, { cache: 'no-store' });
+    const res = await fetch(`${API_URL}/api/public/webinars`, {
+      cache: 'no-store',
+      headers: SERVER_FETCH_HEADERS,
+    });
     if (!res.ok) return [];
     return res.json();
   } catch {

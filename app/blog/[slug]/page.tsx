@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation';
 import { Calendar, Tag, ArrowLeft, Eye, Clock } from 'lucide-react';
 import BlogSidebar from '@/components/BlogSidebar';
 import type { SidebarPost, SidebarCategory, SidebarAd } from '@/components/BlogSidebar';
+import { SERVER_FETCH_HEADERS } from '@/lib/http';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.targetym.ai';
 
@@ -22,7 +23,10 @@ interface BlogPostFull {
 
 async function fetchPost(slug: string): Promise<BlogPostFull | null> {
   try {
-    const res = await fetch(`${API_URL}/api/public/blog/${slug}`, { cache: 'no-store' });
+    const res = await fetch(`${API_URL}/api/public/blog/${slug}`, {
+      cache: 'no-store',
+      headers: SERVER_FETCH_HEADERS,
+    });
     if (res.status === 404) return null;
     if (!res.ok) return null;
     return res.json();
@@ -33,7 +37,10 @@ async function fetchPost(slug: string): Promise<BlogPostFull | null> {
 
 async function fetchPostsList(): Promise<SidebarPost[]> {
   try {
-    const res = await fetch(`${API_URL}/api/public/blog?limit=50`, { cache: 'no-store' });
+    const res = await fetch(`${API_URL}/api/public/blog?limit=50`, {
+      cache: 'no-store',
+      headers: SERVER_FETCH_HEADERS,
+    });
     if (!res.ok) return [];
     const data = await res.json();
     return data.items ?? [];
@@ -44,7 +51,10 @@ async function fetchPostsList(): Promise<SidebarPost[]> {
 
 async function fetchCategories(): Promise<SidebarCategory[]> {
   try {
-    const res = await fetch(`${API_URL}/api/public/blog/categories`, { cache: 'no-store' });
+    const res = await fetch(`${API_URL}/api/public/blog/categories`, {
+      cache: 'no-store',
+      headers: SERVER_FETCH_HEADERS,
+    });
     if (!res.ok) return [];
     return res.json();
   } catch {
@@ -54,7 +64,10 @@ async function fetchCategories(): Promise<SidebarCategory[]> {
 
 async function fetchBlogAds(): Promise<SidebarAd[]> {
   try {
-    const res = await fetch(`${API_URL}/api/public/blog-ads`, { cache: 'no-store' });
+    const res = await fetch(`${API_URL}/api/public/blog-ads`, {
+      cache: 'no-store',
+      headers: SERVER_FETCH_HEADERS,
+    });
     if (!res.ok) return [];
     return res.json();
   } catch {
