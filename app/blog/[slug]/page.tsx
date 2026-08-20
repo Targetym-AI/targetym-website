@@ -1,8 +1,8 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { notFound } from 'next/navigation';
 import { Calendar, Tag, ArrowLeft, Eye, Clock } from 'lucide-react';
 import BlogSidebar from '@/components/BlogSidebar';
+import BlogPostClientFallback from '@/components/BlogPostClientFallback';
 import type { SidebarPost, SidebarCategory, SidebarAd } from '@/components/BlogSidebar';
 import { SERVER_FETCH_HEADERS } from '@/lib/http';
 
@@ -205,7 +205,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
     fetchBlogAds(),
   ]);
 
-  if (!post) notFound();
+  if (!post) return <BlogPostClientFallback apiUrl={API_URL} slug={params.slug} />;
 
   const tags = post.tags ? post.tags.split(',').map((t) => t.trim()).filter(Boolean) : [];
   const readTime = estimateReadTime(post.content);
