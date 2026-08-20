@@ -102,6 +102,24 @@ const CATEGORY_META: Record<string, { title: string; description: string }> = {
   },
 };
 
+const BLOG_KEYWORDS = [
+  'blog SIRH Afrique',
+  'SIRH Afrique',
+  'logiciel RH Afrique',
+  'SIRH IA',
+  'meilleur SIRH en Afrique',
+  'digitalisation RH Afrique',
+  'gestion RH Afrique',
+  'SIRH Sénégal',
+  "SIRH Côte d'Ivoire",
+  'SIRH Mali',
+  'SIRH Guinée',
+  'SIRH Gabon',
+  'SIRH Congo',
+  'SIRH Comores',
+  'Targetym AI',
+];
+
 function getCategoryMeta(category: string) {
   const upper = category.toUpperCase();
   return CATEGORY_META[upper] ?? CATEGORY_META[category] ?? null;
@@ -115,15 +133,21 @@ export async function generateMetadata({
   const category = searchParams.category;
   if (category) {
     const known = getCategoryMeta(category);
-    if (known) return { ...known, alternates: { canonical: `/blog?category=${encodeURIComponent(category)}` } };
+    if (known) return {
+      ...known,
+      keywords: [...BLOG_KEYWORDS, `articles ${category.toLowerCase()}`],
+      alternates: { canonical: `/blog?category=${encodeURIComponent(category)}` },
+    };
     return {
       title: `Articles ${category} | Blog Targetym AI`,
+      keywords: [...BLOG_KEYWORDS, `articles ${category.toLowerCase()}`],
       description: `Retrouvez tous nos articles sur le thème "${category}" : analyses, conseils et bonnes pratiques RH pour l'Afrique.`,
       alternates: { canonical: `/blog?category=${encodeURIComponent(category)}` },
     };
   }
   return {
     title: 'Blog SIRH & IA RH en Afrique | Targetym AI',
+    keywords: BLOG_KEYWORDS,
     description: "Actualités RH, conseils pratiques et retours d'expérience SIRH et IA pour les entreprises africaines.",
     alternates: { canonical: '/blog' },
   };
