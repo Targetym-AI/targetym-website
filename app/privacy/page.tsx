@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
+import { publicPageMetadata } from '@/lib/seo';
 
-export const metadata: Metadata = {
+export const metadata: Metadata = publicPageMetadata({
   title: 'Politique de Confidentialité - Targetym AI | SIRH en Afrique',
   description:
     "Politique de confidentialité de Targetym AI, le SIRH augmenté par l'IA en Afrique (Sénégal, Côte d'Ivoire, Bénin, Cameroun, Mali). Protection de vos données conforme à la Loi n°2008-12.",
@@ -17,7 +18,8 @@ export const metadata: Metadata = {
     'confidentialité SIRH',
     'Targetym AI',
   ],
-};
+  path: '/privacy',
+});
 
 const lastUpdated = 'Avril 2026';
 

@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
+import { publicPageMetadata } from '@/lib/seo';
 
-export const metadata: Metadata = {
+export const metadata: Metadata = publicPageMetadata({
   title: "Mentions Légales & CGU - Targetym AI | SIRH en Afrique",
   description:
     "Mentions légales et conditions d'utilisation de Targetym AI, le SIRH augmenté par l'IA en Afrique (Sénégal, Côte d'Ivoire, Bénin, Cameroun, Mali). Conformité droit sénégalais et OHADA.",
@@ -16,7 +17,8 @@ export const metadata: Metadata = {
     'mentions légales Targetym',
     'Targetym AI',
   ],
-};
+  path: '/terms',
+});
 
 const lastUpdated = 'Avril 2026';
 

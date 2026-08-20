@@ -1,8 +1,9 @@
 import type { Metadata } from 'next';
 import { Rocket, Heart, Zap, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
+import { publicPageMetadata } from '@/lib/seo';
 
-export const metadata: Metadata = {
+export const metadata: Metadata = publicPageMetadata({
   title: 'Carrières — Targetym AI',
   description: "Rejoignez l'équipe Targetym AI, le SIRH n°1 en Afrique (Sénégal, Côte d'Ivoire, Bénin, Cameroun, Mali). Construisons ensemble l'avenir des RH africaines.",
   keywords: [
@@ -13,7 +14,8 @@ export const metadata: Metadata = {
     "emploi tech Côte d'Ivoire",
     'Targetym AI',
   ],
-};
+  path: '/careers',
+});
 
 const perks = [
   {

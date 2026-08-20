@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
+import { publicPageMetadata } from '@/lib/seo';
 
-export const metadata: Metadata = {
+export const metadata: Metadata = publicPageMetadata({
   title: 'Contact Targetym AI – SIRH & Logiciel RH en Afrique',
   description: "Contactez Targetym AI pour découvrir le meilleur logiciel RH en Afrique. Démos, devis et accompagnement pour vos RH au Sénégal, en Côte d'Ivoire, au Bénin, au Cameroun et au Mali.",
   keywords: [
@@ -14,7 +15,8 @@ export const metadata: Metadata = {
     'démo SIRH Afrique',
     'Targetym AI',
   ],
-};
+  path: '/contact',
+});
 
 export default function ContactLayout({ children }: { children: React.ReactNode }) {
   return <>{children}</>;

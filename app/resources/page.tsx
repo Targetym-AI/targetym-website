@@ -4,6 +4,7 @@ import { FileText, ExternalLink, BookOpen, Layers, Play, GraduationCap } from 'l
 import VideoCard from '@/components/VideoCard';
 import WebinarsSection from '@/components/WebinarsSection';
 import { SERVER_FETCH_HEADERS } from '@/lib/http';
+import { publicPageMetadata } from '@/lib/seo';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.targetym.ai';
 
@@ -26,7 +27,7 @@ interface ResourcesData {
   total: number;
 }
 
-export const metadata = {
+export const metadata = publicPageMetadata({
   title: 'Vidéos tutorielles — Targetym AI, logiciel RH en Afrique',
   description:
     "Guides, vidéos et outils pratiques pour moderniser la gestion des ressources humaines avec Targetym AI, le SIRH IA n°1 en Afrique (Sénégal, Côte d'Ivoire, Bénin, Cameroun, Mali).",
@@ -36,7 +37,8 @@ export const metadata = {
     'formation SIRH Sénégal',
     'Targetym AI',
   ],
-};
+  path: '/resources',
+});
 
 async function fetchResources(): Promise<ResourcesData> {
   try {

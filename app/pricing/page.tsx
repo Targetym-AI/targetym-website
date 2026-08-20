@@ -11,8 +11,9 @@ import {
   Users,
   Building2
 } from 'lucide-react';
+import { publicPageMetadata } from '@/lib/seo';
 
-export const metadata: Metadata = {
+export const metadata: Metadata = publicPageMetadata({
   title: 'Tarifs SIRH IA en Afrique – Plans Targetym AI',
   description: "Tarifs du meilleur logiciel RH en Afrique : forfaits flexibles pour PME et grands groupes au Sénégal, en Côte d'Ivoire, au Bénin, au Cameroun et au Mali. Paie, performance, talents — prix par employé.",
   keywords: [
@@ -26,7 +27,8 @@ export const metadata: Metadata = {
     'abonnement SIRH Afrique',
     'Targetym AI',
   ],
-};
+  path: '/pricing',
+});
 
 const plans = [
   {

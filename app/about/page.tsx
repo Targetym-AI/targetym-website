@@ -1,7 +1,8 @@
 import type { Metadata } from 'next';
 import { Target, Users, Globe, TrendingUp, Lightbulb, Shield } from 'lucide-react';
+import { publicPageMetadata } from '@/lib/seo';
 
-export const metadata: Metadata = {
+export const metadata: Metadata = publicPageMetadata({
   title: 'À Propos — Targetym AI, le Logiciel RH n°1 en Afrique',
   description: "Découvrez Targetym AI, la suite SIRH intelligente conçue pour les entreprises du Sénégal, de la Côte d'Ivoire, du Bénin, du Cameroun et du Mali. Notre mission, notre vision et notre équipe.",
   keywords: [
@@ -16,7 +17,8 @@ export const metadata: Metadata = {
     'plateforme RH Afrique francophone',
     'à propos Targetym AI',
   ],
-};
+  path: '/about',
+});
 
 const DASHBOARD_URL = process.env.NEXT_PUBLIC_DASHBOARD_URL || 'https://dashboard.targetym.ai';
 

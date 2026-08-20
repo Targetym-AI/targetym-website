@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
+import { publicPageMetadata } from '@/lib/seo';
 
-export const metadata: Metadata = {
+export const metadata: Metadata = publicPageMetadata({
   title: 'Conditions Générales de Vente - Targetym AI | SIRH Afrique',
   description:
     "Conditions Générales de Vente de Targetym AI, le SIRH augmenté par l'IA en Afrique (Sénégal, Côte d'Ivoire, Bénin, Cameroun, Mali), édité par Agiltym SARL. Droit sénégalais et OHADA.",
@@ -16,7 +17,8 @@ export const metadata: Metadata = {
     'abonnement SIRH Afrique',
     'Targetym AI',
   ],
-};
+  path: '/cgv',
+});
 
 const lastUpdated = 'Juin 2026';
 

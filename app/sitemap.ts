@@ -9,6 +9,16 @@ interface BlogPost {
   published_at: string | null;
 }
 
+// Maintient les articles déjà publiés dans le sitemap si Cloudflare refuse le
+// fetch Vercel. Les nouveaux articles continuent de provenir automatiquement
+// de l'API dès que cette protection est levée.
+const FALLBACK_BLOG_POSTS: BlogPost[] = [
+  { slug: 'les-20-fonctionnalites-inedites-de-targetym-ai-sirh-32-autres-a-decouvrir', published_at: '2026-04-28T11:14:46.788858Z' },
+  { slug: 'digitaliser-les-processus-rh-comment-sortir-du-chaos-du-jonglage-entre-plusieurs-outils', published_at: '2026-04-28T10:54:00.866274Z' },
+  { slug: 'construire-un-outil-sirh-toutes-les-fonctionnalites-sont-elles-vraiment-pertinentes', published_at: '2026-04-28T10:45:38.777272Z' },
+  { slug: 'votre-management-rh-est-il-mature-pour-un-sirh-complet', published_at: '2026-04-28T10:38:42.828156Z' },
+];
+
 async function fetchBlogSlugs(): Promise<BlogPost[]> {
   try {
     const res = await fetch(`${API_URL}/api/public/blog?limit=100`, {
@@ -39,7 +49,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${BASE_URL}/cgv`, changeFrequency: 'yearly', priority: 0.3 },
   ];
 
-  const posts = await fetchBlogSlugs();
+  const apiPosts = await fetchBlogSlugs();
+  const posts = Array.from(
+    new Map([...FALLBACK_BLOG_POSTS, ...apiPosts].map((post) => [post.slug, post])).values(),
+  );
   const blogRoutes: MetadataRoute.Sitemap = posts.map((post) => ({
     url: `${BASE_URL}/blog/${post.slug}`,
     lastModified: post.published_at ? new Date(post.published_at) : undefined,

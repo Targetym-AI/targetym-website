@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
+import { publicPageMetadata } from '@/lib/seo';
 
-export const metadata: Metadata = {
+export const metadata: Metadata = publicPageMetadata({
   title: 'Solutions SIRH & Agents IA RH en Afrique | Targetym AI',
   description: "Découvrez les solutions du meilleur logiciel RH en Afrique : recrutement, paie, performance, OKR, talents et people analytics — pour les entreprises du Sénégal, de Côte d'Ivoire et d'Afrique francophone.",
   keywords: [
@@ -15,7 +16,8 @@ export const metadata: Metadata = {
     'logiciel paie Afrique',
     'logiciel recrutement Afrique',
   ],
-};
+  path: '/solutions',
+});
 
 export default function SolutionsLayout({ children }: { children: React.ReactNode }) {
   return <>{children}</>;
