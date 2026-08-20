@@ -115,15 +115,17 @@ export async function generateMetadata({
   const category = searchParams.category;
   if (category) {
     const known = getCategoryMeta(category);
-    if (known) return known;
+    if (known) return { ...known, alternates: { canonical: `/blog?category=${encodeURIComponent(category)}` } };
     return {
       title: `Articles ${category} | Blog Targetym AI`,
       description: `Retrouvez tous nos articles sur le thème "${category}" : analyses, conseils et bonnes pratiques RH pour l'Afrique.`,
+      alternates: { canonical: `/blog?category=${encodeURIComponent(category)}` },
     };
   }
   return {
     title: 'Blog SIRH & IA RH en Afrique | Targetym AI',
     description: "Actualités RH, conseils pratiques et retours d'expérience SIRH et IA pour les entreprises africaines.",
+    alternates: { canonical: '/blog' },
   };
 }
 

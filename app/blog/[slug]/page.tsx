@@ -182,14 +182,33 @@ function truncateDescription(text: string | null | undefined): string | undefine
   return text.slice(0, maxLength - 1).trimEnd() + '…';
 }
 
+function titleFromSlug(slug: string): string {
+  return slug
+    .split('-')
+    .filter(Boolean)
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+}
+
 export async function generateMetadata({ params }: { params: { slug: string } }) {
   const post = await fetchPost(params.slug);
-  if (!post) return { title: 'Article introuvable | Targetym AI' };
+  const canonical = `/blog/${encodeURIComponent(params.slug)}`;
+  if (!post) {
+    const title = titleFromSlug(params.slug);
+    return {
+      title: buildBlogTitle(title),
+      description: 'Découvrez cet article du blog Targetym AI sur le SIRH, la gestion RH et la digitalisation des entreprises africaines.',
+      alternates: { canonical },
+    };
+  }
   const description = truncateDescription(post.excerpt);
   return {
     title: buildBlogTitle(post.title),
     description,
+    alternates: { canonical },
     openGraph: {
+      type: 'article',
+      url: canonical,
       title: post.title,
       description,
       images: post.cover_image_url ? [post.cover_image_url] : [],
@@ -209,9 +228,36 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
 
   const tags = post.tags ? post.tags.split(',').map((t) => t.trim()).filter(Boolean) : [];
   const readTime = estimateReadTime(post.content);
+  const articleJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: post.title,
+    description: post.excerpt ?? undefined,
+    image: post.cover_image_url ? [mediaUrl(post.cover_image_url)] : undefined,
+    datePublished: post.published_at ?? undefined,
+    dateModified: post.published_at ?? undefined,
+    mainEntityOfPage: `https://www.targetym.ai/blog/${encodeURIComponent(post.slug)}`,
+    author: {
+      '@type': 'Organization',
+      name: 'Targetym AI',
+      url: 'https://www.targetym.ai/about',
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: 'Targetym AI',
+      logo: {
+        '@type': 'ImageObject',
+        url: 'https://www.targetym.ai/logo-targetym.png',
+      },
+    },
+  };
 
   return (
     <div className="bg-white">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd).replace(/</g, '\\u003c') }}
+      />
       {/* ── Barre de navigation sticky ── */}
       <div className="border-b border-gray-100 bg-white sticky top-0 z-10">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between">

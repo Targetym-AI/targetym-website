@@ -69,9 +69,30 @@ export default function BlogPostClientFallback({ apiUrl, slug }: Props) {
 
   const imageUrl = post.cover_image_url?.startsWith('/') ? `${apiUrl}${post.cover_image_url}` : post.cover_image_url;
   const tags = post.tags?.split(',').map((tag) => tag.trim()).filter(Boolean) ?? [];
+  const articleUrl = `https://www.targetym.ai/blog/${encodeURIComponent(slug)}`;
+  const articleJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: post.title,
+    description: post.excerpt ?? undefined,
+    image: imageUrl ? [imageUrl] : undefined,
+    datePublished: post.published_at ?? undefined,
+    dateModified: post.published_at ?? undefined,
+    mainEntityOfPage: articleUrl,
+    author: { '@type': 'Organization', name: 'Targetym AI', url: 'https://www.targetym.ai/about' },
+    publisher: {
+      '@type': 'Organization',
+      name: 'Targetym AI',
+      logo: { '@type': 'ImageObject', url: 'https://www.targetym.ai/logo-targetym.png' },
+    },
+  };
 
   return (
     <div className="bg-white">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd).replace(/</g, '\\u003c') }}
+      />
       <div className="border-b border-gray-100 bg-white sticky top-0 z-10">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-3">
           <Link href="/blog" className="inline-flex items-center gap-1.5 text-xs text-gray-500 hover:text-primary-600 transition-colors font-medium">
