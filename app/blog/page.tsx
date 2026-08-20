@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { Calendar, Tag, ArrowRight, BookOpen, Clock } from 'lucide-react';
 import { SERVER_FETCH_HEADERS } from '@/lib/http';
+import BlogClientFallback from '@/components/BlogClientFallback';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.targetym.ai';
 
@@ -194,11 +195,7 @@ export default async function BlogPage({ searchParams }: { searchParams: { categ
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
 
           {posts.length === 0 ? (
-            <div className="flex flex-col items-center justify-center py-28 text-gray-300">
-              <BookOpen className="w-10 h-10 mb-3" />
-              <p className="text-sm font-medium text-gray-400">Aucun article pour le moment</p>
-              <p className="text-xs text-gray-400 mt-1">Revenez bientôt !</p>
-            </div>
+            <BlogClientFallback apiUrl={API_URL} />
           ) : (
             <>
               {/* Article à la une */}
