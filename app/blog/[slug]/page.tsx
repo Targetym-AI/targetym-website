@@ -190,6 +190,43 @@ function titleFromSlug(slug: string): string {
     .join(' ');
 }
 
+function blogKeywords(title: string, category?: string | null): string[] {
+  const normalized = `${title} ${category ?? ''}`.toLocaleLowerCase('fr-FR');
+  const keywords = [
+    title,
+    'Targetym AI',
+    'SIRH Afrique',
+    'logiciel RH Afrique',
+    'SIRH IA',
+    'meilleur SIRH en Afrique',
+    'SIRH Sénégal',
+    "logiciel RH Côte d'Ivoire",
+    'SIRH Mali',
+    'SIRH Guinée',
+    'SIRH Gabon',
+    'SIRH Congo',
+    'SIRH Comores',
+  ];
+
+  if (/recrut|candidat|onboard/.test(normalized)) {
+    keywords.push('recrutement RH Afrique', 'onboarding digital', 'scoring IA des candidats');
+  }
+  if (/performance|okr|management|évaluation/.test(normalized)) {
+    keywords.push('performance RH', 'OKR', 'évaluation de performance 360');
+  }
+  if (/paie|rémunération|salaire/.test(normalized)) {
+    keywords.push('logiciel de paie Afrique', 'gestion de la rémunération');
+  }
+  if (/formation|talent|compétence|carrière/.test(normalized)) {
+    keywords.push('gestion des talents', 'formation RH', 'matrice 9-Box');
+  }
+  if (/digital|outil|process|sirh/.test(normalized)) {
+    keywords.push('digitalisation RH', 'automatisation RH', 'gestion du personnel');
+  }
+
+  return Array.from(new Set(keywords));
+}
+
 export async function generateMetadata({ params }: { params: { slug: string } }) {
   const post = await fetchPost(params.slug);
   const canonical = `/blog/${encodeURIComponent(params.slug)}`;
@@ -198,6 +235,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
     return {
       title: buildBlogTitle(title),
       description: 'Découvrez cet article du blog Targetym AI sur le SIRH, la gestion RH et la digitalisation des entreprises africaines.',
+      keywords: blogKeywords(title),
       alternates: { canonical },
     };
   }
@@ -205,6 +243,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   return {
     title: buildBlogTitle(post.title),
     description,
+    keywords: blogKeywords(post.title, post.category),
     alternates: { canonical },
     openGraph: {
       type: 'article',
