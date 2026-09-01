@@ -8,7 +8,10 @@ import { Lock, Mail, Eye, EyeOff, Loader2, Building2, Phone, CheckCircle, Clock,
 import { getAuthErrorMessage } from '@/lib/error-messages';
 
 // URL de ton API Railway
-const API_URL = (process.env.NEXT_PUBLIC_API_URL || 'https://api.targetym.ai').replace(/^http:\/\//, 'https://');
+// TLS forcé partout, SAUF pour un hôte local — même règle que
+// targetym-dashboard/lib/apiUrl.ts (resolveApiUrl).
+const API_URL = (process.env.NEXT_PUBLIC_API_URL || 'https://api.targetym.ai')
+  .replace(/^http:\/\/(?!localhost|127\.0\.0\.1|\[::1\])/, 'https://');
 const DASHBOARD_URL = process.env.NEXT_PUBLIC_DASHBOARD_URL || 'https://dashboard.targetym.ai';
 
 function getRequestedDashboardDestination(requestedPath: string | null): string | null {

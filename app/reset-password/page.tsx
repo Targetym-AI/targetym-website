@@ -6,7 +6,10 @@ import { useSearchParams } from 'next/navigation';
 import { Lock, Loader2, Eye, EyeOff, CheckCircle, ArrowLeft, AlertTriangle } from 'lucide-react';
 import { getAuthErrorMessage } from '@/lib/error-messages';
 
-const API_URL = (process.env.NEXT_PUBLIC_API_URL || 'https://api.targetym.ai').replace(/^http:\/\//, 'https://');
+// TLS force partout, SAUF pour un hote local - meme regle que
+// targetym-dashboard/lib/apiUrl.ts (resolveApiUrl).
+const API_URL = (process.env.NEXT_PUBLIC_API_URL || 'https://api.targetym.ai')
+  .replace(/^http:\/\/(?!localhost|127\.0\.0\.1|\[::1\])/, 'https://');
 
 function ResetPasswordForm() {
   const searchParams = useSearchParams();
