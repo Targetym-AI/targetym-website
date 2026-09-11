@@ -4,7 +4,7 @@ import { useState, useRef, Suspense, useEffect, useCallback, type PointerEvent a
 import Link from 'next/link';
 import Image from 'next/image';
 import { useSearchParams } from 'next/navigation';
-import { Lock, Mail, Eye, EyeOff, Loader2, Building2, Phone, CheckCircle, Clock, Users, ArrowLeft, ArrowRight, Sparkles, BarChart3, Download, Bot, ShieldCheck, CalendarCheck, ClipboardCheck, UserPlus, Handshake, Star, GraduationCap, Target, ScanLine, CalendarDays, Banknote, Scale } from 'lucide-react';
+import { Lock, Mail, Eye, EyeOff, Loader2, Building2, Phone, CheckCircle, Clock, Users, ArrowLeft, ArrowRight, Sparkles, BarChart3, Download, Bot, ShieldCheck, CalendarCheck, ClipboardCheck, UserPlus, Handshake, Star, GraduationCap, Target, ScanLine, CalendarDays, Banknote, Scale, Copy, KeyRound } from 'lucide-react';
 import { getAuthErrorMessage } from '@/lib/error-messages';
 
 // URL de ton API Railway
@@ -290,8 +290,15 @@ function LoginForm() {
   const [needsSetup, setNeedsSetup] = useState(false);
   const [tempToken, setTempToken] = useState('');
   const [qrCode, setQrCode] = useState('');
+  const [manualSecret, setManualSecret] = useState('');
   const [otpCode, setOtpCode] = useState(['', '', '', '', '', '']);
   const [verifying2FA, setVerifying2FA] = useState(false);
+  const [recoveryMode, setRecoveryMode] = useState(false);
+  const [recoveryCode, setRecoveryCode] = useState('');
+  const [generatedRecoveryCodes, setGeneratedRecoveryCodes] = useState<string[]>([]);
+  const [recoveryCodesSaved, setRecoveryCodesSaved] = useState(false);
+  const [completedUserRole, setCompletedUserRole] = useState<string | undefined>();
+  const [copied2FAValue, setCopied2FAValue] = useState<'secret' | 'codes' | null>(null);
   const otpRefs = useRef<(HTMLInputElement | null)[]>([]);
 
   // Setup 2FA (fetch QR code)
@@ -307,6 +314,7 @@ function LoginForm() {
       if (res.ok) {
         const data = await res.json();
         setQrCode(data.qr_code_base64);
+        setManualSecret(data.secret);
       } else {
         setError('Erreur lors de la configuration 2FA');
       }
@@ -314,6 +322,16 @@ function LoginForm() {
       setError(getAuthErrorMessage(err));
     }
   }, []);
+
+  const copy2FAValue = async (value: string, target: 'secret' | 'codes') => {
+    try {
+      await navigator.clipboard.writeText(value);
+      setCopied2FAValue(target);
+      window.setTimeout(() => setCopied2FAValue(null), 2000);
+    } catch {
+      setError('Copie impossible. Sélectionnez le texte manuellement.');
+    }
+  };
 
   // Auto-setup when entering 2FA step with needs_setup
   useEffect(() => {
@@ -386,6 +404,12 @@ function LoginForm() {
         throw new Error(data.detail || 'Code invalide');
       }
 
+      if (data.recovery_codes?.length) {
+        setGeneratedRecoveryCodes(data.recovery_codes);
+        setCompletedUserRole(data.user?.role);
+        return;
+      }
+
       // Le refresh token reste dans le cookie HTTP-only de l'API. Aucun JWT
       // ne transite dans l'URL ou dans le stockage JavaScript.
       window.location.href = getDashboardDestination(data.user?.role, requestedDashboardPath);
@@ -393,6 +417,42 @@ function LoginForm() {
       setError(getAuthErrorMessage(err, responseStatus));
       setOtpCode(['', '', '', '', '', '']);
       otpRefs.current[0]?.focus();
+    } finally {
+      setVerifying2FA(false);
+    }
+  };
+
+  const recover2FA = async () => {
+    if (recoveryCode.replace(/[^A-Za-z2-7]/g, '').length !== 12) {
+      setError('Saisissez un code de récupération complet.');
+      return;
+    }
+
+    setVerifying2FA(true);
+    setError('');
+    try {
+      const res = await fetch(`${API_URL}/api/auth/2fa/recover`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${tempToken}`,
+        },
+        body: JSON.stringify({ code: recoveryCode }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.detail || 'Code de récupération invalide');
+      }
+
+      setTempToken(data.temp_token);
+      setNeedsSetup(true);
+      setRecoveryMode(false);
+      setRecoveryCode('');
+      setQrCode('');
+      setManualSecret('');
+      setOtpCode(['', '', '', '', '', '']);
+    } catch (err) {
+      setError(getAuthErrorMessage(err));
     } finally {
       setVerifying2FA(false);
     }
@@ -545,12 +605,20 @@ function LoginForm() {
               <div className="targetym-auth-card p-6 sm:p-8">
                 <div className="targetym-auth-heading mb-8">
                   <h2 className="text-3xl font-bold text-slate-900 mb-2">
-                    Vérification en deux étapes
+                    {generatedRecoveryCodes.length > 0
+                      ? 'Conservez vos codes de récupération'
+                      : recoveryMode
+                        ? 'Récupérer votre accès'
+                        : 'Vérification en deux étapes'}
                   </h2>
                   <p className="text-slate-600">
-                    {needsSetup
-                      ? "Configurez votre application d'authentification"
-                      : "Entrez le code de votre application d'authentification"}
+                    {generatedRecoveryCodes.length > 0
+                      ? 'Ils permettront de remplacer un téléphone perdu.'
+                      : recoveryMode
+                        ? 'Utilisez un des codes enregistrés lors de l’activation.'
+                        : needsSetup
+                          ? "Configurez votre application d'authentification"
+                          : "Entrez le code de votre application d'authentification"}
                   </p>
                 </div>
 
@@ -561,85 +629,194 @@ function LoginForm() {
                   </div>
                 )}
 
-                {/* QR Code setup */}
-                {needsSetup && (
-                  <div className="mb-6">
-                    <div className="bg-slate-50 rounded-xl p-4 mb-4">
-                      <h3 className="text-sm font-semibold text-slate-900 mb-2">Instructions :</h3>
-                      <ol className="text-sm text-slate-600 space-y-1.5 list-decimal list-inside">
-                        <li>Ouvrez <strong>Google Authenticator</strong>, <strong>Authy</strong> ou une autre app TOTP</li>
-                        <li>Scannez le QR code ci-dessous</li>
-                        <li>Entrez le code à 6 chiffres affiché</li>
-                      </ol>
+                {generatedRecoveryCodes.length > 0 ? (
+                  <>
+                    <div className="rounded-xl border border-amber-200 bg-amber-50 p-4">
+                      <p className="text-sm text-amber-900">
+                        Stockez ces codes hors de votre téléphone. Un code utilisé invalidera
+                        toute la liste et vous demandera d&apos;enrôler un nouveau téléphone.
+                      </p>
+                      <div className="mt-4 grid grid-cols-2 gap-2">
+                        {generatedRecoveryCodes.map((code) => (
+                          <code key={code} className="rounded-md border border-amber-200 bg-white px-2 py-2 text-center text-xs font-semibold text-slate-900">
+                            {code}
+                          </code>
+                        ))}
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => copy2FAValue(generatedRecoveryCodes.join('\n'), 'codes')}
+                        className="mt-3 flex w-full items-center justify-center gap-2 rounded-lg border border-amber-300 bg-white py-2 text-sm font-medium text-amber-900 hover:bg-amber-100"
+                      >
+                        {copied2FAValue === 'codes' ? <CheckCircle className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
+                        {copied2FAValue === 'codes' ? 'Codes copiés' : 'Copier tous les codes'}
+                      </button>
                     </div>
-                    <div className="flex justify-center p-4 bg-white border-2 border-slate-200 rounded-xl">
-                      {qrCode ? (
-                        <img src={qrCode} alt="QR Code 2FA" className="w-48 h-48" />
-                      ) : (
-                        <div className="w-48 h-48 flex items-center justify-center">
-                          <Loader2 className="w-8 h-8 text-primary-500 animate-spin" />
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                )}
-
-                {/* Saisie OTP */}
-                <div className="mb-6">
-                  <label className="block text-sm font-semibold text-slate-900 mb-3 text-center">
-                    Code à 6 chiffres
-                  </label>
-                  <div className="flex justify-center gap-2" onPaste={handleOtpPaste}>
-                    {otpCode.map((digit, i) => (
+                    <label className="mt-4 flex items-start gap-2 text-sm text-slate-700">
                       <input
-                        key={i}
-                        ref={(el) => { otpRefs.current[i] = el; }}
-                        type="text"
-                        inputMode="numeric"
-                        maxLength={1}
-                        value={digit}
-                        onChange={(e) => handleOtpChange(i, e.target.value)}
-                        onKeyDown={(e) => handleOtpKeyDown(i, e)}
-                        className="w-11 h-14 text-center text-xl font-bold bg-slate-50 border-2 border-slate-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all"
-                        autoFocus={i === 0}
+                        type="checkbox"
+                        checked={recoveryCodesSaved}
+                        onChange={(event) => setRecoveryCodesSaved(event.target.checked)}
+                        className="mt-0.5 h-4 w-4 rounded border-slate-300 text-primary-600"
                       />
-                    ))}
-                  </div>
-                </div>
+                      J&apos;ai enregistré ces codes dans un endroit sûr.
+                    </label>
+                    <button
+                      type="button"
+                      disabled={!recoveryCodesSaved}
+                      onClick={() => {
+                        window.location.href = getDashboardDestination(
+                          completedUserRole,
+                          requestedDashboardPath,
+                        );
+                      }}
+                      className="mt-4 flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-primary-500 font-semibold text-white hover:bg-primary-600 disabled:opacity-50"
+                    >
+                      Continuer vers mon espace
+                      <ArrowRight className="h-4 w-4" />
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    {/* QR Code setup */}
+                    {needsSetup && !recoveryMode && (
+                      <div className="mb-6">
+                        <div className="bg-slate-50 rounded-xl p-4 mb-4">
+                          <h3 className="text-sm font-semibold text-slate-900 mb-2">Instructions :</h3>
+                          <ol className="text-sm text-slate-600 space-y-1.5 list-decimal list-inside">
+                            <li>Ouvrez <strong>Google Authenticator</strong>, <strong>Authy</strong> ou une autre app TOTP</li>
+                            <li>Scannez le QR code ou saisissez la clé manuelle</li>
+                            <li>Entrez le code à 6 chiffres affiché</li>
+                          </ol>
+                        </div>
+                        <div className="flex justify-center p-4 bg-white border-2 border-slate-200 rounded-xl">
+                          {qrCode ? (
+                            <img src={qrCode} alt="QR Code 2FA" className="w-48 h-48" />
+                          ) : (
+                            <div className="w-48 h-48 flex items-center justify-center">
+                              <Loader2 className="w-8 h-8 text-primary-500 animate-spin" />
+                            </div>
+                          )}
+                        </div>
+                        {manualSecret && (
+                          <div className="mt-4 rounded-xl border border-slate-200 bg-slate-50 p-3">
+                            <p className="mb-2 text-xs font-medium text-slate-700">
+                              Impossible de scanner ? Dans l&apos;application, choisissez
+                              « Saisir une clé de configuration » puis « Basé sur l&apos;heure ».
+                            </p>
+                            <div className="flex items-center gap-2 rounded-lg border border-slate-200 bg-white p-2">
+                              <code className="min-w-0 flex-1 break-all text-xs font-semibold tracking-wider text-slate-900">
+                                {manualSecret.match(/.{1,4}/g)?.join(' ')}
+                              </code>
+                              <button
+                                type="button"
+                                onClick={() => copy2FAValue(manualSecret, 'secret')}
+                                className="shrink-0 rounded-md p-2 text-primary-600 hover:bg-primary-50"
+                                title="Copier la clé manuelle"
+                              >
+                                {copied2FAValue === 'secret' ? <CheckCircle className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
+                              </button>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    )}
 
-                {/* Bouton vérifier */}
-                <button
-                  onClick={verify2FA}
-                  disabled={verifying2FA || otpCode.join('').length !== 6}
-                  className="w-full h-11 sm:h-12 bg-primary-500 hover:bg-primary-600 text-white font-semibold rounded-lg sm:rounded-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 group shadow-lg hover:shadow-xl"
-                >
-                  {verifying2FA ? (
-                    <>
-                      <Loader2 className="w-5 h-5 animate-spin" />
-                      Vérification...
-                    </>
-                  ) : (
-                    <>
-                      Vérifier
-                      <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                    </>
-                  )}
-                </button>
+                    {recoveryMode ? (
+                      <div className="mb-6">
+                        <label className="mb-2 block text-sm font-semibold text-slate-900">
+                          Code de récupération
+                        </label>
+                        <input
+                          type="text"
+                          value={recoveryCode}
+                          onChange={(event) => setRecoveryCode(event.target.value.toUpperCase())}
+                          placeholder="XXXX-XXXX-XXXX"
+                          autoComplete="one-time-code"
+                          className="w-full rounded-xl border-2 border-slate-300 bg-slate-50 px-4 py-3 text-center font-mono text-lg tracking-wider outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500"
+                        />
+                        <p className="mt-2 text-xs text-slate-500">
+                          Après validation, vous devrez immédiatement configurer le nouveau téléphone.
+                        </p>
+                      </div>
+                    ) : (
+                      <div className="mb-6">
+                        <label className="block text-sm font-semibold text-slate-900 mb-3 text-center">
+                          Code à 6 chiffres
+                        </label>
+                        <div className="flex justify-center gap-2" onPaste={handleOtpPaste}>
+                          {otpCode.map((digit, i) => (
+                            <input
+                              key={i}
+                              ref={(el) => { otpRefs.current[i] = el; }}
+                              type="text"
+                              inputMode="numeric"
+                              maxLength={1}
+                              value={digit}
+                              onChange={(e) => handleOtpChange(i, e.target.value)}
+                              onKeyDown={(e) => handleOtpKeyDown(i, e)}
+                              className="w-11 h-14 text-center text-xl font-bold bg-slate-50 border-2 border-slate-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all"
+                              autoFocus={i === 0}
+                            />
+                          ))}
+                        </div>
+                      </div>
+                    )}
 
-                {/* Retour */}
-                <button
-                  onClick={() => {
-                    setTwoFactorStep(false);
-                    setTempToken('');
-                    setQrCode('');
-                    setOtpCode(['', '', '', '', '', '']);
-                    setError('');
-                  }}
-                  className="w-full mt-4 py-2 text-sm text-slate-500 hover:text-slate-700 flex items-center justify-center gap-1 transition-colors"
-                >
-                  <ArrowLeft className="w-4 h-4" />
-                  Retour à la connexion
-                </button>
+                    <button
+                      onClick={recoveryMode ? recover2FA : verify2FA}
+                      disabled={verifying2FA || (
+                        recoveryMode
+                          ? recoveryCode.replace(/[^A-Za-z2-7]/g, '').length !== 12
+                          : otpCode.join('').length !== 6
+                      )}
+                      className="w-full h-11 sm:h-12 bg-primary-500 hover:bg-primary-600 text-white font-semibold rounded-lg sm:rounded-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 group shadow-lg hover:shadow-xl"
+                    >
+                      {verifying2FA ? (
+                        <>
+                          <Loader2 className="w-5 h-5 animate-spin" />
+                          Vérification...
+                        </>
+                      ) : (
+                        <>
+                          {recoveryMode ? 'Valider et changer de téléphone' : 'Vérifier'}
+                          <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                        </>
+                      )}
+                    </button>
+
+                    {!needsSetup && (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setRecoveryMode(!recoveryMode);
+                          setError('');
+                        }}
+                        className="mt-4 flex w-full items-center justify-center gap-2 py-2 text-sm font-medium text-primary-600 hover:text-primary-700"
+                      >
+                        <KeyRound className="h-4 w-4" />
+                        {recoveryMode ? 'Utiliser mon application' : 'Téléphone perdu ? Utiliser un code de récupération'}
+                      </button>
+                    )}
+
+                    <button
+                      onClick={() => {
+                        setTwoFactorStep(false);
+                        setTempToken('');
+                        setQrCode('');
+                        setManualSecret('');
+                        setOtpCode(['', '', '', '', '', '']);
+                        setRecoveryMode(false);
+                        setRecoveryCode('');
+                        setError('');
+                      }}
+                      className="w-full mt-2 py-2 text-sm text-slate-500 hover:text-slate-700 flex items-center justify-center gap-1 transition-colors"
+                    >
+                      <ArrowLeft className="w-4 h-4" />
+                      Retour à la connexion
+                    </button>
+                  </>
+                )}
               </div>
             </>
           ) : (
