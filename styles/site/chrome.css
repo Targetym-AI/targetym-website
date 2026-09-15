@@ -31,7 +31,7 @@
   --gap: 16px;                       /* air entre une carte et les murs de son encoche */
   --bar-h: 64px;                     /* barre de nav verte */
   --nav-h: calc(var(--inset) + var(--bar-h) + 20px);   /* slot réservé à la nav en haut de page */
-  --photo-w: calc(47% - 20px);       /* largeur de la photo */
+  --photo-w: calc(min(100%, var(--content-w)) * .47 - 20px);   /* largeur de la photo ; le min() donne la même base à la photo (dans le hero plafonné) et à la marge de la nav (calculée sur toute la page) */
   --photo-h: clamp(640px, 47vw, 760px);
   --r: 28px;                         /* rayon des coins, convexes et rentrants */
   --notch-w: 210px;                  /* encoche haut-gauche : y loge la fin de la barre de nav */
@@ -128,6 +128,20 @@ body:has(.frame) { background: var(--paper); }
 .lang:hover { color: var(--ink); }
 .nav-bar .btn-outline { background: var(--card); color: var(--ink); border-color: transparent; }
 .nav-bar .btn-outline:hover { background: var(--accent-soft); }
+
+/* Sur l'accueil, la barre s'allonge avec la photo (jusqu'à ~1020 px) : l'espace gagné
+   se répartit entre le logo et les liens au lieu de s'entasser avant Connexion.
+   Progression linéaire de 24/20 px (846 px de barre) à 57/45 px (1022 px), qui
+   remplace les écarts fixes des paliers au-dessus de 840 px ; l'écart de la barre
+   compte deux fois (logo→liens et liens→Connexion). */
+@container nav (min-width: 841px) {
+  .nav:not(.nav-full) .nav-bar { gap: clamp(24px, 18.75cqi - 134.6px, 57px); }
+  .nav:not(.nav-full) .nav-links { gap: clamp(20px, 14.2cqi - 100.1px, 45px); }
+}
+@container nav (min-width: 770px) and (max-width: 840px) {   /* même idée dans le palier resserré : 24/16 px → 33/26 px */
+  .nav:not(.nav-full) .nav-bar { gap: clamp(24px, 15cqi - 93.3px, 33px); }
+  .nav:not(.nav-full) .nav-links { gap: clamp(16px, 16.5cqi - 113px, 26px); }
+}
 
 /* Paliers selon la largeur réelle de la barre, pas celle de l'écran : sur l'accueil,
    l'encoche de la photo la raccourcit. On resserre d'abord, puis le burger prend le relais. */
