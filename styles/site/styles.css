@@ -339,6 +339,19 @@ h1, h2, h3 { font-family: var(--font-display); line-height: 1.08; letter-spacing
   letter-spacing: -.035em;
 }
 
+/* Tant que la photo est à droite, le texte ne doit jamais passer dessous : la colonne
+   s'arrête 56 px avant la photo (l'air de la marge de page) et le titre suit sa largeur. */
+@media (min-width: 861px) {
+  .hero-copy {
+    container: hero-copy / inline-size;
+    /* le hero fait 100 % + ses deux marges de 56 px ; la photo en prend 47 % - 20 px, plus
+       l'inset de 20 px : il en reste 53 %, moins la marge gauche et l'air avant la photo */
+    max-width: min(680px, calc((100% + 112px) * .53 - 112px));
+  }
+  .hero h1 { font-size: min(48px, 100cqi / 14); }   /* la plus longue des trois lignes ≈ 13,8 × la taille */
+}
+/* (la colonne étroite, entre 861 et 1140 px, est traitée après .hero-proof pour passer devant) */
+
 .hero-sub { margin: 24px 0 30px; font-size: 16px; color: var(--muted); max-width: 500px; }
 .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
 .hero-note    { margin-top: 12px; font-size: 13px; color: var(--muted); }   /* ce que coûte le clic : rien */
@@ -410,6 +423,20 @@ h1, h2, h3 { font-family: var(--font-display); line-height: 1.08; letter-spacing
   transition-delay: 0s;
 }
 .hero-proof p { font-size: 13px; line-height: 1.35; color: var(--muted); max-width: 300px; }
+
+/* Colonne étroite (≈ 861–1140 px) : en trois lignes forcées le titre passerait sous 34 px.
+   Il revient à la ligne librement et le bloc se resserre pour tenir dans la hauteur de la photo. */
+@container hero-copy (max-width: 475px) {
+  .hero h1 { font-size: 32px; text-wrap: balance; }
+  .hero h1 br { display: none; }
+  .hero-sub { margin: 18px 0 22px; font-size: 15px; }
+  .hero-actions .btn { padding-inline: 20px; font-size: 15px; }
+  .hero-proof { margin-top: 24px; }
+}
+/* Sous 380 px, même resserré le bloc touche la nav : la preuve laisse sa place, le mur de logos juste dessous prend le relais */
+@container hero-copy (max-width: 379px) {
+  .hero-proof { display: none; }
+}
 
 
 
