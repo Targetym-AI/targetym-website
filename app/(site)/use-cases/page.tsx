@@ -77,7 +77,7 @@ export default function UseCasesPage() {
       <section className="section sec-anim blog-lead" aria-labelledby="agent-title">
         <p className="eyebrow left" id="agent-title">Le cas d&apos;usage transversal</p>
         <article className="post-feature uc-feature" id="uc-agent" data-cut>
-          <Link className="pf-media" href="/use-cases/agent" aria-label="Voir le cas d'usage du super-agent IA"><Image src="/img/tour/demandes.jpg" alt="Écran des demandes : chaque dossier préparé par l'agent, il reste à valider" width={1100} height={600} /> <span className="tag pf-tag">Super-agent IA</span> <span className="dock dock-br" aria-hidden="true"><span className="round">↗</span></span></Link>
+          <Link className="pf-media" href="/use-cases/agent" aria-label="Voir le cas d'usage du super-agent IA"><Image src="/img/tour/copilote.jpg" alt="Le Copilote AI : le point du jour préparé par le super-agent, il reste à valider" width={1100} height={739} /> <span className="tag pf-tag">Super-agent IA</span> <span className="dock dock-br" aria-hidden="true"><span className="round">↗</span></span></Link>
           <div className="pf-body">
             <p className="pf-meta">Tous les modules<b>·</b>DRH, managers, collaborateurs<b>·</b>95&nbsp;% du travail RH</p>
             <h2><Link href="/use-cases/agent">Le super-agent IA, un cas d&apos;usage à lui tout seul</Link></h2>
