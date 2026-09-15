@@ -1,5 +1,6 @@
 /* Targetym AI — les cas d'usage, une seule source (reprise de prototype/v3/use-cases-data.js).
    Texte brut : les espaces insécables de la typographie française sont posés au rendu par fr().
+   Dans les étapes, [libellé](https://…) devient un lien (un produit du groupe, par exemple).
    Chiffres et situations : des exemples, à valider. */
 
 export type FamilyKey = 'recrutement' | 'administration' | 'performance' | 'talents' | 'paie' | 'pilotage' | 'conformite' | 'agent';
@@ -99,7 +100,7 @@ export const families: Family[] = [
     "name": "Le super-agent IA",
     "sub": "un cas d'usage à lui tout seul",
     "tint": "#0c1d1a",
-    "shot": "/img/tour/demandes.jpg"
+    "shot": "/img/tour/copilote.jpg"
   }
 ];
 
@@ -143,7 +144,7 @@ export const cases: UseCase[] = [
     "situation": "L'offre de chef de projet a reçu 500 CV en dix jours.",
     "story": "Une offre publiée sur cinq sites reçoit 500 candidatures en dix jours. Le module les lit, les note sur la fiche de poste et vous remet les quinze profils à rencontrer.",
     "steps": [
-      "Diffuse l'offre sur les jobboards, LinkedIn et votre page carrière, en une fois.",
+      "Diffuse l'offre sur [Intowork](https://www.intowork.co/), les autres jobboards, LinkedIn et votre page carrière, en une fois.",
       "Centralise les candidatures dans un pipeline visuel, doublons écartés.",
       "Note chaque CV sur les critères de la fiche de poste et motive chaque refus."
     ],
@@ -804,7 +805,7 @@ export const cases: UseCase[] = [
     "role": "all",
     "module": "Tous les modules",
     "short": "Le super-agent IA",
-    "img": "/img/tour/demandes.jpg",
+    "img": "/img/tour/copilote.jpg",
     "panel": "/#interface",
     "title": "Le super-agent IA, un cas d'usage à lui tout seul",
     "h1": [

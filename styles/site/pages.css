@@ -695,6 +695,9 @@
 .uc-step.is-module .lg-agent { background: #fff; box-shadow: 0 0 0 3px rgba(255,255,255,.25); }
 .uc-step ul { list-style: none; display: grid; gap: 14px; margin-top: auto; padding-top: 40px; }
 .uc-step li { display: grid; grid-template-columns: 24px minmax(0, 1fr); gap: 12px; align-items: start; font-size: 15px; line-height: 1.45; }
+/* Un produit cité dans une étape (Intowork…) : souligné, pour qu'on voie qu'il s'ouvre */
+.uc-step-link { font-weight: 700; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; text-decoration-color: rgba(255,255,255,.5); transition: text-decoration-color .18s ease; }
+.uc-step-link:hover { text-decoration-color: currentColor; }
 .uc-step li .ico { width: 24px; height: 24px; padding: 5px; border-radius: 50%; background: rgba(255,255,255,.16); stroke-width: 2.6; }
 .uc-step:not(:last-child)::after {
   content: "→"; position: absolute; z-index: 2; top: 50%; right: calc(-20px - var(--gap) / 2);
