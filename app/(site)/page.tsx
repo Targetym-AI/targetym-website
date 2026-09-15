@@ -35,6 +35,16 @@ export const metadata: Metadata = {
 /* Les articles du rail sont repris de l'API toutes les dix minutes : l'accueil reste statique */
 export const revalidate = 600;
 
+/* Logos détourés dans public/images/recommandations. Les tailles égalisent leur surface
+   (≈ 5 600 px²) : un logo empilé comme Mavel monte plus haut qu'un logo en longueur. */
+const RECOMMENDERS = [
+  { name: 'Mavel', src: '/images/recommandations/mavel.png', width: 87, height: 64 },
+  { name: 'Cautiona', src: '/images/recommandations/cautiona.png', width: 152, height: 37 },
+  { name: 'NSIA Assurances', src: '/images/recommandations/nsia-assurances.png', width: 117, height: 48 },
+  { name: 'H&C Executive Education', src: '/images/recommandations/hc-executive.png', width: 161, height: 35 },
+  { name: 'Managersity', src: '/images/recommandations/managersity.png', width: 154, height: 36 },
+];
+
 export default async function HomePage() {
   const { items } = await fetchPosts({ limit: 3, revalidate });
 
@@ -83,18 +93,11 @@ export default async function HomePage() {
       </section>
 
       <section className="logos sec-anim" aria-labelledby="logos-label">
-        <p className="logos-label" id="logos-label">Déjà en place chez</p>
+        <p className="logos-label" id="logos-label">Ils nous recommandent</p>
         <ul>
-          <li>Téranga <b>Bank</b></li>
-          <li>Baobab</li>
-          <li>SAHEL LOGISTICS</li>
-          <li>Kaolack Group</li>
-          <li>NOVA<i>assur</i></li>
-          <li>Atlantic Agro</li>
-          <li>zenith</li>
-          <li>Karité Co.</li>
-          <li>MANSA<b>tech</b></li>
-          <li>Wax &amp; Co</li>
+          {RECOMMENDERS.map((r) => (
+            <li key={r.name}><Image src={r.src} alt={r.name} width={r.width} height={r.height} /></li>
+          ))}
         </ul>
       </section>
 
