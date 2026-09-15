@@ -268,10 +268,10 @@ export default async function HomePage() {
                     <div className="shot"><Image className="shot-img" src="/img/tour/demandes.jpg" alt="" width={1280} height={860} /></div>
                     <div className="shot"><Image className="shot-img" src="/img/tour/paie.jpg" alt="" width={1280} height={860} /></div>
                     {/* Cinquième écran : celui du téléphone. C'est le cadre qui devient
-                       téléphone (voir .is-phone) ; l'écran n'a qu'à fondre. Capture mobile
-                       de l'application (390×844, Retina ×2). */}
+                       téléphone (voir .is-phone) ; l'écran n'a qu'à fondre. Capture de
+                       l'application sur iPhone, barre d'état comprise. */}
                     <div className="shot shot-phone">
-                      <div className="phone-screen"><Image className="ph-img" src="/img/tour/mobile.jpg" alt="" width={780} height={1688} /></div>
+                      <div className="phone-screen"><Image className="ph-img" src="/img/tour/mobile.jpg" alt="" width={591} height={1280} /></div>
                     </div>
                   </div>
                 </div>
