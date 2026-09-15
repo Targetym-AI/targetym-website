@@ -83,7 +83,7 @@ export default function SiteNav() {
           {' '}
           <Link className="nav-login" href="/login">Connexion</Link>
         </nav>
-        <div className="nav-actions"><button className="lang" type="button" aria-label="Changer de langue">FR <span aria-hidden="true">◐</span></button> <Link className="btn btn-outline" href="/login">Connexion <span aria-hidden="true">→</span></Link> <button className="nav-burger" type="button" aria-label="Menu" aria-expanded={open} aria-controls="nav-menu" onClick={() => setOpen((o) => !o)}><i></i></button></div>
+        <div className="nav-actions"><Link className="btn btn-outline" href="/login">Connexion <span aria-hidden="true">→</span></Link> <button className="nav-burger" type="button" aria-label="Menu" aria-expanded={open} aria-controls="nav-menu" onClick={() => setOpen((o) => !o)}><i></i></button></div>
       </div>
     </header>
   );

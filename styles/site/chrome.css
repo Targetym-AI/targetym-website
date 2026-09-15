@@ -104,6 +104,7 @@ body:has(.frame) { background: var(--paper); }
   margin-inline: auto;
   padding: var(--inset) 0 0 var(--inset);
   padding-right: calc(var(--photo-w) + var(--inset) - var(--notch-w) + var(--gap));
+  container: nav / inline-size;           /* les paliers de la barre (voir plus bas) suivent sa largeur */
 }
 .nav-bar {
   display: flex;
@@ -125,15 +126,25 @@ body:has(.frame) { background: var(--paper); }
 .nav-actions { margin-left: auto; display: flex; align-items: center; gap: 16px; }
 .lang { font-size: 13px; font-weight: 700; color: var(--muted); display: inline-flex; gap: 6px; }
 .lang:hover { color: var(--ink); }
-.nav-bar .lang { color: rgba(255,255,255,.72); }
-.nav-bar .lang:hover { color: #fff; }
 .nav-bar .btn-outline { background: var(--card); color: var(--ink); border-color: transparent; }
 .nav-bar .btn-outline:hover { background: var(--accent-soft); }
 
-/* Menu mobile : sous 860px les liens quittent la barre pour un volet blanc
-   qu'ouvre le bouton à deux traits (voir le script). Rien de tout ça en desktop. */
+/* Paliers selon la largeur réelle de la barre, pas celle de l'écran : sur l'accueil,
+   l'encoche de la photo la raccourcit. On resserre d'abord, puis le burger prend le relais. */
+@container nav (min-width: 770px) and (max-width: 910px) {
+  .nav-bar { gap: 24px; padding-left: 24px; }
+  .nav-links { gap: 20px; }
+}
+@container nav (min-width: 770px) and (max-width: 840px) {
+  .nav-links { gap: 16px; font-size: 14px; }
+  .nav-bar .brand img { height: 22px; }
+  .nav-bar .btn-outline { padding: 9px 14px; font-size: 13px; }
+}
+
+/* Menu burger : quand la barre passe sous 770px, les liens la quittent pour un volet blanc
+   qu'ouvre le bouton à deux traits (voir SiteNav). Sur l'accueil, l'encoche y mène dès 1140px d'écran. */
 .nav-burger { display: none; }
-@media (max-width: 860px) {
+@container nav (max-width: 769px) {
   .nav-burger {
     display: grid; place-items: center;
     width: 40px; height: 40px;
@@ -156,8 +167,9 @@ body:has(.frame) { background: var(--paper); }
     transform: rotate(90deg);
   }
   .nav-links {
+    display: none;
     position: absolute;
-    left: var(--inset); right: var(--inset);
+    left: var(--inset); width: 100cqw;   /* aussi large que la barre, encoche comprise */
     top: calc(var(--inset) + var(--bar-h) + 8px);
     flex-direction: column; gap: 4px;
     padding: 10px;
@@ -200,7 +212,7 @@ body:has(.frame) { background: var(--paper); }
 .nav-links .nav-drop-menu a:hover, .nav-links .nav-drop-menu a.is-active { background: var(--soft); color: var(--ink); }
 .nav-drop-menu b { display: block; font-size: 14px; font-weight: 700; }
 .nav-drop-menu i { display: block; margin-top: 2px; font-style: normal; font-size: 12px; font-weight: 500; color: var(--muted); }
-@media (max-width: 860px) {
+@container nav (max-width: 769px) {
   .nav-drop { display: contents; }
   .nav-drop-btn { padding: 14px 14px 4px; pointer-events: none; font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--faint); }
   .nav-drop.is-active .nav-drop-btn { color: var(--faint); }
@@ -227,7 +239,7 @@ body:has(.frame) { background: var(--paper); }
 .nav-links .nav-drop-menu.is-mega .nav-mega-agent a { color: var(--teal); font-weight: 800; }
 .nav-links .nav-drop-menu.is-mega .nav-mega-all { grid-column: 1 / -1; display: inline-flex; align-items: center; gap: 6px; margin-top: 4px; padding: 10px 10px 4px; border-top: 1px solid var(--line); border-radius: 0; font-weight: 800; color: var(--teal); }
 .nav-links .nav-drop-menu.is-mega .nav-mega-all:hover { background: none; text-decoration: underline; text-underline-offset: 3px; }
-@media (max-width: 860px) {
+@container nav (max-width: 769px) {
   .nav-links .nav-drop-menu.is-mega { display: grid; grid-template-columns: 1fr 1fr; gap: 0 8px; width: auto; padding: 0; }
   .nav-mega-group { display: contents; }
   .nav-drop-menu.is-mega b { display: none; }
@@ -236,7 +248,6 @@ body:has(.frame) { background: var(--paper); }
   .nav-links .nav-drop-menu.is-mega .nav-mega-all { margin-top: 2px; padding: 12px 14px; border-top: 0; }
 }
 @media (max-width: 560px) {
-  .nav-bar .lang { display: none; }      /* la langue se change dans le pied de page */
   .nav-bar { gap: 12px; padding: 0 8px 0 18px; }
   .nav-actions { gap: 10px; }
   .nav-bar .btn-outline { padding: 9px 14px; font-size: 13px; }
@@ -360,7 +371,6 @@ body:has(.frame) { background: var(--paper); }
 @media (max-width: 860px) {
   .nav { --bar-h: 56px; --nav-h: 96px; padding: var(--inset) var(--inset) 0; }   /* plus d'encoche : la barre prend toute la largeur */
   .nav-bar { gap: 20px; padding: 0 8px 0 22px; }
-  .nav-links { display: none; }
   .hm-tl { display: none; }
   .hero-media { --stat-w: 176px; --stat-h: 168px; --chart-w: 210px; --chart-h: 140px; }
 }
