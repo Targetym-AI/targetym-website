@@ -1,0 +1,12 @@
+/* ============================================================
+   Site Next.js : ajouts d'exécution au CSS du prototype.
+   Le prototype arme ses encoches par un script en fin de page, avant le premier
+   rendu. Ici le JS arrive après l'hydratation : html.js-cut (script en tête de
+   page) masque dès le premier rendu ce que le script aurait armé, pour éviter
+   que l'encoche apparaisse, disparaisse puis se découpe. Sans JS, rien n'est masqué.
+   ============================================================ */
+.js-cut [data-cut]:not(.is-cut) .dock { visibility: hidden; }
+
+@supports not (animation-timeline: view()) {
+  .js-cut .sec-anim:not(.sec-shown) { opacity: 0; }
+}
