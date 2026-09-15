@@ -39,7 +39,7 @@ export const revalidate = 600;
    (≈ 5 600 px²) : un logo empilé comme Mavel monte plus haut qu'un logo en longueur. */
 const RECOMMENDERS = [
   { name: 'Mavel', src: '/images/recommandations/mavel.png', width: 87, height: 64 },
-  { name: 'Cautiona', src: '/images/recommandations/cautiona.png', width: 152, height: 37 },
+  { name: 'NSIA Holding Assurances', src: '/images/recommandations/nsia-holding-assurances.png', width: 115, height: 48 },
   { name: 'NSIA Assurances', src: '/images/recommandations/nsia-assurances.png', width: 117, height: 48 },
   { name: 'H&C Executive Education', src: '/images/recommandations/hc-executive.png', width: 161, height: 35 },
   { name: 'Managersity', src: '/images/recommandations/managersity.png', width: 154, height: 36 },
