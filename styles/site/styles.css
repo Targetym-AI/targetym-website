@@ -1,0 +1,1711 @@
+/* ============================================================
+   Targetym AI — prototype v3 « plus humain »
+   Même charte que v1/v2 (encre teal-noir, accent teal #066c6c, Nunito + Manrope),
+   mais la composition vient de la référence photo : page blanche posée
+   sur un fond clair, grande photo qui mord le coin haut-droit,
+   cartes flottantes, collage et mur de logos.
+   ============================================================ */
+
+:root {
+  --ink: #0c1d1a;
+  --paper: #eceeed;      /* fond derrière la page blanche */
+  --card: #ffffff;
+  --teal: #0a7e74;
+  --accent: #066c6c;         /* couleur d'accent (boutons, cartes, repères) */
+  --accent-hover: #0a7e74;
+  --accent-ink: #ffffff;     /* texte posé sur l'accent */
+  --accent-soft: #e2f0ef;
+  --muted: #6a7a76;
+  --faint: #9aa8a4;      /* seconde ligne des titres bicolores */
+  --line: #e6ebe9;
+  --soft: #f4f6f5;       /* fond des cartes secondaires */
+  --radius: 26px;
+  --frame: 16px;          /* liseré gris autour de la page (0 = bord à bord) */
+  --sec: clamp(78px, 7.2vw, 118px);   /* respiration entre deux sections */
+  --content-w: 1600px;    /* butée de confort du contenu sur les très grands écrans */
+  --font-display: var(--font-nunito), "Nunito", system-ui, sans-serif;
+  --font-body: var(--font-manrope), "Manrope", system-ui, sans-serif;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--ink);
+  background: var(--paper);
+  -webkit-font-smoothing: antialiased;
+}
+
+img { max-width: 100%; display: block; }
+a { color: inherit; text-decoration: none; }
+button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+:focus-visible { outline: 2px solid var(--teal); outline-offset: 3px; border-radius: 6px; }
+h1, h2, h3 { font-family: var(--font-display); line-height: 1.08; letter-spacing: -.02em; }
+
+/* ---------- Cadre ---------- */
+
+.frame { padding: var(--frame); }
+.page {
+  position: relative;
+  width: 100%;
+  background: var(--card);
+  border-radius: var(--radius);
+  overflow: clip;            /* clippe comme hidden, sans devenir le conteneur de défilement (sinon plus de sticky) */
+}
+
+.section { padding: 0 56px var(--sec); max-width: var(--content-w); margin-inline: auto; }
+
+/* ---------- Titres bicolores (référence) ---------- */
+
+.head-duo {
+  max-width: 760px;
+  margin: 0 auto 48px;
+  text-align: center;
+  font-size: clamp(28px, 3.2vw, 40px);
+  font-weight: 800;
+}
+.head-duo span { display: block; color: var(--faint); font-weight: 700; }
+.head-duo.left { margin: 0 0 24px; text-align: left; font-size: clamp(26px, 2.7vw, 36px); }
+.head-duo br { display: none; }                       /* retour forcé réservé au desktop */
+@media (min-width: 861px) { .head-duo br { display: inline; } }
+
+.eyebrow {
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--muted);
+  text-align: center;
+  margin-bottom: 14px;
+}
+
+/* ---------- Boutons ---------- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 28px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 15px;
+  white-space: nowrap;
+  transition: background .15s ease, color .15s ease, border-color .15s ease, transform .15s ease;
+}
+.btn-mint { background: var(--accent); color: var(--accent-ink); }
+.btn-mint:hover { background: var(--accent-hover); transform: translateY(-1px); }
+.btn-plain { background: var(--card); color: var(--ink); border: 1px solid var(--line); }
+.btn-plain:hover { border-color: var(--ink); }
+.btn-outline { background: transparent; border: 1px solid var(--line); padding: 10px 18px; font-size: 13.5px; }
+.btn-outline:hover { border-color: var(--ink); }
+.btn-ghost { color: #fff; border: 1px solid rgba(255,255,255,.35); }
+.btn-ghost:hover { border-color: #fff; }
+
+.arrow {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  display: grid; place-items: center;
+  font-size: 15px;
+  color: var(--muted);
+  transition: border-color .15s ease, color .15s ease, background .15s ease;
+}
+.arrow:hover { border-color: var(--ink); color: var(--ink); }
+.arrows { display: flex; gap: 10px; }
+
+/* ---------- Nav ---------- */
+
+/* .nav réserve le slot ; .nav-bar est la barre verte arrondie, posée au même retrait
+   que la photo et dont la fin loge dans l'encoche haut-gauche avec --gap d'air. */
+.nav {
+  position: relative;
+  z-index: 4;                              /* au-dessus des encoches (3) : le menu Ressources se déploie sur le hero */
+  height: var(--nav-h);
+  max-width: var(--content-w);
+  margin-inline: auto;
+  padding: var(--inset) 0 0 var(--inset);
+  padding-right: calc(var(--photo-w) + var(--inset) - var(--notch-w) + var(--gap));
+  container: nav / inline-size;           /* les paliers de la barre (voir plus bas) suivent sa largeur */
+}
+.nav-bar {
+  display: flex;
+  align-items: center;
+  gap: 36px;
+  height: var(--bar-h);
+  padding: 0 12px 0 30px;
+  background: var(--accent);
+  color: var(--accent-ink);
+  border-radius: 20px;
+}
+.brand { font-family: var(--font-display); font-size: 21px; font-weight: 800; letter-spacing: -.03em; }
+.brand em { font-style: normal; color: var(--accent); }
+.brand { flex: none; }                     /* le logo ne se comprime jamais */
+.brand img { display: block; height: 26px; width: auto; }
+.nav-bar .brand img { filter: brightness(0) invert(1); }   /* la version sombre du logo, passée en blanc sur la barre verte */
+.nav-links { display: flex; gap: 30px; font-size: 14.5px; font-weight: 600; color: rgba(255,255,255,.66); white-space: nowrap; }
+.nav-links a:hover, .nav-links .is-active { color: #fff; }
+.nav-actions { margin-left: auto; display: flex; align-items: center; gap: 16px; }
+.lang { font-size: 13px; font-weight: 700; color: var(--muted); display: inline-flex; gap: 6px; }
+.lang:hover { color: var(--ink); }
+.nav-bar .btn-outline { background: var(--card); color: var(--ink); border-color: transparent; }
+.nav-bar .btn-outline:hover { background: var(--accent-soft); }
+
+/* Paliers selon la largeur réelle de la barre, pas celle de l'écran : sur l'accueil,
+   l'encoche de la photo la raccourcit. On resserre d'abord, puis le burger prend le relais. */
+@container nav (min-width: 770px) and (max-width: 910px) {
+  .nav-bar { gap: 24px; padding-left: 24px; }
+  .nav-links { gap: 20px; }
+}
+@container nav (min-width: 770px) and (max-width: 840px) {
+  .nav-links { gap: 16px; font-size: 14px; }
+  .nav-bar .brand img { height: 22px; }
+  .nav-bar .btn-outline { padding: 9px 14px; font-size: 13px; }
+}
+
+/* Menu burger : quand la barre passe sous 770px, les liens la quittent pour un volet blanc
+   qu'ouvre le bouton à deux traits (voir SiteNav). Sur l'accueil, l'encoche y mène dès 1140px d'écran. */
+.nav-burger { display: none; }
+@container nav (max-width: 769px) {
+  .nav-burger {
+    display: grid; place-items: center;
+    width: 40px; height: 40px;
+    border-radius: 12px;
+    background: rgba(255,255,255,.14);
+    color: #fff;
+  }
+  .nav-burger i {
+    position: relative;
+    width: 18px; height: 2px;
+    border-radius: 2px;
+    background: currentColor;
+    box-shadow: 0 -6px 0 currentColor, 0 6px 0 currentColor;
+    transition: box-shadow .2s ease, transform .3s var(--ease);
+  }
+  .nav.is-open .nav-burger i { transform: rotate(45deg); box-shadow: 0 0 0 currentColor, 0 0 0 currentColor; }
+  .nav.is-open .nav-burger i::after {
+    content: ""; position: absolute; inset: 0;   /* superposé au trait, puis tourné : la croix */
+    width: 18px; height: 2px; border-radius: 2px; background: currentColor;
+    transform: rotate(90deg);
+  }
+  .nav-links {
+    display: none;
+    position: absolute;
+    left: var(--inset); width: 100cqw;   /* aussi large que la barre, encoche comprise */
+    top: calc(var(--inset) + var(--bar-h) + 8px);
+    flex-direction: column; gap: 4px;
+    padding: 10px;
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    background: var(--card);
+    color: var(--ink);
+    box-shadow: 0 20px 44px rgba(12,29,26,.16);
+    font-size: 15px;
+    max-height: calc(100dvh - var(--inset) - var(--bar-h) - 28px);   /* le volet défile en lui-même : le menu Cas d'usage le rend long */
+    overflow-y: auto; overscroll-behavior: contain;
+  }
+  .nav-links a { padding: 12px 14px; border-radius: 12px; }
+  .nav-links a:hover, .nav-links .is-active { background: var(--soft); color: var(--ink); }
+  .nav.is-open .nav-links { display: flex; }
+  .nav.is-open .nav-bar { animation: none; }   /* le clip-path de l'entrée masquerait le volet, qui déborde de la barre */
+}
+.nav-links .nav-login { display: none; }   /* Connexion n'entre dans le volet que sur les tout petits écrans */
+
+/* Ressources : un menu déroulant (Blog, Vidéos). En desktop il s'ouvre au
+   survol, au focus clavier et au clic (tablettes) ; dans le volet mobile, ses
+   deux liens sont simplement listés sous l'intitulé. */
+.nav-drop { position: relative; }
+.nav-drop-btn { display: inline-flex; align-items: center; gap: 5px; font: inherit; color: inherit; cursor: pointer; }
+.nav-chev { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; transition: transform .25s var(--ease); }
+.nav-drop:hover .nav-drop-btn, .nav-drop:focus-within .nav-drop-btn, .nav-drop.is-open .nav-drop-btn, .nav-drop.is-active .nav-drop-btn { color: #fff; }
+.nav-drop:hover .nav-chev, .nav-drop:focus-within .nav-chev, .nav-drop.is-open .nav-chev { transform: rotate(180deg); }
+.nav-drop-menu {
+  position: absolute; left: -14px; top: calc(100% + 14px); z-index: 5;
+  min-width: 264px; padding: 8px;
+  border: 1px solid var(--line); border-radius: 18px;
+  background: var(--card); color: var(--ink);
+  box-shadow: 0 20px 44px rgba(12,29,26,.16);
+  opacity: 0; visibility: hidden; transform: translateY(-6px);
+  transition: opacity .18s ease, transform .22s var(--ease), visibility 0s linear .2s;
+}
+.nav-drop-menu::before { content: ""; position: absolute; left: 0; right: 0; bottom: 100%; height: 16px; }   /* pont de survol entre la barre et le menu */
+.nav-drop:hover .nav-drop-menu, .nav-drop:focus-within .nav-drop-menu, .nav-drop.is-open .nav-drop-menu { opacity: 1; visibility: visible; transform: none; transition-delay: 0s; }
+.nav-links .nav-drop-menu a { display: block; padding: 10px 12px; border-radius: 12px; color: var(--ink); }
+.nav-links .nav-drop-menu a:hover, .nav-links .nav-drop-menu a.is-active { background: var(--soft); color: var(--ink); }
+.nav-drop-menu b { display: block; font-size: 14px; font-weight: 700; }
+.nav-drop-menu i { display: block; margin-top: 2px; font-style: normal; font-size: 12px; font-weight: 500; color: var(--muted); }
+@container nav (max-width: 769px) {
+  .nav-drop { display: contents; }
+  .nav-drop-btn { padding: 14px 14px 4px; pointer-events: none; font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--faint); }
+  .nav-drop.is-active .nav-drop-btn { color: var(--faint); }
+  .nav-chev { display: none; }
+  .nav-drop-menu { position: static; min-width: 0; padding: 0; border: 0; box-shadow: none; opacity: 1; visibility: visible; transform: none; transition: none; }
+  .nav-drop-menu::before { display: none; }
+  .nav-links .nav-drop-menu a { padding: 12px 14px; }
+  .nav-drop-menu b { font-size: 15px; font-weight: 600; }
+  .nav-drop-menu i { display: none; }
+}
+/* Le menu « Cas d'usage » : les sept familles et leurs modules, en colonnes.
+   Il se cale sur la barre (le bouton est en position statique), pas sur le
+   bouton : trop large pour pendre sous lui. */
+.nav-drop-uc { position: static; }
+.nav-drop-menu.is-mega {
+  left: 18px; top: calc(100% + 10px);
+  display: grid; grid-template-columns: repeat(4, minmax(160px, 1fr)); gap: 12px 12px;
+  width: min(800px, calc(100vw - 80px)); min-width: 0; padding: 14px 14px 12px;
+}
+.nav-mega-group { display: grid; align-content: start; gap: 1px; }
+.nav-drop-menu.is-mega b { padding: 6px 10px 4px; font-size: 10.5px; font-weight: 700; line-height: 1.35; letter-spacing: .08em; text-transform: uppercase; color: var(--faint); white-space: normal; }
+.nav-links .nav-drop-menu.is-mega a { padding: 6px 10px; border-radius: 9px; font-size: 13.5px; font-weight: 600; }
+.nav-mega-agent { padding: 4px; border-radius: 12px; background: var(--soft); }
+.nav-links .nav-drop-menu.is-mega .nav-mega-agent a { color: var(--teal); font-weight: 800; }
+.nav-links .nav-drop-menu.is-mega .nav-mega-all { grid-column: 1 / -1; display: inline-flex; align-items: center; gap: 6px; margin-top: 4px; padding: 10px 10px 4px; border-top: 1px solid var(--line); border-radius: 0; font-weight: 800; color: var(--teal); }
+.nav-links .nav-drop-menu.is-mega .nav-mega-all:hover { background: none; text-decoration: underline; text-underline-offset: 3px; }
+@container nav (max-width: 769px) {
+  .nav-links .nav-drop-menu.is-mega { display: grid; grid-template-columns: 1fr 1fr; gap: 0 8px; width: auto; padding: 0; }
+  .nav-mega-group { display: contents; }
+  .nav-drop-menu.is-mega b { display: none; }
+  .nav-links .nav-drop-menu.is-mega a { padding: 11px 14px; border-radius: 12px; font-size: 14.5px; line-height: 1.3; white-space: normal; }
+  .nav-mega-agent { display: block; grid-column: 1 / -1; padding: 0; background: none; }   /* redevient une boîte : sinon display: contents perd la colonne */
+  .nav-links .nav-drop-menu.is-mega .nav-mega-all { margin-top: 2px; padding: 12px 14px; border-top: 0; }
+}
+@media (max-width: 560px) {
+  .nav-bar { gap: 12px; padding: 0 8px 0 18px; }
+  .nav-actions { gap: 10px; }
+  .nav-bar .btn-outline { padding: 9px 14px; font-size: 13px; }
+}
+@media (max-width: 440px) {                /* sous 440 px, le logo et Connexion ne tiennent plus côte à côte */
+  .nav-bar .btn-outline { display: none; }
+  .nav-links .nav-login { display: block; margin-top: 4px; padding-top: 14px; border-top: 1px solid var(--line); font-weight: 700; }
+}
+
+/* ---------- Hero ---------- */
+
+:root {
+  --inset: 20px;                     /* marge de la photo (et de la barre de nav) par rapport à la page */
+  --gap: 16px;                       /* air entre une carte et les murs de son encoche */
+  --bar-h: 64px;                     /* barre de nav verte */
+  --nav-h: calc(var(--inset) + var(--bar-h) + 20px);   /* slot réservé à la nav en haut de page */
+  --photo-w: calc(47% - 20px);       /* largeur de la photo */
+  --photo-h: clamp(640px, 47vw, 760px);
+  --r: 28px;                         /* rayon des coins, convexes et rentrants */
+  --notch-w: 210px;                  /* encoche haut-gauche : y loge la fin de la barre de nav */
+  --notch-h: calc(var(--bar-h) + var(--gap));
+  --chart-w: 222px;                  /* carte graphique (encoche haut-droite) */
+  --chart-h: 156px;
+  --stat-w: 206px;                   /* carte verte (encoche bas-droite) */
+  --stat-h: 196px;
+  --ease: cubic-bezier(.2, .7, .2, 1);
+}
+
+.hero {
+  position: relative;
+  max-width: var(--content-w);
+  margin-inline: auto;
+  padding: 14px 56px var(--sec);
+  /* la photo remonte sous la nav : on réserve sa hauteur, et la marge de
+     section en dessous ; le texte se centre sur la hauteur de la photo */
+  min-height: calc(var(--photo-h) + var(--inset) - var(--nav-h) + var(--sec));
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Centré sur la hauteur de la photo, mais celle-ci passe sous la nav : la marge
+   négative remonte le bloc de la moitié de ce qu'occupe la barre, pour qu'il
+   soit centré sur la partie visible. */
+.hero-copy { max-width: 680px; margin-top: -34px; }
+
+.hero h1 em { font-style: normal; color: var(--accent); }
+.hero h1 {
+  font-size: clamp(36px, 4.3vw, 48px);     /* trois lignes de ~30 signes dans la colonne */
+  font-weight: 800;
+  letter-spacing: -.035em;
+}
+
+.hero-sub { margin: 24px 0 30px; font-size: 16px; color: var(--muted); max-width: 500px; }
+.hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+.hero-note    { margin-top: 12px; font-size: 13px; color: var(--muted); }   /* ce que coûte le clic : rien */
+
+.live-dot {
+  flex: none;
+  width: 9px; height: 9px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 0 rgba(6,108,108,.45);
+  animation: pulse 2s ease-out infinite;
+}
+@keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(6,108,108,.45); } 70%, 100% { box-shadow: 0 0 0 9px rgba(6,108,108,0); } }
+/* Preuve sociale, sous les boutons : quatre portraits qui se chevauchent et
+   une ligne. Chaque portrait est un bouton ; sa bulle (le mot du client) est
+   posée au-dessus, alignée sur lui, et n'apparaît qu'au survol, au focus
+   clavier ou après un tap (li.is-open, posé par le script). */
+.hero-proof { display: flex; align-items: center; gap: 14px; margin-top: 36px; }
+.stack { list-style: none; display: flex; flex: none; }
+.stack li { position: relative; }
+.stack li + li { margin-left: -10px; }
+.face {
+  display: block;
+  padding: 0; border: 0; background: none;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: transform .25s var(--ease);
+}
+.face img {
+  display: block;
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--card);
+}
+.face:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.stack li:hover, .stack li.is-open, .stack li:has(.face:focus-visible) { z-index: 2; }
+.stack li:hover .face, .stack li.is-open .face, .face:focus-visible { transform: translateY(-3px) scale(1.08); }
+.say {
+  position: absolute;
+  left: -6px; bottom: calc(100% + 12px);
+  z-index: 5;
+  width: 232px;
+  padding: 11px 13px 12px;
+  border-radius: 14px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  box-shadow: 0 14px 34px rgba(12,29,26,.16);
+  font-size: 12.5px; line-height: 1.4; color: var(--ink);
+  opacity: 0; visibility: hidden;
+  transform: translateY(6px);
+  transition: opacity .22s var(--ease), transform .22s var(--ease), visibility 0s .22s;
+  pointer-events: none;
+}
+.say::after {
+  content: "";
+  position: absolute;
+  left: 18px; bottom: -6px;
+  width: 10px; height: 10px;
+  background: var(--card);
+  border-right: 1px solid var(--line); border-bottom: 1px solid var(--line);
+  transform: rotate(45deg);
+}
+.say q { quotes: "«\00a0" "\00a0»"; font-weight: 600; }
+.say b { display: block; margin-top: 7px; font-size: 11.5px; font-weight: 800; color: var(--teal); }
+.say i { display: block; font-style: normal; font-size: 11px; color: var(--muted); }
+.stack li:hover .say, .stack li.is-open .say, .face:focus-visible + .say {
+  opacity: 1; visibility: visible; transform: none;
+  transition-delay: 0s;
+}
+.hero-proof p { font-size: 13px; line-height: 1.35; color: var(--muted); max-width: 300px; }
+
+
+
+/* --- Photo du hero : bloc arrondi avec deux encoches en « marche »,
+       comme la référence. Chaque encoche = un rectangle blanc dont le coin
+       intérieur est arrondi, plus deux « oreilles » qui arrondissent les
+       coins convexes de la photo de part et d'autre. --- */
+
+.hero-media {
+  position: absolute;
+  top: calc(var(--inset) - var(--nav-h));   /* remonte jusqu'au haut de la page */
+  right: var(--inset);
+  width: var(--photo-w);
+  height: var(--photo-h);
+  z-index: 1;
+}
+.hm-photo {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--r);
+  overflow: hidden;
+  background: var(--soft);
+}
+.hero-photo {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  object-position: center 70%;
+}
+
+.hm-notch { position: absolute; z-index: 2; }
+.hm-notch::before { content: ""; position: absolute; background: var(--card); }
+.hm-notch .ear {
+  position: absolute;
+  width: var(--r); height: var(--r);
+  background: var(--card);
+}
+
+/* Encoche haut-gauche : la nav vit dedans */
+.hm-tl {
+  top: 0; left: 0;
+  width: calc(var(--notch-w) + var(--r)); height: calc(var(--notch-h) + var(--r));
+}
+.hm-tl::before { top: 0; left: 0; width: var(--notch-w); height: var(--notch-h); border-bottom-right-radius: var(--r); }
+.hm-tl .ear-a { top: 0; left: var(--notch-w); }        /* arrondit le départ du bord haut */
+.hm-tl .ear-b { top: var(--notch-h); left: 0; }        /* arrondit le départ du bord gauche */
+.hm-tl .ear {
+  -webkit-mask: radial-gradient(circle at 100% 100%, transparent calc(var(--r) - .5px), #000 var(--r));
+          mask: radial-gradient(circle at 100% 100%, transparent calc(var(--r) - .5px), #000 var(--r));
+}
+
+/* Encoche haut-droite : la carte graphique vit dedans */
+.hm-tr {
+  top: 0; right: 0;
+  width: calc(var(--chart-w) + var(--gap) + var(--r));
+  height: calc(var(--chart-h) + var(--gap) + var(--r));
+}
+.hm-tr::before {
+  top: 0; right: 0;
+  width: calc(var(--chart-w) + var(--gap));
+  height: calc(var(--chart-h) + var(--gap));
+  border-bottom-left-radius: var(--r);
+}
+.hm-tr .ear-a { top: 0; right: calc(var(--chart-w) + var(--gap)); }    /* arrondit la fin du bord haut */
+.hm-tr .ear-b { top: calc(var(--chart-h) + var(--gap)); right: 0; }    /* arrondit le départ du bord droit */
+.hm-tr .ear {
+  -webkit-mask: radial-gradient(circle at 0 100%, transparent calc(var(--r) - .5px), #000 var(--r));
+          mask: radial-gradient(circle at 0 100%, transparent calc(var(--r) - .5px), #000 var(--r));
+}
+
+/* Encoche bas-droite : la carte verte vit dedans */
+.hm-br {
+  bottom: 0; right: 0;
+  width: calc(var(--stat-w) + var(--gap) + var(--r));
+  height: calc(var(--stat-h) + var(--gap) + var(--r));
+}
+.hm-br::before {
+  bottom: 0; right: 0;
+  width: calc(var(--stat-w) + var(--gap));    /* carte verte + air */
+  height: calc(var(--stat-h) + var(--gap));
+  border-top-left-radius: var(--r);
+}
+.hm-br .ear-a { bottom: calc(var(--stat-h) + var(--gap)); right: 0; }    /* arrondit la fin du bord droit */
+.hm-br .ear-b { bottom: 0; right: calc(var(--stat-w) + var(--gap)); }    /* arrondit la fin du bord bas */
+.hm-br .ear {
+  -webkit-mask: radial-gradient(circle at 0 0, transparent calc(var(--r) - .5px), #000 var(--r));
+          mask: radial-gradient(circle at 0 0, transparent calc(var(--r) - .5px), #000 var(--r));
+}
+
+/* Carte graphique, dans l'encoche haut-droite */
+.float-chart {
+  position: absolute;
+  top: 0; right: 0;
+  z-index: 3;
+  width: var(--chart-w); height: var(--chart-h);
+  padding: 14px 16px 12px;
+  background: var(--soft);
+  border-radius: 18px;
+  display: flex; flex-direction: column;
+}
+.float-chart figcaption { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+.float-chart b { font-size: 12.5px; font-weight: 700; }
+.fc-tag { font-size: 10px; font-weight: 700; color: var(--muted); background: var(--card); border-radius: 999px; padding: 3px 8px; }
+.fc-bars { display: flex; align-items: flex-end; gap: 7px; flex: 1; min-height: 0; }
+.fc-bars span {
+  flex: 1;
+  height: var(--h);
+  border-radius: 4px 4px 2px 2px;
+  background: #d7e0dd;
+  transform-origin: bottom;
+}
+.fc-bars .is-hi { background: var(--accent); }
+.fc-axis { display: flex; gap: 7px; margin-top: 6px; }
+.fc-axis i { flex: 1; font-style: normal; font-size: 8.5px; line-height: 1.3; text-align: center; color: var(--faint); }
+/* Carte résultat, dans l'encoche bas-droite */
+.float-stat {
+  position: absolute;
+  right: 0; bottom: 0;
+  z-index: 3;
+  width: var(--stat-w); height: var(--stat-h);
+  padding: 18px 18px 16px;
+  background: var(--accent);
+  border-radius: 18px;
+  display: flex; flex-direction: column;
+}
+.float-stat { color: var(--accent-ink); }
+.float-stat b { font-family: var(--font-display); font-size: 40px; font-weight: 800; letter-spacing: -.04em; line-height: 1; }
+.fs-title { margin-top: auto; font-size: 12.5px; font-weight: 700; }
+.fs-note { margin-top: 4px; font-size: 11px; line-height: 1.4; color: rgba(255,255,255,.75); }
+
+/* --- Animations d'entrée du hero. Tout passe par des keyframes (fill: both) :
+       sans animation (reduced-motion), chaque élément reste simplement visible. --- */
+
+@keyframes rise    { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: none; } }
+@keyframes fade    { from { opacity: 0; } to { opacity: 1; } }
+@keyframes reveal  { from { opacity: 0; transform: scale(1.06); } to { opacity: 1; transform: none; } }
+@keyframes cut-l   { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0); } }   /* lame de gauche à droite */
+@keyframes cut-r   { from { clip-path: inset(0 0 0 100%); } to { clip-path: inset(0); } }   /* lame de droite à gauche */
+@keyframes slide-a { from { opacity: 0; transform: translate(28px, -28px); } to { opacity: 1; transform: none; } }
+@keyframes slide-b { from { opacity: 0; transform: translate(36px, 36px); }  to { opacity: 1; transform: none; } }
+@keyframes grow    { from { transform: scaleY(0); } to { transform: none; } }
+@keyframes bob     { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+
+/* 0 → 1 s : la barre de nav se déroule d'un trait et creuse son encoche au passage (même lame, même
+   timing que .hm-tl : l'encoche étant plus large que le bout de barre, le blanc précède toujours le vert),
+   le texte monte, la photo apparaît */
+.nav-bar       { animation: cut-l .8s var(--ease) .1s backwards; }   /* backwards : une fois entrée, plus de clip-path, le menu Ressources peut déborder */
+.hm-tl         { animation: cut-l .8s var(--ease) .1s both; }
+.hero-copy > * { animation: rise .8s var(--ease) both; }
+.hero h1       { animation-delay: .15s; }
+.hero-sub      { animation-delay: .3s; }
+.hero-actions  { animation-delay: .42s; }
+.hero-note     { animation-delay: .48s; }
+.hero-proof    { animation-delay: .55s; }
+.hm-photo      { animation: fade .9s var(--ease) .2s both; }     /* le conteneur ne bouge pas : il masque le zoom */
+.hero-photo    { animation: reveal 1.6s var(--ease) .2s both; }
+
+/* 1.3 → 2.1 s : les deux encoches de droite se découpent l'une après l'autre */
+.hm-tr         { animation: cut-r .65s var(--ease) 1.3s both; }
+.hm-br         { animation: cut-r .65s var(--ease) 1.5s both; }
+
+/* 1.8 → 2.6 s : les cartes viennent se poser, puis flottent */
+.float-chart   { animation: slide-a .7s var(--ease) 1.8s both, bob 6s ease-in-out 2.6s infinite; }
+.float-stat    { animation: slide-b .7s var(--ease) 2s both,   bob 7s ease-in-out 2.9s infinite; }
+
+/* 2.1 → 2.6 s : les barres poussent, le compteur monte (JS) */
+.fc-bars span  { animation: grow .6s var(--ease) both; }
+.fc-bars span:nth-child(1) { animation-delay: 2.15s; }
+.fc-bars span:nth-child(2) { animation-delay: 2.22s; }
+.fc-bars span:nth-child(3) { animation-delay: 2.29s; }
+.fc-bars span:nth-child(4) { animation-delay: 2.36s; }
+.fc-bars span:nth-child(5) { animation-delay: 2.43s; }
+.fc-bars span:nth-child(6) { animation-delay: 2.5s; }
+
+/* ---------- Bande de chiffres (après la démo) ---------- */
+/* Quatre repères séparés par des filets, sur un aplat menthe : après la visite
+   et l'app mobile, ils valent comme preuves de ce qu'on vient de voir. Les
+   valeurs montent de 0 à l'entrée dans l'écran (JS) ; sans JS, le HTML porte
+   déjà la valeur finale. */
+
+/* ---------- Encoche : le motif du hero, réutilisable ----------
+   Un cadre de la couleur du fond, posé sur un coin d'un bloc arrondi, dans
+   lequel vit une carte. Ses deux « oreilles » arrondissent le bord du bloc de
+   part et d'autre, comme les encoches de la photo du hero. Le bloc porteur est
+   positionné ; --dr reprend son rayon, --dock-bg la couleur de ce qui l'entoure.
+   Une carte en encoche par bloc, jamais plus : c'est une signature, pas une
+   texture. */
+.dock { position: absolute; z-index: 3; --dr: var(--r); --dock-bg: var(--card); background: var(--dock-bg); }
+.dock::before, .dock::after {
+  content: ""; position: absolute;
+  width: var(--dr); height: var(--dr);
+  background: var(--dock-bg);
+  pointer-events: none;
+}
+.dock-tl { top: 0; left: 0; padding: 0 var(--gap) var(--gap) 0; border-bottom-right-radius: var(--dr); }
+.dock-tl::before { top: 0; left: 100%; }
+.dock-tl::after  { left: 0; top: 100%; }
+.dock-tl::before, .dock-tl::after {
+  -webkit-mask: radial-gradient(circle at 100% 100%, transparent calc(var(--dr) - .5px), #000 var(--dr));
+          mask: radial-gradient(circle at 100% 100%, transparent calc(var(--dr) - .5px), #000 var(--dr));
+}
+.dock-tr { top: 0; right: 0; padding: 0 0 var(--gap) var(--gap); border-bottom-left-radius: var(--dr); }
+.dock-tr::before { top: 0; right: 100%; }
+.dock-tr::after  { right: 0; top: 100%; }
+.dock-tr::before, .dock-tr::after {
+  -webkit-mask: radial-gradient(circle at 0 100%, transparent calc(var(--dr) - .5px), #000 var(--dr));
+          mask: radial-gradient(circle at 0 100%, transparent calc(var(--dr) - .5px), #000 var(--dr));
+}
+.dock-bl { bottom: 0; left: 0; padding: var(--gap) var(--gap) 0 0; border-top-right-radius: var(--dr); }
+.dock-bl::before { bottom: 0; left: 100%; }
+.dock-bl::after  { left: 0; bottom: 100%; }
+.dock-bl::before, .dock-bl::after {
+  -webkit-mask: radial-gradient(circle at 100% 0, transparent calc(var(--dr) - .5px), #000 var(--dr));
+          mask: radial-gradient(circle at 100% 0, transparent calc(var(--dr) - .5px), #000 var(--dr));
+}
+.dock-br { bottom: 0; right: 0; padding: var(--gap) 0 0 var(--gap); border-top-left-radius: var(--dr); }
+.dock-br::before { bottom: 0; right: 100%; }
+.dock-br::after  { right: 0; bottom: 100%; }
+.dock-br::before, .dock-br::after {
+  -webkit-mask: radial-gradient(circle at 0 0, transparent calc(var(--dr) - .5px), #000 var(--dr));
+          mask: radial-gradient(circle at 0 0, transparent calc(var(--dr) - .5px), #000 var(--dr));
+}
+
+/* --- L'encoche se découpe à l'arrivée, comme dans le hero ---
+   Le script arme les hôtes ([data-cut] → .cut-armed : rien de visible) puis les
+   lance (.is-cut) quand ils entrent dans l'écran. La lame part du bord de page,
+   de gauche à droite pour les encoches de gauche, l'inverse à droite ; puis la
+   carte vient se poser, comme les cartes flottantes du hero. Le cadre de coupe
+   déborde d'un rayon pour ne pas rogner les oreilles. Sans script, tout est là. */
+@keyframes dock-cut-l {
+  from { clip-path: inset(calc(-1 * var(--dr)) calc(100% + var(--dr)) calc(-1 * var(--dr)) calc(-1 * var(--dr))); }
+  to   { clip-path: inset(calc(-1 * var(--dr)) calc(-1 * var(--dr)) calc(-1 * var(--dr)) calc(-1 * var(--dr))); }
+}
+@keyframes dock-cut-r {
+  from { clip-path: inset(calc(-1 * var(--dr)) calc(-1 * var(--dr)) calc(-1 * var(--dr)) calc(100% + var(--dr))); }
+  to   { clip-path: inset(calc(-1 * var(--dr)) calc(-1 * var(--dr)) calc(-1 * var(--dr)) calc(-1 * var(--dr))); }
+}
+@keyframes dock-land {
+  from { opacity: 0; transform: translate(var(--dx, 0), var(--dy, 0)); }
+  to   { opacity: 1; transform: none; }
+}
+.cut-armed .dock { visibility: hidden; }
+.is-cut .dock { visibility: visible; }
+.is-cut .dock-tl, .is-cut .dock-bl { animation: dock-cut-l .7s var(--ease) both; }
+.is-cut .dock-tr, .is-cut .dock-br { animation: dock-cut-r .7s var(--ease) both; }
+.is-cut .dock > * { animation: dock-land .6s var(--ease) .45s both; }
+.dock-tl > * { --dx: -28px; --dy: -28px; }     /* la carte arrive du coin, comme dans le hero */
+.dock-tr > * { --dx: 28px; --dy: -28px; }
+.dock-bl > * { --dx: -32px; --dy: 32px; }
+.dock-br > * { --dx: 32px; --dy: 32px; }
+
+.figures {
+  padding: 0 56px var(--sec);
+  max-width: var(--content-w);
+  margin-inline: auto;
+}
+.fig-band { position: relative; border-radius: 22px; background: var(--accent-soft); }
+.fig-dock { --dr: 22px; }
+.fig-tag {
+  display: inline-flex; align-items: center;
+  height: 38px; padding: 0 18px;
+  border-radius: 999px;
+  background: var(--accent); color: var(--accent-ink);
+  font-size: 11.5px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+}
+.fig-row {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  padding: 66px 10px 42px;   /* le haut laisse la place à l'intitulé en encoche */
+}
+.fig-row li { padding: 0 32px; border-left: 1px solid rgba(6,108,108,.16); }
+.fig-row li:first-child { border-left: 0; }
+.fig-row b {
+  display: block;
+  font-family: var(--font-display);
+  font-size: clamp(34px, 3.6vw, 52px);
+  font-weight: 800;
+  letter-spacing: -.045em;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;   /* le compteur ne fait pas trembler la ligne */
+}
+.fig-row i {
+  display: block;
+  margin-top: 14px;
+  font-style: normal;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.5;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* Les repères montent à l'entrée dans l'écran. .is-armed n'est posée par le
+   script que si l'animation est permise : sans JS, rien n'est masqué. */
+.figures.is-armed .fig-row li {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity .55s var(--ease), transform .65s var(--ease);
+}
+.figures.is-armed .fig-row li:nth-child(2) { transition-delay: .07s; }
+.figures.is-armed .fig-row li:nth-child(3) { transition-delay: .14s; }
+.figures.is-armed .fig-row li:nth-child(4) { transition-delay: .21s; }
+.figures.is-in .fig-row li { opacity: 1; transform: none; }
+
+/* ---------- Ce que ça change ---------- */
+/* Accordéon : les trois cartes partagent la même structure. Celle qui porte
+   .is-open s'élargit, déplie sa photo, ses chiffres et son détail ; les autres
+   retombent en carte simple — icône, titre, résumé. C'est le scroll qui déplace
+   .is-open d'une carte à l'autre, pas le clic. */
+
+/* Épinglée (.is-live, posée par le script au-dessus de 1080px), la section porte
+   sa hauteur de défilement — trois créneaux, un par carte — et .values-pin y
+   reste collée. Le souffle du bas passe par une marge, qui ne rogne ni la course
+   du scroll ni la zone de collage. La hauteur écrite ici n'est qu'un ordre de
+   grandeur pour la première image : le script la recalcule sur la fenêtre. */
+.values.is-live { height: 300vh; padding-bottom: 0; margin-bottom: var(--sec); }
+.values.is-live .values-pin { position: sticky; top: 0; }
+
+.value-row {
+  display: flex;
+  gap: 18px;
+  align-items: stretch;
+  min-height: 424px;
+}
+.value-row.is-init * { transition: none !important; }   /* pas de repli animé au premier rendu */
+
+.v-item {
+  position: relative;
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  overflow: hidden;
+  border-radius: 20px;
+  box-shadow: inset 0 0 0 1px var(--line);
+  transition: flex-grow .7s var(--ease), background-color .5s var(--ease), box-shadow .35s ease;
+}
+.v-item.is-open {
+  flex-grow: 1.85;
+  background: var(--soft);
+  box-shadow: inset 0 0 0 1px transparent;
+}
+.v-item:not(.is-open):hover { box-shadow: 0 16px 34px rgba(12,29,26,.09); }
+
+/* La surface cliquable couvre la carte fermée ; une fois ouverte, elle rend
+   la main au texte (sélection, liens) et n'est plus une cible. */
+.v-hit {
+  position: absolute; inset: 0;
+  z-index: 2;
+  border-radius: inherit;
+}
+.v-item.is-open .v-hit { pointer-events: none; cursor: default; }
+
+/* Photo : elle ne se déplie que sur la carte ouverte */
+.v-media {
+  position: relative;
+  flex: 0 0 0;
+  min-width: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: flex-basis .7s var(--ease), opacity .4s ease;
+}
+.v-item.is-open .v-media { flex-basis: 40%; opacity: 1; }
+.v-media img { width: 100%; height: 100%; object-fit: cover; }
+/* Dans l'encoche bas-gauche de la photo : ce que l'agent vient de faire, façon
+   « en direct » du hero. Décoratif, donc transparent au pointeur. */
+.v-item .dock { pointer-events: none; }
+.v-media .dock { --dr: 20px; }   /* la photo touche le bord de la carte : autour, c'est la page (blanc), pas le gris de la carte */
+/* La photo ne se déplie qu'à l'ouverture : son encoche se découpe à ce
+   moment-là, à chaque ouverture, une fois la photo en place. */
+.values.is-cut .v-media .dock { visibility: hidden; animation: none; }
+.values.is-cut .v-media .dock > * { animation: none; }
+.values.is-cut .v-item.is-open .v-media .dock { visibility: visible; animation: dock-cut-l .7s var(--ease) .35s both; }
+.values.is-cut .v-item.is-open .v-media .dock > * { animation: dock-land .6s var(--ease) .8s both; }
+.v-live {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 9px 14px 9px 11px;
+  border-radius: 999px;
+  background: var(--card);
+  box-shadow: 0 8px 20px rgba(12,29,26,.08);
+  font-size: 12px; font-weight: 700; white-space: nowrap;
+}
+.v-live i { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+
+.v-panel { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; }
+
+/* Bandeau haut : icône, flèche, chiffres. Il passe au vert à l'ouverture. */
+.v-hi {
+  position: relative;
+  padding: 22px;
+  transition: background-color .5s var(--ease), color .5s var(--ease), padding .5s var(--ease);
+}
+.v-item.is-open .v-hi { background: var(--accent); color: var(--accent-ink); padding: 20px; }
+
+.v-ico {
+  width: 42px; height: 42px;
+  border-radius: 12px;
+  background: var(--soft);
+  display: grid; place-items: center;
+  transition: background-color .5s var(--ease), width .5s var(--ease), height .5s var(--ease);
+}
+.v-item.is-open .v-ico { width: 44px; height: 44px; border-radius: 13px; background: rgba(255,255,255,.18); }
+.v-ico svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linejoin: round; stroke-linecap: round; }
+
+
+/* Les chiffres arrivent avec l'ouverture (hauteur bornée : deux lignes) */
+.v-stats {
+  display: flex; gap: 24px;
+  overflow: hidden;
+  max-height: 0; margin-top: 0; opacity: 0;
+  transition: max-height .6s var(--ease), margin-top .6s var(--ease), opacity .3s ease;
+}
+.v-item.is-open .v-stats { max-height: 90px; margin-top: 22px; opacity: 1; transition-delay: .08s; }
+.v-stats b { display: block; font-family: var(--font-display); font-size: 26px; font-weight: 800; letter-spacing: -.03em; }
+.v-stats i { font-style: normal; font-size: 11px; line-height: 1.3; color: rgba(255,255,255,.75); display: block; margin-top: 3px; }
+
+/* Vignette : elle remplit le vide de la carte fermée et s'efface à l'ouverture,
+   où c'est la grande photo de gauche qui prend le relais (même fichier). */
+.v-thumb {
+  position: relative;
+  flex: 1 1 0;
+  min-height: 0;
+  margin: 2px 22px 0;
+  border-radius: 14px;
+  background: var(--soft) var(--shot) center / cover no-repeat;
+  transition: flex-grow .6s var(--ease), min-height .6s var(--ease), margin .6s var(--ease), opacity .4s ease;
+}
+.v-item.is-open .v-thumb { flex-grow: 0; min-height: 0; margin-top: 0; opacity: 0; }
+/* La flèche de la carte fermée vit dans l'encoche bas-droite de sa vignette */
+.v-thumb .dock { --dr: 14px; }
+.v-go {
+  display: grid; place-items: center;
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: var(--soft);
+  font-style: normal; font-size: 15px; color: var(--ink);
+  transition: background-color .2s ease, color .2s ease;
+}
+.v-item:not(.is-open):hover .v-go { background: var(--accent); color: var(--accent-ink); }
+
+/* Texte : titre et résumé sont toujours là, le détail ne sort qu'à l'ouverture */
+.v-text { margin-top: auto; padding: 18px 22px 22px; }
+.v-item.is-open .v-text { padding: 18px 20px 20px; }
+.v-text h3 { font-size: 17px; font-weight: 800; }
+.v-text > p { margin-top: 8px; font-size: 12.5px; line-height: 1.5; color: var(--muted); }
+
+.v-detail {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transition: grid-template-rows .6s var(--ease), opacity .3s ease;
+}
+.v-detail > div { overflow: hidden; visibility: hidden; transition: visibility .6s; }
+.v-item.is-open .v-detail { grid-template-rows: 1fr; opacity: 1; transition-delay: 0s, .2s; }
+.v-item.is-open .v-detail > div { visibility: visible; }
+
+.v-list { list-style: none; margin-top: 12px; display: grid; gap: 7px; }
+.v-list li {
+  position: relative;
+  padding-left: 17px;
+  font-size: 12px; line-height: 1.45;
+  color: var(--muted);
+}
+.v-list li::before {
+  content: "";
+  position: absolute; left: 2px; top: 6px;
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+/* ---------- L'interface (visite guidée pilotée par le scroll) ---------- */
+/* .tour est haute de ~2,6 écrans quand le script tourne (.is-live) ; .tour-pin y
+   reste collée un écran durant. Sous 860px, c'est la scène qui se colle et les
+   étapes défilent dessous (voir la media query). Sans JS, tout est en flux normal. */
+
+.tour {
+  position: relative;
+  max-width: var(--content-w);
+  margin-inline: auto;
+  padding: 0 56px var(--sec);
+}
+/* Épinglée, la section porte sa hauteur de défilement : le souffle du bas passe
+   par une marge, qui ne rogne ni la course du scroll ni la zone de collage. */
+.tour.is-live { height: 270vh; padding-bottom: 0; margin-bottom: var(--sec); }
+.tour-pin { display: flex; align-items: center; }
+/* Le bloc épinglé fait la hauteur de son contenu, pas celle de l'écran : la section
+   démarre donc pile sur son surtitre, au même pas que les autres, au lieu d'ouvrir
+   un vide de 130 à 230px selon l'écran. C'est le script qui le recentre ensuite
+   dans la fenêtre, en réglant `top`. */
+.tour.is-live .tour-pin { position: sticky; top: 0; }
+
+.tour-grid {
+  width: 100%;
+  display: grid;
+  grid-template-columns: .85fr 1.15fr;
+  gap: 56px;
+  align-items: start;
+}
+/* Les deux colonnes s'accrochent en haut : le surtitre tombe pile sur le bord de
+   la section (même pas que les autres), et ni le texte ni la scène ne bougent
+   quand une étape se déplie — la dernière, plus haute, pousse seulement vers le
+   bas (le script pose le bloc pour cette hauteur-là, voir measure()). */
+.tour-copy { align-self: start; }
+.eyebrow.left { text-align: left; margin-bottom: 12px; }
+
+/* Étapes : une liste compacte, l'active se déplie ; un rail à gauche marque la progression */
+.tour-list { position: relative; margin-top: 6px; padding-left: 28px; }
+.tour-rail {
+  position: absolute; left: 0; top: 0; bottom: 0;
+  width: 2px;
+  border-radius: 2px;
+  background: var(--line);
+}
+.tour-rail i {
+  position: absolute; left: 0; top: 0;
+  width: 100%; height: 0;
+  border-radius: 2px;
+  background: var(--accent);
+  transition: height .45s var(--ease);
+}
+.tour-rail i::after {                 /* la tête du rail : là où on en est */
+  content: "";
+  position: absolute; left: 50%; bottom: -5px;
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 4px var(--accent-soft);
+  transform: translateX(-50%);
+}
+
+.tour-steps { list-style: none; display: grid; gap: 4px; }
+.tour-step { position: relative; }
+.ts-hit {
+  display: flex; align-items: center; gap: 12px;
+  width: 100%;
+  padding: 8px 0;
+  text-align: left;
+  color: var(--muted);
+  transition: color .3s ease;
+}
+.tour-step.is-on .ts-hit { color: var(--ink); }
+.ts-ico {
+  flex: none;
+  width: 34px; height: 34px;
+  border-radius: 10px;
+  background: var(--soft);
+  color: var(--ink);
+  display: grid; place-items: center;
+  transition: background-color .35s ease, color .35s ease;
+}
+.tour-step.is-on .ts-ico { background: var(--accent); color: var(--accent-ink); }
+.ts-ico svg { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.ts-title { font-family: var(--font-display); font-size: 16.5px; font-weight: 800; letter-spacing: -.01em; }
+
+.ts-body {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  padding-left: 46px;
+  transition: grid-template-rows .5s var(--ease), opacity .3s ease;
+}
+.ts-body > div { overflow: hidden; }
+.tour-step.is-on .ts-body { grid-template-rows: 1fr; opacity: 1; transition-delay: 0s, .15s; }
+.ts-body p { max-width: 400px; padding: 2px 0 10px; font-size: 14px; line-height: 1.55; color: var(--muted); }
+/* L'étape « app mobile » en dit un peu plus : trois points et les magasins */
+.ts-points { list-style: none; display: grid; gap: 6px; max-width: 400px; margin: 0 0 14px; font-size: 13.5px; line-height: 1.45; color: var(--muted); }
+.ts-points li { position: relative; padding-left: 16px; }
+.ts-points li::before { content: ""; position: absolute; left: 0; top: .5em; width: 7px; height: 7px; border-radius: 50%; background: var(--accent); }
+.ts-stores { display: flex; flex-wrap: wrap; gap: 8px; padding-bottom: 12px; }
+/* Boutons de magasins d'applications (section application). */
+.store {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 9px 16px;
+  border: 1px solid rgba(255,255,255,.22);
+  border-radius: 12px;
+  transition: border-color .15s ease;
+}
+.store-ico { font-size: 16px; line-height: 1; }
+.store-txt i { display: block; font-style: normal; font-size: 9px; color: rgba(255,255,255,.5); }
+.store-txt b { font-size: 13px; font-weight: 700; }
+/* Les badges des magasins : fond noir et liseré gris comme les badges officiels,
+   la pomme en blanc, le triangle de Google Play dans ses quatre couleurs. */
+.ts-stores .store { gap: 9px; min-height: 46px; padding: 6px 16px 6px 12px; background: #000; color: #fff; border-color: #a6a6a6; border-radius: 10px; transition: background .15s ease, transform .15s ease; }
+.ts-stores .store:hover { background: #1d1d1f; transform: translateY(-1px); }
+.store-logo { flex: none; width: 24px; height: 24px; }
+.ts-stores .store-txt { line-height: 1.12; }
+.ts-stores .store-txt i { font-size: 10px; color: rgba(255,255,255,.86); }
+.ts-stores .store-txt b { font-size: 16px; font-weight: 700; letter-spacing: -.01em; white-space: nowrap; }
+
+/* Scène : la fenêtre de l'app, posée sur le blanc de la page. La scène est un
+   conteneur (cqw) : le cadre en tire sa hauteur, que la métamorphose ne change
+   pas — le téléphone déborde du cadre initial, centré. */
+.tour-stage { padding: 36px 0 36px 24px; container-type: inline-size; }
+/* Le device porte une ombre : une encoche posée dessus (.dock) laisserait un
+   rectangle clair au milieu de l'ombre. Ici l'encoche est donc découpée dans
+   le cadre par un masque, et l'ombre, portée par le parent en drop-shadow,
+   épouse le contour découpé — carte verte comprise. Les cotes de l'encoche
+   sont des propriétés typées : c'est en les animant qu'on la découpe (entrée)
+   ou qu'on la referme (téléphone). */
+@property --nw { syntax: "<length>"; inherits: true; initial-value: 0px; }
+@property --nh { syntax: "<length>"; inherits: true; initial-value: 0px; }
+.device-wrap {
+  position: relative;
+  display: flex; align-items: center; justify-content: center;
+  height: min(calc(100cqw * 11 / 16), 100vh - 140px);
+  --sw: 178px; --sh: 128px;                                   /* la carte verte */
+  --nw: calc(var(--sw) + var(--gap));                         /* l'encoche : la carte et son air */
+  --nh: calc(var(--sh) + var(--gap));
+  --dr: 20px;                                                 /* rayon du cadre, repris pour les coins de l'encoche */
+  filter: drop-shadow(0 28px 44px rgba(12,29,26,.24));
+  transition: --nw .5s var(--ease), --nh .5s var(--ease), height .8s var(--ease);
+}
+.device {
+  position: relative;
+  flex: none;
+  display: flex; flex-direction: column;
+  width: 100%; height: 100%;
+  padding: 8px;
+  border-radius: 20px;
+  background: #142a26;
+  box-shadow: 0 2px 0 rgba(255,255,255,.08) inset;
+  /* Tout, moins l'encoche : son rectangle (en deux bandes, pour épargner le coin
+     rentrant), le quart de disque qui arrondit ce coin, puis les deux oreilles
+     qui arrondissent les bords du cadre de part et d'autre. */
+  mask:
+    linear-gradient(#000 0 0),
+    linear-gradient(#000 0 0) right 0 bottom 0 / calc(var(--nw) - var(--dr)) var(--nh) no-repeat,
+    linear-gradient(#000 0 0) right 0 bottom 0 / var(--nw) calc(var(--nh) - var(--dr)) no-repeat,
+    radial-gradient(circle at 100% 100%, #000 calc(var(--dr) - .5px), transparent var(--dr)) right calc(var(--nw) - var(--dr)) bottom calc(var(--nh) - var(--dr)) / var(--dr) var(--dr) no-repeat,
+    radial-gradient(circle at 0 0, transparent calc(var(--dr) - .5px), #000 var(--dr)) right 0 bottom var(--nh) / var(--dr) var(--dr) no-repeat,
+    radial-gradient(circle at 0 0, transparent calc(var(--dr) - .5px), #000 var(--dr)) right var(--nw) bottom 0 / var(--dr) var(--dr) no-repeat;
+  mask-composite: subtract, add, add, add, add, add;
+  transition: width .8s var(--ease), height .8s var(--ease), border-radius .8s var(--ease),
+              padding .8s var(--ease), background-color .8s var(--ease), transform .8s var(--ease);
+}
+
+/* L'entrée : l'encoche se découpe depuis le coin — d'abord vers le haut, puis
+   la lame file vers la gauche, comme celles du hero — et la carte verte vient
+   s'y poser. Armée par le script, la scène tient l'animation en pause sur sa
+   première image (encoche fermée, carte absente) : rien ne change sous
+   l'animation, donc aucune transition ne se déclenche ; .is-cut la lance. */
+@keyframes device-cut {
+  0%   { --nw: 0px; --nh: 0px; }
+  40%  { --nh: calc(var(--sh) + var(--gap)); }
+  100% { --nw: calc(var(--sw) + var(--gap)); }
+}
+.tour-stage.cut-armed .device-wrap { animation: device-cut .8s var(--ease) .15s backwards paused; }
+.tour-stage.cut-armed .device-stat { animation: slide-b .7s var(--ease) .7s backwards paused; }
+.tour-stage.is-cut .device-wrap, .tour-stage.is-cut .device-stat { animation-play-state: running; }
+/* En état téléphone, pas de découpe : si la scène entre à l'écran directement sur
+   la dernière étape (lien « App mobile » de la nav), l'encoche se creuserait
+   dans le téléphone. Au retour à l'étape 4, la découpe rejoue avec l'ordinateur. */
+.tour-stage.is-phone .device-wrap, .tour-stage.is-phone .device-stat { animation: none; }
+.tour-stage.cut-skip .device-wrap, .tour-stage.cut-skip .device-stat { animation: none; }   /* arrivée directe par la nav : découpe sautée */
+
+/* --- La métamorphose : à la dernière étape, le cadre devient le téléphone ---
+   Même élément, en transition : il rétrécit sur place, s'arrondit, s'incline ;
+   l'encoche se referme et la carte verte s'en va ; la barre du navigateur se
+   replie et l'écran du téléphone fond dans le cadre. Au retour, tout se
+   rejoue à l'envers. */
+.is-phone .device {
+  width: min(262px, 100cqw);
+  height: min(559px, 100vh - 100px);
+  padding: 10px;
+  border-radius: 40px;
+  background: var(--ink);
+  transform: rotate(-4deg);
+}
+.is-phone .device-wrap { --nw: 0px; --nh: 0px; }
+.is-phone .device-bar { height: 0; opacity: 0; }
+.is-phone .shots { border-radius: 31px; background: var(--soft); }
+.is-phone .device-stat { opacity: 0; transform: translate(28px, 28px); }
+.shot-phone .phone-screen { width: 100%; max-width: 242px; margin-inline: auto; }   /* la largeur du téléphone, même si le cadre est encore large */
+
+.device-bar { display: flex; align-items: center; gap: 6px; height: 26px; padding: 0 8px; overflow: hidden; transition: height .5s var(--ease), opacity .25s ease; }
+.device-bar i { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,.22); }
+.device-bar span {
+  margin-left: 10px;
+  padding: 3px 12px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.1);
+  font-size: 9.5px; font-weight: 600;
+  color: rgba(255,255,255,.7);
+}
+.shots { position: relative; flex: 1; min-height: 0; border-radius: 12px; overflow: hidden; background: #f6f8f7; transition: border-radius .8s var(--ease), background-color .8s var(--ease); }
+.shot {
+  position: absolute; inset: 0;
+  opacity: 0;
+  transform: translateY(26px) scale(.985);
+  transition: opacity .45s ease, transform .6s var(--ease);
+}
+.shot.is-on { opacity: 1; transform: none; }
+.shot.is-past { transform: translateY(-26px) scale(.985); }
+/* Les écrans sont des captures de l'application, calées en haut à gauche : le
+   cadre est un peu moins large que l'écran capturé (16:11 contre 3:2), le bord
+   droit se perd sous l'encoche et rien d'important n'y est. */
+.shot-img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 0 0; }
+
+/* La carte verte dans l'encoche bas-droite : la même que sur la photo du hero,
+   avec un chiffre par étape (voir data-stat sur les étapes). */
+.device-stat {
+  position: absolute; right: 0; bottom: 0;
+  width: var(--sw); height: var(--sh);
+  padding: 18px;
+  display: flex; flex-direction: column; justify-content: space-between;
+  border-radius: 18px;
+  background: var(--accent); color: var(--accent-ink);
+  transition: opacity .35s ease, transform .5s var(--ease);
+}
+.device-stat b { display: block; font-family: var(--font-display); font-size: 34px; font-weight: 800; letter-spacing: -.04em; line-height: 1; }
+.device-stat i { display: block; margin-top: 10px; font-style: normal; font-size: 12px; line-height: 1.4; color: rgba(255,255,255,.78); }
+.device-stat b, .device-stat i { transition: opacity .18s ease, transform .18s ease; }
+.device-stat.is-swap b, .device-stat.is-swap i { opacity: 0; transform: translateY(6px); }
+
+/* ---------- L'écran du téléphone (dernière étape de la visite) ----------
+   Une capture mobile de l'application, dans le cadre devenu téléphone. */
+
+.phone-screen { height: 100%; border-radius: 31px; background: var(--soft); overflow: hidden; }
+.ph-img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 50% 0; }
+
+/* ---------- Modules ---------- */
+
+.mod-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+/* Chaque carte : icône, titre et texte en haut ; la capture du module posée en
+   bas, plus large que la carte (--shot-w, en unités de conteneur), qui déborde
+   d'un côté et par le bas — la carte la recadre. Toute la carte est cliquable :
+   le bouton du titre s'étire dessus (::after) et ouvre la modale. */
+.mod {
+  position: relative;
+  container-type: inline-size;
+  --shot-w: 128cqw;        /* largeur de la capture */
+  --shot-cut: 50px;        /* ce qu'on lui coupe en bas */
+  min-height: 300px;
+  padding: 20px 20px 0;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  overflow: hidden;
+  cursor: pointer;
+  z-index: 0;
+  transition: background-color .3s var(--ease), color .3s var(--ease), border-color .3s ease, box-shadow .3s ease;
+}
+.mod-ico {
+  width: 40px; height: 40px;
+  border-radius: 11px;
+  background: var(--soft);
+  display: grid; place-items: center;
+  transition: background-color .3s ease;
+}
+.mod-ico svg { width: 19px; height: 19px; fill: none; stroke: var(--ink); stroke-width: 1.6; stroke-linejoin: round; transition: stroke .3s ease; }
+.mod h3 { font-size: 15.5px; font-weight: 800; margin-top: 12px; padding-right: 36px; }
+.mod p { font-size: 12px; line-height: 1.5; color: var(--muted); padding-bottom: 10px; }
+.mod-open { all: unset; font: inherit; color: inherit; cursor: pointer; }
+.mod-open::after { content: ""; position: absolute; inset: 0; z-index: 2; border-radius: inherit; }
+.mod:has(.mod-open:focus-visible) { box-shadow: 0 0 0 2px var(--card), 0 0 0 4px var(--accent); }
+.mod-arrow {
+  position: absolute; top: 16px; right: 16px;
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  display: grid; place-items: center;
+  font-size: 15px; font-weight: 700; color: var(--ink);
+  transition: background-color .3s ease, color .3s ease, border-color .3s ease;
+}
+.mod-shot {
+  position: relative;
+  margin: auto -20px 0;
+  height: calc(var(--shot-w) * 600 / 1100 - var(--shot-cut));
+}
+.mod-shot img {
+  position: absolute; top: 0; left: 20px;
+  width: var(--shot-w); max-width: none; height: auto;
+  border-radius: 10px 10px 0 0;
+  box-shadow: 0 -6px 28px rgba(12,29,26,.16);
+  transition: transform .45s var(--ease), box-shadow .3s ease;
+}
+.shot-l .mod-shot img { left: auto; right: 20px; }
+.mod:hover .mod-shot img, .mod:focus-within .mod-shot img { transform: translateY(-8px); box-shadow: 0 -10px 34px rgba(0,0,0,.3); }
+
+/* Au survol (ou au clavier), la carte s'allume : fond vert, texte blanc.
+   La carte mise en avant l'est en permanence : c'est le repère de la grille. */
+.mod:hover, .mod:focus-within, .mod-hi {
+  background: var(--accent);
+  color: var(--accent-ink);
+  border-color: transparent;
+  box-shadow: 0 18px 36px rgba(6,108,108,.35);
+}
+.mod:hover .mod-ico, .mod:focus-within .mod-ico, .mod-hi .mod-ico { background: rgba(255,255,255,.18); }
+.mod:hover .mod-ico svg, .mod:focus-within .mod-ico svg, .mod-hi .mod-ico svg { stroke: #fff; }
+.mod:hover p, .mod:focus-within p, .mod-hi p { color: rgba(255,255,255,.78); }
+.mod:hover .mod-arrow, .mod:focus-within .mod-arrow, .mod-hi .mod-arrow { background: #fff; border-color: #fff; color: var(--accent); }
+.mod-hi:hover, .mod-hi:focus-within { box-shadow: 0 22px 44px rgba(6,108,108,.45); }
+.mod-hi .mod-shot img { box-shadow: 0 -8px 30px rgba(0,0,0,.28); }
+
+/* La carte mise en avant : deux rangées de haut, sa capture beaucoup plus grande. */
+.mod-hi { grid-row: span 2; --shot-w: 230cqw; --shot-cut: 50px; }
+.mod-hi h3 { margin-top: 14px; font-size: 18px; }
+.mod-hi p { font-size: 12.5px; max-width: 34ch; }
+
+/* ---------- Modale d'un module ---------- */
+/* Panneau blanc sur la page assombrie. En tête, le titre et ses boutons à gauche,
+   les points forts à droite ; dessous, un bandeau vert avec la capture dans un
+   cadre de navigateur et deux chiffres clés. */
+html.has-modal { overflow: hidden; }
+.mm {
+  width: min(1180px, 100vw - 32px);
+  max-width: none; max-height: none;
+  margin: auto; padding: 0; border: 0;
+  background: transparent; color: var(--ink);
+}
+.mm::backdrop { background: rgba(12,29,26,.55); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
+.mm[open]::backdrop { animation: mm-bg .3s ease both; }
+.mm-panel {
+  position: relative;
+  max-height: calc(100vh - 32px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 44px 48px;
+  border-radius: 28px;
+  background: var(--card);
+}
+.mm[open] .mm-panel { animation: mm-in .42s var(--ease) both; }
+@keyframes mm-in { from { opacity: 0; transform: translateY(16px) scale(.98); } }
+@keyframes mm-bg { from { opacity: 0; } }
+.mm-top { position: sticky; top: 0; z-index: 3; height: 0; display: flex; justify-content: flex-end; }
+.mm-close {
+  width: 40px; height: 40px;
+  margin: -28px -28px 0 0;
+  border: 0; border-radius: 12px;
+  background: var(--soft);
+  display: grid; place-items: center;
+  cursor: pointer;
+  transition: background-color .15s ease;
+}
+.mm-close:hover { background: var(--line); }
+.mm-close svg { width: 16px; height: 16px; fill: none; stroke: var(--ink); stroke-width: 2; stroke-linecap: round; }
+.mm-head { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 48px; align-items: end; padding-right: 32px; }
+.mm-kicker { margin-bottom: 0; color: var(--teal); }
+.mm-copy h2 { margin-top: 12px; font-size: clamp(28px, 3.1vw, 42px); font-weight: 800; line-height: 1.04; letter-spacing: -.025em; }
+.mm-lead { margin-top: 16px; font-size: 15.5px; line-height: 1.6; color: var(--muted); max-width: 54ch; }
+.mm-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 26px; }
+.mm-checks { list-style: none; display: grid; gap: 14px; }
+.mm-checks li { display: flex; align-items: flex-start; gap: 12px; font-size: 14.5px; font-weight: 600; line-height: 1.45; }
+.mm-checks i { flex: none; width: 22px; height: 22px; margin-top: 1px; border-radius: 50%; background: var(--accent-soft); color: var(--accent); display: grid; place-items: center; }
+.mm-checks svg { width: 12px; height: 12px; fill: none; stroke: currentColor; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
+.mm-demo {
+  margin-top: 34px;
+  padding: 28px;
+  border-radius: 22px;
+  color: #fff;
+  background:
+    radial-gradient(90% 80% at 100% 0%, rgba(255,255,255,.22), transparent 60%),
+    radial-gradient(60% 60% at 0% 100%, rgba(12,29,26,.35), transparent 60%),
+    linear-gradient(140deg, #14a293 0%, var(--teal) 42%, #0b4f4a 100%);
+}
+.mm-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 22px; }
+.mm-tabs[hidden] { display: none; }
+.mm-tab {
+  padding: 8px 15px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.35);
+  background: transparent; color: rgba(255,255,255,.88);
+  font: inherit; font-size: 12.5px; font-weight: 700; white-space: nowrap;
+  cursor: pointer;
+  transition: background-color .15s ease, color .15s ease, border-color .15s ease;
+}
+.mm-tab:hover { border-color: #fff; color: #fff; }
+.mm-tab.is-on { background: #fff; border-color: #fff; color: var(--accent); }
+.mm-stage { display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr); gap: 22px; align-items: stretch; }
+.mm-browser { border-radius: 14px; overflow: hidden; background: #fff; box-shadow: 0 30px 60px rgba(4,30,28,.35); display: flex; flex-direction: column; }
+.mm-bar { display: flex; align-items: center; gap: 6px; padding: 10px 14px; background: var(--soft); border-bottom: 1px solid var(--line); }
+.mm-bar i { width: 9px; height: 9px; border-radius: 50%; background: #d5dcd9; }
+.mm-url { margin-left: 8px; flex: 1; padding: 5px 12px; border-radius: 7px; background: var(--card); font-size: 11.5px; font-weight: 600; color: var(--muted); }
+/* La capture a déjà sa barre de fenêtre (5 % de sa hauteur) : on la coupe. */
+.mm-screen { display: block; overflow: hidden; aspect-ratio: 1100 / 570; }
+.mm-shot { display: block; width: 100%; height: auto; margin-top: -2.73%; }
+.mm-side { display: grid; grid-template-rows: 1fr 1fr auto; gap: 14px; }
+.mm-stat { padding: 20px 22px; border-radius: 16px; background: var(--card); color: var(--ink); }
+.mm-stat b { display: block; font-family: var(--font-display); font-size: clamp(30px, 3vw, 42px); font-weight: 800; line-height: 1; letter-spacing: -.03em; color: var(--accent); white-space: nowrap; }
+.mm-stat span { display: block; margin-top: 8px; font-size: 13px; line-height: 1.45; color: var(--muted); }
+.mm-agent { display: flex; align-items: flex-start; gap: 10px; padding: 14px 16px; border-radius: 14px; background: rgba(255,255,255,.14); font-size: 13px; line-height: 1.5; }
+.mm-agent .live-dot { margin-top: 5px; background: #fff; box-shadow: 0 0 0 0 rgba(255,255,255,.45); animation-name: pulse-w; }
+@keyframes pulse-w { 0% { box-shadow: 0 0 0 0 rgba(255,255,255,.45); } 70%, 100% { box-shadow: 0 0 0 9px rgba(255,255,255,0); } }
+.mm-agent b { color: #fff; font-weight: 800; }
+.mm-agent em { font-style: normal; color: rgba(255,255,255,.88); }
+
+/* ---------- Blog (après le CTA) ---------- */
+/* Placé après l'appel à l'action, le blog n'est plus une sortie avant la
+   conversion mais un rattrapage pour qui n'est pas prêt. Il reprend en tête
+   la respiration que .cta, calé au bord de la page, ne lui laisse pas. */
+.cta + .blog { padding-top: var(--sec); }
+
+.blog-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 22px; }
+.blog-head .eyebrow { margin: 0; text-align: left; }
+
+.blog-rail {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: calc(50% - 12px);
+  gap: 24px;
+  list-style: none;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  padding-bottom: 4px;
+}
+.blog-rail::-webkit-scrollbar { display: none; }
+.blog-rail li { scroll-snap-align: start; }
+.blog-rail img { display: block; width: 100%; height: 320px; object-fit: cover; border-radius: 18px; }
+.bl-media { position: relative; display: block; }
+.bl-media .dock { --dr: 18px; }
+.bl-foot { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; padding: 16px 4px 0; }
+.bl-foot h3 { font-size: 17px; font-weight: 800; }
+.bl-foot p { margin-top: 5px; font-size: 12.5px; color: var(--muted); }
+.round {
+  flex: none;
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  background: var(--soft);
+  display: grid; place-items: center;
+  font-size: 15px;
+  transition: background .15s ease;
+}
+.blog-rail a:hover .round { background: var(--accent); color: #fff; }
+
+/* ---------- Témoignage ---------- */
+/* Portrait en bloc arrondi, l'auteur dans l'encoche bas-gauche, la citation à
+   droite : la forme du hero, reprise au moment où la page demande à être crue. */
+
+.quote { max-width: var(--content-w); margin: 0 auto; }
+.quote-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: 64px;
+  align-items: center;
+  max-width: 1180px;
+  margin-inline: auto;
+}
+.quote-media { position: relative; margin: 0; aspect-ratio: 9 / 10; }
+.quote-media img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center 30%; border-radius: var(--r); }
+.quote-dock { --dr: var(--r); }
+.quote-who { display: block; padding: 12px 18px 13px; border-radius: 16px; background: var(--soft); }
+.quote-who b { display: block; font-size: 14px; font-weight: 800; }
+.quote-who i { display: block; font-style: normal; font-size: 12.5px; color: var(--muted); }
+.quote-label { font-size: 13px; color: var(--muted); margin-bottom: 22px; }
+.quote blockquote p {
+  font-family: var(--font-display);
+  font-size: clamp(22px, 2.6vw, 32px);
+  font-weight: 700;
+  line-height: 1.32;
+  letter-spacing: -.02em;
+}
+.quote-foot { margin-top: 34px; }
+.qf-nav { display: flex; align-items: center; gap: 14px; }
+.qf-count { font-size: 13px; color: var(--muted); }
+
+/* ---------- Mur de logos (sous le hero) ---------- */
+/* La preuve avant la promesse suivante : une ligne d'intitulé, un filet, dix
+   noms en gris. Le bloc reste discret, c'est une réponse, pas un argument. */
+
+.logos { padding: 0 56px var(--sec); max-width: var(--content-w); margin-inline: auto; }
+.logos-label {
+  padding-top: 34px;
+  border-top: 1px solid var(--line);
+  text-align: center;
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+.logos ul {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 34px 20px;
+  align-items: center;
+  padding-top: 30px;
+}
+.logos li {
+  text-align: center;
+  font-size: 21px;
+  font-weight: 700;
+  letter-spacing: -.01em;
+  color: #a3aeab;
+  transition: color .18s ease;
+}
+.logos li:hover { color: var(--ink); }
+.logos li b { font-weight: 400; }
+.logos li i { font-style: italic; font-weight: 400; }
+.logos li:nth-child(3) { font-family: var(--font-body); font-size: 13px; letter-spacing: .12em; }
+.logos li:nth-child(7) { font-family: var(--font-display); font-size: 25px; letter-spacing: -.05em; }
+.logos li:nth-child(9) { font-size: 18px; letter-spacing: .04em; }
+
+/* ---------- FAQ (avant le dernier appel) : les réponses se déplient, details natif, pas de script ---------- */
+.faq { max-width: 860px; margin-inline: auto; }
+.faq details { border-top: 1px solid var(--line); }
+.faq details:last-child { border-bottom: 1px solid var(--line); }
+.faq summary {
+  list-style: none;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: space-between; gap: 20px;
+  padding: 20px 4px;
+  font-family: var(--font-display);
+  font-size: 17px; font-weight: 800;
+}
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after {
+  content: ""; flex: none;
+  width: 9px; height: 9px;
+  border-right: 2px solid currentColor; border-bottom: 2px solid currentColor;
+  opacity: .5;
+  transform: translateY(-2px) rotate(45deg);
+  transition: transform .3s var(--ease), opacity .2s ease;
+}
+.faq details[open] summary::after { opacity: 1; transform: translateY(2px) rotate(-135deg); }
+.faq details p { padding: 0 4px 22px; max-width: 720px; font-size: 14.5px; line-height: 1.6; color: var(--muted); }
+.faq details p a { color: var(--accent); font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
+
+/* ---------- CTA ---------- */
+
+.cta {
+  position: relative;
+  margin: 0 16px 16px;
+  border-radius: 22px;
+  isolation: isolate;
+}
+/* Pas d'overflow: hidden ici : le coin arrondi du bloc laisserait un fil gris
+   sous la platine des boutons (double anticrénelage). L'arrondi est porté par
+   la photo et le voile, que la platine recouvre franchement. */
+.cta-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; border-radius: inherit; z-index: -2; }
+.cta::after {
+  content: "";
+  position: absolute; inset: 0; z-index: -1;
+  border-radius: inherit;
+  background: linear-gradient(100deg, rgba(12,29,26,.93) 30%, rgba(12,29,26,.42));
+}
+.cta-inner { padding: 64px 56px 104px; color: #fff; max-width: 620px; }   /* le bas laisse la place au plateau des boutons */
+.cta h2 { font-size: clamp(28px, 3.4vw, 42px); font-weight: 800; }
+.cta-inner > p { margin: 16px 0 28px; color: rgba(255,255,255,.72); font-size: 15px; }
+.cta-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+/* Le plateau des boutons, dans l'encoche bas-gauche : décalé pour que les
+   boutons s'alignent sur le texte, pas sur le bord du bloc. */
+.cta-dock { --dr: 22px; padding-left: 40px; }
+
+/* ---------- Footer ---------- */
+
+/* Pied de page : une carte blanche comme la page, le grand mot « targetym » qui
+   déborde en bas et à droite, puis la ligne légale. */
+.footer {
+  position: relative;
+  margin: var(--frame) 0 0;
+  padding: 64px 56px 26px;
+  background: var(--card);
+  color: var(--ink);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.footer-top, .footer-legal { max-width: calc(var(--content-w) - 112px); margin-inline: auto; }
+.footer-top {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, .8fr) minmax(0, 1.7fr) minmax(0, 1.2fr);
+  gap: 40px;
+  align-items: start;
+}
+.footer-brand .brand img { height: 30px; }
+.footer-tag { margin-top: 22px; max-width: 300px; font-size: 17px; font-weight: 600; line-height: 1.35; letter-spacing: -.01em; }
+.footer h3 { font-family: var(--font-body); font-size: 13.5px; font-weight: 600; margin-bottom: 14px; }
+.footer-nav { display: flex; flex-direction: column; gap: 8px; font-size: 13.5px; color: var(--muted); }
+.footer-nav h3 { margin-bottom: 6px; color: var(--ink); }
+.footer-nav a:hover { color: var(--ink); }
+.socials { display: flex; flex-wrap: wrap; gap: 8px; }
+.social {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 5px 11px 5px 6px;
+  border: 1px solid var(--line); border-radius: 999px;
+  font-size: 12px; font-weight: 600;
+  transition: border-color .15s ease;
+}
+.social:hover { border-color: var(--ink); }
+.social i {
+  display: grid; place-items: center;
+  width: 17px; height: 17px; border-radius: 50%;
+  color: #fff; font-style: normal; font-size: 8.5px; font-weight: 800; line-height: 1;
+}
+.social svg { width: 10px; height: 10px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+.sn-in { background: #0a66c2; }
+.sn-x { background: #111; }
+.sn-ig { background: linear-gradient(45deg, #f9a03f, #e1306c 55%, #8a3ab9); }
+.sn-yt { background: #ff0033; }
+.sn-fb { background: #1877f2; }
+.footer-go { display: flex; flex-direction: column; }
+.go { display: block; padding: 13px 0 15px; border-top: 1px solid var(--line); }
+.go:first-child { border-top: 0; padding-top: 0; }
+.go b {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-family: var(--font-display); font-size: 21px; font-weight: 800;
+  letter-spacing: -.02em; line-height: 1.15;
+}
+.go-arrow {
+  display: inline-grid; place-items: center;
+  width: 24px; height: 24px; border-radius: 50%;
+  background: var(--ink); color: #fff;
+  font-size: 12px; font-weight: 700;
+  transition: transform .2s var(--ease);
+}
+.go:hover .go-arrow { transform: translate(2px, -2px); }
+.go i { display: block; margin-top: 3px; font-style: normal; font-size: 12.5px; color: var(--muted); }
+.go-hi b { color: var(--teal); }
+.go-hi .go-arrow { background: var(--teal); }
+/* L'application mobile : un lien par magasin, chacun avec son logo */
+.go-stores { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.go-store {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 5px 6px 5px 12px;
+  border: 1px solid var(--line); border-radius: 999px;
+  font-size: 13px; font-weight: 700; color: var(--ink);
+  transition: border-color .15s ease;
+}
+.go-store:hover { border-color: var(--ink); }
+.go-store:hover .go-arrow { transform: translate(2px, -2px); }
+.go-store .go-arrow { width: 22px; height: 22px; font-size: 11px; }
+.go-store-logo { flex: none; width: 16px; height: 16px; }
+
+.footer-mark {
+  height: .76em;                      /* coupe le mot un rien au-dessus de la ligne de base */
+  margin: 44px -56px 0;
+  overflow: hidden;
+  font-family: var(--font-display); font-size: 24vw; font-weight: 800;
+  line-height: .9; letter-spacing: -.05em; white-space: nowrap;
+  color: var(--ink);
+  user-select: none;
+}
+
+.footer-legal {
+  display: flex; align-items: center; gap: 22px; flex-wrap: wrap;
+  padding-top: 26px;
+  font-size: 12px;
+  color: var(--muted);
+}
+.footer-legal a:hover { color: var(--ink); }
+.footer-here { margin-left: auto; display: inline-flex; align-items: center; gap: 18px; }
+.footer-clock { font-variant-numeric: tabular-nums; }
+.footer-wx { display: inline-flex; align-items: center; gap: 6px; }
+.footer-wx svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; }
+
+/* ---------- Adaptations ---------- */
+
+@media (max-width: 1080px) {
+  .fig-row li { padding: 0 22px; }
+  .fig-row i { letter-spacing: .1em; }
+  .value-row { flex-direction: column; min-height: 0; }
+  .v-item, .v-item.is-open { flex: none; }
+  .v-media { display: none; }
+  .v-thumb { min-height: 132px; margin-top: 14px; }
+  .mod-grid { grid-template-columns: repeat(2, 1fr); }
+  .mod-hi { grid-row: auto; --shot-w: 128cqw; --shot-cut: 50px; }
+  .footer-top { grid-template-columns: 1fr 1fr; }
+}
+
+/* Entre 860 et 1120px la photo est trop étroite pour deux encoches en haut : on garde celle de la nav */
+@media (min-width: 861px) and (max-width: 1120px) {
+  .float-chart, .hm-tr { display: none; }
+}
+
+@media (max-width: 860px) {
+  .section, .hero, .figures, .logos { padding-left: 28px; padding-right: 28px; }
+  .mm-panel { padding: 36px 28px; }
+  .mm-close { margin: -18px -12px 0 0; }
+  .mm-head { grid-template-columns: 1fr; gap: 26px; padding-right: 0; }
+  .mm-demo { padding: 20px; }
+  .mm-stage { grid-template-columns: 1fr; }
+  .mm-side { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
+  .mm-agent { grid-column: 1 / -1; }
+  .nav { --bar-h: 56px; --nav-h: 96px; padding: var(--inset) var(--inset) 0; }   /* plus d'encoche : la barre prend toute la largeur */
+  .nav-bar { gap: 20px; padding: 0 8px 0 22px; }
+  .hero { min-height: 0; padding-bottom: 70px; }
+  .hero-copy { max-width: none; margin-top: 0; }
+  .hero-media { position: relative; top: auto; right: auto; width: 100%; height: 460px; margin-top: 34px; }
+  .hm-tl { display: none; }
+  .hero-media { --stat-w: 176px; --stat-h: 168px; --chart-w: 210px; --chart-h: 140px; }
+  .float-stat { padding: 14px; }
+  .float-stat b { font-size: 34px; }
+  .fig-row { grid-template-columns: repeat(2, 1fr); row-gap: 30px; padding: 64px 6px 30px; }
+  .fig-row li { padding: 0 20px; }
+  .fig-row li:nth-child(odd) { border-left: 0; }
+  .tour { padding: 0 28px var(--sec); }
+  .tour-grid { grid-template-columns: 1fr; gap: 28px; }
+  /* Toujours piloté par le défilement, autrement : le script place la scène
+     entre le titre et la liste, où elle se colle en haut de l'écran ; les
+     étapes, toutes dépliées, défilent dessous. Celle qui passe sous la scène
+     est l'active : le rail se remplit jusqu'à elle et l'écran suit. Sans
+     script, la scène reste en flux sous le texte. */
+  .tour-list { margin-top: 18px; }
+  .ts-hit { padding: 10px 0; }
+  .ts-body { grid-template-rows: 1fr; opacity: 1; padding-left: 0; }
+  .ts-body p, .ts-points, .ts-stores { margin-left: 46px; }
+  .ts-body p { padding-bottom: 14px; }
+  .tour-stage { padding: 24px 0 24px 12px; }
+  .tour-copy .tour-stage { position: sticky; top: 8px; z-index: 3; padding: 8px 0 14px; background: var(--card); }
+  .tour-copy .tour-stage::after {        /* le texte s'efface en passant sous la scène */
+    content: ""; position: absolute; left: 0; right: 0; top: 100%; height: 26px;
+    background: linear-gradient(var(--card), transparent); pointer-events: none;
+  }
+  /* La scène garde la même hauteur d'un état à l'autre (celle du téléphone,
+     réduit pour partager l'écran avec le texte) : si elle grandissait, elle
+     pousserait les étapes, donc l'étape active, donc elle-même. L'ordinateur,
+     en 4:3, se centre dedans ; le téléphone en prend toute la hauteur. */
+  .tour-stage { --ph-h: min(360px, 46vh); }
+  .device-wrap { height: var(--ph-h); filter: drop-shadow(0 14px 24px rgba(12,29,26,.2)); }
+  .device { height: min(100%, calc(100cqw * 3 / 4)); }
+  .is-phone .device { width: calc(var(--ph-h) * 262 / 559); height: var(--ph-h); }
+  /* Ni encoche ni carte verte sur cette largeur : elle cacherait l'écran */
+  .device-wrap { --nw: 0px; --nh: 0px; }
+  .device-stat { display: none; }
+  .tour-stage.cut-armed .device-wrap { animation: none; }
+  .blog-rail { grid-auto-columns: 84%; }
+  .logos ul { grid-template-columns: repeat(3, 1fr); }
+  .cta-inner { padding: 48px 28px 96px; }
+  .cta-dock { padding-left: 12px; }
+  .quote-grid { grid-template-columns: 1fr; gap: 28px; }
+  .quote-media { max-width: 420px; aspect-ratio: 4 / 5; }
+  .footer { padding: 44px 28px 22px; }
+  .footer-mark { margin: 36px -28px 0; }
+}
+
+
+@media (max-width: 560px) {
+  .hero h1 br { display: none; }        /* retours forcés seulement en desktop */
+  .hero-proof { margin-top: 32px; align-items: flex-start; }
+  .stack { margin-top: 2px; }
+  .fig-row li { padding: 0 8px; }
+  .fig-row b { font-size: 7.6vw; }                     /* « CSV · API » tient sur sa ligne jusqu'à 360 px */
+  .fig-word { white-space: nowrap; letter-spacing: -.055em; }
+  .cta-actions { flex-direction: column; align-items: flex-start; }
+  .cta-inner { padding-bottom: 156px; }                 /* idem pour le plateau des deux boutons */
+  .fig-row i { letter-spacing: .1em; }
+  .mod-grid { grid-template-columns: 1fr; }
+  .mod { min-height: 0; }
+  .mm { width: calc(100vw - 16px); }
+  .mm-panel { max-height: calc(100vh - 16px); padding: 28px 18px; border-radius: 22px; }
+  .mm-close { margin: -12px -4px 0 0; }
+  .mm-side { grid-template-columns: 1fr; }
+  .mm-actions .btn { width: 100%; justify-content: center; }
+  .float-chart, .hm-tr { display: none; }
+  .logos ul { grid-template-columns: repeat(2, 1fr); }
+  .footer-top { grid-template-columns: 1fr; gap: 28px; }
+  .footer-here { margin-left: 0; width: 100%; gap: 14px; }
+  .brand img { height: 22px; }
+}
+
+/* ---------- Entrée et sortie des sections ----------
+   Après le hero, chaque bloc se lève de la profondeur quand il entre dans
+   l'écran, et s'y renfonce quand il en sort : un peu de flou, une bascule en
+   perspective, l'échelle qui se rétablit. Tout est piloté par le défilement
+   (timeline view()) : réversible, sans à-coup, à la vitesse du pouce. L'entrée
+   se joue sur les premiers 55vh de course, la sortie sur les 50 derniers.
+   Les sections épinglées (.values, .tour) confient leur timeline, par son nom,
+   à leur bloc collé : c'est lui qui bouge, la section garde sa géométrie pour
+   le script. Les cartes de modules se lèvent une à une, en diagonale.
+   Sans timelines de défilement (Firefox), le script pose .sec-shown à l'entrée
+   et l'animation se joue au temps ; il n'y a pas de sortie. */
+.sec-anim { --sec-blur: 8px; }
+@keyframes sec-in {
+  0%   { opacity: 0; filter: blur(var(--sec-blur)); transform: perspective(1200px) translate3d(0, 90px, -120px) rotateX(7deg) scale(.94); transform-origin: 50% 100%; }
+  55%  { opacity: 1; filter: none; }
+  100% { opacity: 1; filter: none; transform: none; transform-origin: 50% 100%; }
+}
+@keyframes sec-out {
+  0%   { opacity: 1; filter: none; transform: none; transform-origin: 50% 0%; }
+  40%  { opacity: 1; filter: none; }
+  100% { opacity: 0; filter: blur(var(--sec-blur)); transform: perspective(1200px) translate3d(0, -70px, -140px) rotateX(-6deg) scale(.93); transform-origin: 50% 0%; }
+}
+@keyframes card-in {
+  from { opacity: 0; transform: translateY(48px) scale(.96); }
+  to   { opacity: 1; transform: none; }
+}
+.sec-anim {
+  animation: sec-in linear both, sec-out linear forwards;
+  animation-timeline: view(), view();
+  animation-range: entry 0% entry 55vh, exit calc(100% - 50vh) exit 100%;
+}
+.values { view-timeline: --sec-values block; }
+.tour   { view-timeline: --sec-tour block; }
+.values-pin.sec-anim { animation-timeline: --sec-values, --sec-values; }
+.tour-pin.sec-anim   { animation-timeline: --sec-tour, --sec-tour; }
+.mod {
+  animation: card-in linear both;
+  animation-timeline: view();
+  animation-range: entry calc(var(--i, 0) * 5vh) entry calc(40vh + var(--i, 0) * 5vh);
+}
+.mod-grid .mod:nth-child(4n + 2) { --i: 1; }
+.mod-grid .mod:nth-child(4n + 3) { --i: 2; }
+.mod-grid .mod:nth-child(4n)     { --i: 3; }
+@media (max-width: 860px) {
+  .sec-anim { --sec-blur: 0px; }        /* le flou coûte cher sur mobile ; le reste suffit */
+}
+@supports not (animation-timeline: view()) {
+  .sec-anim, .mod { animation: none; }
+  .sec-armed { opacity: 0; }
+  .sec-shown { animation: sec-in .9s var(--ease) both; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}

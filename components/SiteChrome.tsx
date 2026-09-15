@@ -1,47 +1,32 @@
 'use client';
 
-import Link from 'next/link';
-import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import Header from './Header';
-import Footer from './Footer';
+import SiteNav from './site/SiteNav';
+import SiteFooter from './site/SiteFooter';
+import SiteEffects from './site/SiteEffects';
 
-const MINIMAL_CHROME_PREFIXES = ['/demo-gratuit-targetym'];
+const matches = (pathname: string, prefixes: string[]) =>
+  prefixes.some((prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`));
+
+/* Pages sans habillage : la connexion a sa propre scène plein écran */
+const BARE_PREFIXES = ['/login'];
 
 export default function SiteChrome({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const isMinimal = MINIMAL_CHROME_PREFIXES.some(
-    (prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`)
-  );
 
-  if (isMinimal) {
-    return (
-      <>
-        <header className="bg-white border-b border-gray-100 sticky top-0 z-50">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="flex h-16 items-center justify-center">
-              <Link href="/">
-                <Image
-                  src="/logo-targetym-dark.png"
-                  alt="Targetym AI"
-                  width={150}
-                  height={40}
-                  className="object-contain"
-                />
-              </Link>
-            </div>
-          </div>
-        </header>
-        <main className="min-h-screen">{children}</main>
-      </>
-    );
+  if (matches(pathname, BARE_PREFIXES)) {
+    return <main className="min-h-screen">{children}</main>;
   }
 
+  /* Même cadre que le nouveau site : page blanche arrondie, nav et pied de page du prototype */
   return (
-    <>
-      <Header />
-      <main className="min-h-screen">{children}</main>
-      <Footer />
-    </>
+    <div className="frame">
+      <div className="page">
+        <SiteNav />
+        <main>{children}</main>
+      </div>
+      <SiteFooter />
+      <SiteEffects />
+    </div>
   );
 }

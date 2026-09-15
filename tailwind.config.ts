@@ -5,6 +5,9 @@ const config: Config = {
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
+    // Pages et composants du nouveau site : CSS du prototype, pas de Tailwind
+    "!./app/\\(site\\)/**", // parenthèses échappées : sinon lues comme un groupe de glob
+    "!./components/site/**",
   ],
   theme: {
     extend: {

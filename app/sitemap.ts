@@ -1,5 +1,6 @@
 import type { MetadataRoute } from 'next';
 import { SERVER_FETCH_HEADERS } from '@/lib/http';
+import { cases } from '@/lib/site/use-cases';
 
 const BASE_URL = 'https://www.targetym.ai';
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.targetym.ai';
@@ -38,6 +39,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${BASE_URL}/`, changeFrequency: 'weekly', priority: 1 },
     { url: `${BASE_URL}/solutions`, changeFrequency: 'monthly', priority: 0.9 },
     { url: `${BASE_URL}/pricing`, changeFrequency: 'monthly', priority: 0.9 },
+    { url: `${BASE_URL}/use-cases`, changeFrequency: 'monthly', priority: 0.8 },
     { url: `${BASE_URL}/about`, changeFrequency: 'monthly', priority: 0.7 },
     { url: `${BASE_URL}/contact`, changeFrequency: 'monthly', priority: 0.7 },
     { url: `${BASE_URL}/careers`, changeFrequency: 'monthly', priority: 0.5 },
@@ -60,5 +62,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.6,
   }));
 
-  return [...staticRoutes, ...blogRoutes];
+  const useCaseRoutes: MetadataRoute.Sitemap = cases.map((c) => ({
+    url: `${BASE_URL}/use-cases/${c.id}`,
+    changeFrequency: 'monthly',
+    priority: 0.7,
+  }));
+
+  return [...staticRoutes, ...useCaseRoutes, ...blogRoutes];
 }
