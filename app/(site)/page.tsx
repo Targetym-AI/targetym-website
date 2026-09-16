@@ -52,8 +52,8 @@ export default async function HomePage() {
     <>
       <section className="hero">
         <div className="hero-copy">
-          <h1>Le SIRH dont le super-agent IA <br />prépare et réalise <em>95&nbsp;%</em> <br />du travail des RH et des HRBP</h1>
-          <p className="hero-sub">Quinze modules sur une seule plateforme&nbsp;: recrutement, dossiers du personnel, congés, documents RH, paie multi-pays, performance, talents, pilotage. Du premier entretien au solde de tout compte, avec vos règles et votre convention collective.</p>
+          <h1>Le SIRH dont le super-agent IA <br />prépare et réalise <em>95&nbsp;%</em> <br />du travail des DRH et des HRBP</h1>
+          <p className="hero-sub">15 modules sur une seule plateforme&nbsp;: recrutement, dossiers du personnel, congés, documents RH, paie multi-pays, performance, talents, pilotage. Du premier entretien au solde de tout compte, avec vos règles et votre convention collective.</p>
           <div className="hero-actions"><Link className="btn btn-mint" href="/essai-gratuit">Démarrer l&apos;essai gratuit</Link> <a className="btn btn-plain" href="#interface">Voir l&apos;agent à l&apos;œuvre</a></div>
           <p className="hero-note">15 jours, sans carte bancaire</p>
           {/* Preuve sociale : quatre clients, chacun avec son mot au survol de son
