@@ -373,9 +373,10 @@ export default async function HomePage() {
             <blockquote>
               <p>«&nbsp;Nos attestations partaient en 48&nbsp;heures. Elles partent en 30&nbsp;secondes. Mon équipe s&apos;occupe enfin des personnes, pas des papiers.&nbsp;»</p>
             </blockquote>
+            {/* Navigation masquée tant qu'il n'y a qu'un témoignage.
             <footer className="quote-foot">
               <div className="qf-nav"><button type="button" className="arrow" aria-label="Témoignage précédent">←</button> <span className="qf-count">1 / 8</span> <button type="button" className="arrow" aria-label="Témoignage suivant">→</button></div>
-            </footer>
+            </footer> */}
           </div>
         </div>
       </section>
