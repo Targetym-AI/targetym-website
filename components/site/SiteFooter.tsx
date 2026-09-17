@@ -22,14 +22,13 @@ export default function SiteFooter() {
         </nav>
         <div className="footer-social">
           <h3>Suivez @targetym</h3>
-          <div className="socials"><a className="social" href={LINKEDIN_URL} target="_blank" rel="noopener noreferrer"><i className="sn-in" aria-hidden="true">in</i>LinkedIn</a> <a className="social" href="#"><i className="sn-x" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 5l12 14M18 5L6 19" /></svg></i>X</a> <a className="social" href="#"><i className="sn-ig" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="5" /><circle cx="12" cy="12" r="3.6" /><circle cx="17" cy="7" r="1.1" fill="currentColor" stroke="none" /></svg></i>Instagram</a> <a className="social" href="#"><i className="sn-yt" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 7.5v9l7.5-4.5z" fill="currentColor" stroke="none" /></svg></i>YouTube</a> <a className="social" href="#"><i className="sn-fb" aria-hidden="true">f</i>Facebook</a></div>
+          <div className="socials"><a className="social" href={LINKEDIN_URL} target="_blank" rel="noopener noreferrer"><i className="sn-in" aria-hidden="true">in</i>LinkedIn</a></div>
         </div>
         <div className="footer-go"><Link className="go go-hi" href="/essai-gratuit"><b>Démarrer l&apos;essai gratuit <span className="go-arrow" aria-hidden="true">↗</span></b><i>15 jours, sans carte bancaire</i></Link> <Link className="go" href="/contact"><b>Parler à l&apos;équipe <span className="go-arrow" aria-hidden="true">↗</span></b><i>Réponse sous 24&nbsp;h ouvrées</i></Link> <div className="go go-apps"><b>L&apos;application mobile</b><span className="go-stores"><a className="go-store" href={APP_STORE_URL} target="_blank" rel="noopener noreferrer"><AppleLogo className="go-store-logo" />App Store <span className="go-arrow" aria-hidden="true">↗</span></a> <a className="go-store" href={PLAY_STORE_URL} target="_blank" rel="noopener noreferrer"><PlayLogo className="go-store-logo" />Google Play <span className="go-arrow" aria-hidden="true">↗</span></a></span></div></div>
       </div>
       <div className="footer-mark" aria-hidden="true">targetym</div>
       <div className="footer-legal">
         <p>Targetym AI © 2026 · <Link href="/privacy">Confidentialité</Link> · <Link href="/terms">Conditions</Link> · <Link href="/privacy">Cookies</Link></p>
-        <p className="footer-credit">Photographies&nbsp;: Unsplash</p>
         <div className="footer-here"><button className="lang" type="button">Français <span aria-hidden="true">◐</span></button> <span>Dakar</span></div>
       </div>
     </footer>

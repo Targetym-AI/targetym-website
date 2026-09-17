@@ -1528,12 +1528,7 @@ html.has-modal { overflow: hidden; }
   width: 17px; height: 17px; border-radius: 50%;
   color: #fff; font-style: normal; font-size: 8.5px; font-weight: 800; line-height: 1;
 }
-.social svg { width: 10px; height: 10px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
 .sn-in { background: #0a66c2; }
-.sn-x { background: #111; }
-.sn-ig { background: linear-gradient(45deg, #f9a03f, #e1306c 55%, #8a3ab9); }
-.sn-yt { background: #ff0033; }
-.sn-fb { background: #1877f2; }
 .footer-go { display: flex; flex-direction: column; }
 .go { display: block; padding: 13px 0 15px; border-top: 1px solid var(--line); }
 .go:first-child { border-top: 0; padding-top: 0; }
