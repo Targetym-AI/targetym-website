@@ -39,7 +39,7 @@ export default function ContactPage() {
               </li>
               <li>
                 <span className="c-ico"><svg className="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5.6 3.5h2.9l1.7 4.2-2 1.4a11 11 0 0 0 6.7 6.7l1.4-2 4.2 1.7v2.9a2 2 0 0 1-2.2 2C10.4 20 4 13.6 3.5 5.7a2 2 0 0 1 2.1-2.2z" /></svg></span>
-                <div><b>Téléphone</b><a href="tel:+221779043443">+221 77 904 34 43</a><a href="tel:+22548910893">+225 48 91 08 93</a></div>
+                <div><b>Téléphone</b><a href="tel:+221779043443">+221 77 904 34 43</a></div>
               </li>
               <li>
                 <span className="c-ico"><svg className="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-5.7-6.5-11a6.5 6.5 0 0 1 13 0c0 5.3-6.5 11-6.5 11z" /><circle cx="12" cy="10" r="2.5" /></svg></span>
