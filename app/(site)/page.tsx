@@ -369,7 +369,7 @@ export default async function HomePage() {
             <figcaption className="dock dock-bl quote-dock"><span className="quote-who"><b>Ibrahima Sarr</b><i>DRH, Sahel Logistics · 380 collaborateurs, Dakar</i></span></figcaption>
           </figure>
           <div className="quote-body">
-            <p className="quote-label">Huit DRH, un même constat</p>
+            <p className="quote-label">Le constat d&apos;un DRH</p>
             <blockquote>
               <p>«&nbsp;Nos attestations partaient en 48&nbsp;heures. Elles partent en 30&nbsp;secondes. Mon équipe s&apos;occupe enfin des personnes, pas des papiers.&nbsp;»</p>
             </blockquote>
