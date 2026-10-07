@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { Resend } from 'resend';
 import { escapeHtml } from '../../../lib/sanitize';
+import { LEAD_RECIPIENTS } from '../../../lib/lead-recipients';
 
 export async function POST(req: NextRequest) {
   try {
@@ -22,7 +23,7 @@ export async function POST(req: NextRequest) {
 
     const { error } = await resend.emails.send({
       from: 'Targetym AI <noreply@targetym.ai>',
-      to: 'sales@agiltym.com',
+      to: LEAD_RECIPIENTS,
       replyTo: email,
       subject: `[Essai Gratuit] ${firstName} ${lastName} — ${company}`,
       html: `

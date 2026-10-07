@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import type { CSSProperties } from 'react';
+import type { CSSProperties, ReactNode } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
@@ -37,6 +37,14 @@ function relatedTo(c: UseCase): UseCase[] {
     if (related.length < 3 && !seen.has(x.id)) { seen.add(x.id); related.push(x); }
   });
   return related;
+}
+
+/* Une étape peut citer un produit du groupe : [libellé](https://…) devient un lien, ouvert dans un nouvel onglet */
+function withLinks(s: string): ReactNode[] {
+  return s.split(/(\[[^\]]+\]\(https:\/\/[^)\s]+\))/).map((part, k) => {
+    const m = /^\[([^\]]+)\]\((https:\/\/[^)\s]+)\)$/.exec(part);
+    return m ? <a key={k} className="uc-step-link" href={m[2]} target="_blank" rel="noopener">{m[1]}</a> : part;
+  });
 }
 
 /* La capture de l'app : celle du cas, ou celle de sa famille quand le cas est illustré par une photo */
@@ -104,7 +112,7 @@ export default function UseCasePage({ params }: Props) {
           <h2 className="head-duo left" id="steps-title">Comment ça se passe <span>de la situation à la décision</span></h2>
           <ol className="uc-steps">
             <li className="uc-step"><p className="uc-step-k"><i className="lg-trigger" aria-hidden="true"></i>La situation<b>01</b></p><p className="uc-step-big">{fr(c.situation)}</p></li>
-            <li className="uc-step is-module"><p className="uc-step-k"><i className="lg-agent" aria-hidden="true"></i>{doer}<b>02</b></p><ul>{c.steps.map((s) => <li key={s}><CheckIco /><span>{fr(s)}</span></li>)}</ul></li>
+            <li className="uc-step is-module"><p className="uc-step-k"><i className="lg-agent" aria-hidden="true"></i>{doer}<b>02</b></p><ul>{c.steps.map((s) => <li key={s}><CheckIco /><span>{withLinks(fr(s))}</span></li>)}</ul></li>
             <li className="uc-step"><p className="uc-step-k"><i className="lg-you" aria-hidden="true"></i>Vous<b>03</b></p><p className="uc-step-big">{fr(c.you)}</p></li>
           </ol>
         </section>

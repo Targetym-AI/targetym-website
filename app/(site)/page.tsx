@@ -35,6 +35,16 @@ export const metadata: Metadata = {
 /* Les articles du rail sont repris de l'API toutes les dix minutes : l'accueil reste statique */
 export const revalidate = 600;
 
+/* Logos détourés dans public/images/recommandations. Les tailles égalisent leur surface
+   (≈ 5 600 px²) : un logo empilé comme Mavel monte plus haut qu'un logo en longueur. */
+const RECOMMENDERS = [
+  { name: 'Mavel', src: '/images/recommandations/mavel.png', width: 87, height: 64 },
+  { name: 'NSIA Holding Assurances', src: '/images/recommandations/nsia-holding-assurances.png', width: 115, height: 48 },
+  { name: 'NSIA Assurances', src: '/images/recommandations/nsia-assurances.png', width: 117, height: 48 },
+  { name: 'H&C Executive Education', src: '/images/recommandations/hc-executive.png', width: 161, height: 35 },
+  { name: 'Managersity', src: '/images/recommandations/managersity.png', width: 154, height: 36 },
+];
+
 export default async function HomePage() {
   const { items } = await fetchPosts({ limit: 3, revalidate });
 
@@ -42,8 +52,8 @@ export default async function HomePage() {
     <>
       <section className="hero">
         <div className="hero-copy">
-          <h1>Le SIRH dont le super-agent IA <br />prépare et réalise <em>95&nbsp;%</em> <br />du travail des RH et des HRBP</h1>
-          <p className="hero-sub">Quinze modules sur une seule plateforme&nbsp;: recrutement, dossiers du personnel, congés, documents RH, paie multi-pays, performance, talents, pilotage. Du premier entretien au solde de tout compte, avec vos règles et votre convention collective.</p>
+          <h1>Le SIRH dont le super-agent IA <br />prépare et réalise <em>95&nbsp;%</em> <br />du travail des DRH et des HRBP</h1>
+          <p className="hero-sub">15 modules sur une seule plateforme&nbsp;: recrutement, dossiers du personnel, congés, documents RH, paie multi-pays, performance, talents, pilotage. Du premier entretien au solde de tout compte, avec vos règles et votre convention collective.</p>
           <div className="hero-actions"><Link className="btn btn-mint" href="/essai-gratuit">Démarrer l&apos;essai gratuit</Link> <a className="btn btn-plain" href="#interface">Voir l&apos;agent à l&apos;œuvre</a></div>
           <p className="hero-note">15 jours, sans carte bancaire</p>
           {/* Preuve sociale : quatre clients, chacun avec son mot au survol de son
@@ -83,18 +93,11 @@ export default async function HomePage() {
       </section>
 
       <section className="logos sec-anim" aria-labelledby="logos-label">
-        <p className="logos-label" id="logos-label">Déjà en place chez</p>
+        <p className="logos-label" id="logos-label">Ils nous recommandent</p>
         <ul>
-          <li>Téranga <b>Bank</b></li>
-          <li>Baobab</li>
-          <li>SAHEL LOGISTICS</li>
-          <li>Kaolack Group</li>
-          <li>NOVA<i>assur</i></li>
-          <li>Atlantic Agro</li>
-          <li>zenith</li>
-          <li>Karité Co.</li>
-          <li>MANSA<b>tech</b></li>
-          <li>Wax &amp; Co</li>
+          {RECOMMENDERS.map((r) => (
+            <li key={r.name}><Image src={r.src} alt={r.name} width={r.width} height={r.height} /></li>
+          ))}
         </ul>
       </section>
 
@@ -265,10 +268,10 @@ export default async function HomePage() {
                     <div className="shot"><Image className="shot-img" src="/img/tour/demandes.jpg" alt="" width={1280} height={860} /></div>
                     <div className="shot"><Image className="shot-img" src="/img/tour/paie.jpg" alt="" width={1280} height={860} /></div>
                     {/* Cinquième écran : celui du téléphone. C'est le cadre qui devient
-                       téléphone (voir .is-phone) ; l'écran n'a qu'à fondre. Capture mobile
-                       de l'application (390×844, Retina ×2). */}
+                       téléphone (voir .is-phone) ; l'écran n'a qu'à fondre. Capture de
+                       l'application sur iPhone, barre d'état comprise. */}
                     <div className="shot shot-phone">
-                      <div className="phone-screen"><Image className="ph-img" src="/img/tour/mobile.jpg" alt="" width={780} height={1688} /></div>
+                      <div className="phone-screen"><Image className="ph-img" src="/img/tour/mobile.jpg" alt="" width={591} height={1280} /></div>
                     </div>
                   </div>
                 </div>
@@ -366,13 +369,14 @@ export default async function HomePage() {
             <figcaption className="dock dock-bl quote-dock"><span className="quote-who"><b>Ibrahima Sarr</b><i>DRH, Sahel Logistics · 380 collaborateurs, Dakar</i></span></figcaption>
           </figure>
           <div className="quote-body">
-            <p className="quote-label">Huit DRH, un même constat</p>
+            <p className="quote-label">Le constat d&apos;un DRH</p>
             <blockquote>
               <p>«&nbsp;Nos attestations partaient en 48&nbsp;heures. Elles partent en 30&nbsp;secondes. Mon équipe s&apos;occupe enfin des personnes, pas des papiers.&nbsp;»</p>
             </blockquote>
+            {/* Navigation masquée tant qu'il n'y a qu'un témoignage.
             <footer className="quote-foot">
               <div className="qf-nav"><button type="button" className="arrow" aria-label="Témoignage précédent">←</button> <span className="qf-count">1 / 8</span> <button type="button" className="arrow" aria-label="Témoignage suivant">→</button></div>
-            </footer>
+            </footer> */}
           </div>
         </div>
       </section>

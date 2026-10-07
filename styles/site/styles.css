@@ -153,6 +153,20 @@ h1, h2, h3 { font-family: var(--font-display); line-height: 1.08; letter-spacing
 .nav-bar .btn-outline { background: var(--card); color: var(--ink); border-color: transparent; }
 .nav-bar .btn-outline:hover { background: var(--accent-soft); }
 
+/* Sur l'accueil, la barre s'allonge avec la photo (jusqu'à ~1020 px) : l'espace gagné
+   se répartit entre le logo et les liens au lieu de s'entasser avant Connexion.
+   Progression linéaire de 24/20 px (846 px de barre) à 57/45 px (1022 px), qui
+   remplace les écarts fixes des paliers au-dessus de 840 px ; l'écart de la barre
+   compte deux fois (logo→liens et liens→Connexion). */
+@container nav (min-width: 841px) {
+  .nav:not(.nav-full) .nav-bar { gap: clamp(24px, 18.75cqi - 134.6px, 57px); }
+  .nav:not(.nav-full) .nav-links { gap: clamp(20px, 14.2cqi - 100.1px, 45px); }
+}
+@container nav (min-width: 770px) and (max-width: 840px) {   /* même idée dans le palier resserré : 24/16 px → 33/26 px */
+  .nav:not(.nav-full) .nav-bar { gap: clamp(24px, 15cqi - 93.3px, 33px); }
+  .nav:not(.nav-full) .nav-links { gap: clamp(16px, 16.5cqi - 113px, 26px); }
+}
+
 /* Paliers selon la largeur réelle de la barre, pas celle de l'écran : sur l'accueil,
    l'encoche de la photo la raccourcit. On resserre d'abord, puis le burger prend le relais. */
 @container nav (min-width: 770px) and (max-width: 910px) {
@@ -288,7 +302,7 @@ h1, h2, h3 { font-family: var(--font-display); line-height: 1.08; letter-spacing
   --gap: 16px;                       /* air entre une carte et les murs de son encoche */
   --bar-h: 64px;                     /* barre de nav verte */
   --nav-h: calc(var(--inset) + var(--bar-h) + 20px);   /* slot réservé à la nav en haut de page */
-  --photo-w: calc(47% - 20px);       /* largeur de la photo */
+  --photo-w: calc(min(100%, var(--content-w)) * .47 - 20px);   /* largeur de la photo ; le min() donne la même base à la photo (dans le hero plafonné) et à la marge de la nav (calculée sur toute la page) */
   --photo-h: clamp(640px, 47vw, 760px);
   --r: 28px;                         /* rayon des coins, convexes et rentrants */
   --notch-w: 210px;                  /* encoche haut-gauche : y loge la fin de la barre de nav */
@@ -324,6 +338,19 @@ h1, h2, h3 { font-family: var(--font-display); line-height: 1.08; letter-spacing
   font-weight: 800;
   letter-spacing: -.035em;
 }
+
+/* Tant que la photo est à droite, le texte ne doit jamais passer dessous : la colonne
+   s'arrête 56 px avant la photo (l'air de la marge de page) et le titre suit sa largeur. */
+@media (min-width: 861px) {
+  .hero-copy {
+    container: hero-copy / inline-size;
+    /* le hero fait 100 % + ses deux marges de 56 px ; la photo en prend 47 % - 20 px, plus
+       l'inset de 20 px : il en reste 53 %, moins la marge gauche et l'air avant la photo */
+    max-width: min(680px, calc((100% + 112px) * .53 - 112px));
+  }
+  .hero h1 { font-size: min(48px, 100cqi / 14.4); }   /* la plus longue des trois lignes ≈ 14,2 × la taille */
+}
+/* (la colonne étroite, entre 861 et 1140 px, est traitée après .hero-proof pour passer devant) */
 
 .hero-sub { margin: 24px 0 30px; font-size: 16px; color: var(--muted); max-width: 500px; }
 .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
@@ -396,6 +423,20 @@ h1, h2, h3 { font-family: var(--font-display); line-height: 1.08; letter-spacing
   transition-delay: 0s;
 }
 .hero-proof p { font-size: 13px; line-height: 1.35; color: var(--muted); max-width: 300px; }
+
+/* Colonne étroite (≈ 861–1140 px) : en trois lignes forcées le titre passerait sous 34 px.
+   Il revient à la ligne librement et le bloc se resserre pour tenir dans la hauteur de la photo. */
+@container hero-copy (max-width: 475px) {
+  .hero h1 { font-size: 32px; text-wrap: balance; }
+  .hero h1 br { display: none; }
+  .hero-sub { margin: 18px 0 22px; font-size: 15px; }
+  .hero-actions .btn { padding-inline: 20px; font-size: 15px; }
+  .hero-proof { margin-top: 24px; }
+}
+/* Sous 380 px, même resserré le bloc touche la nav : la preuve laisse sa place, le mur de logos juste dessous prend le relais */
+@container hero-copy (max-width: 379px) {
+  .hero-proof { display: none; }
+}
 
 
 
@@ -1360,8 +1401,9 @@ html.has-modal { overflow: hidden; }
 .qf-count { font-size: 13px; color: var(--muted); }
 
 /* ---------- Mur de logos (sous le hero) ---------- */
-/* La preuve avant la promesse suivante : une ligne d'intitulé, un filet, dix
-   noms en gris. Le bloc reste discret, c'est une réponse, pas un argument. */
+/* La preuve avant la promesse suivante : une ligne d'intitulé, un filet, les
+   logos de ceux qui nous recommandent, en gris. Le bloc reste discret, c'est une
+   réponse, pas un argument. */
 
 .logos { padding: 0 56px var(--sec); max-width: var(--content-w); margin-inline: auto; }
 .logos-label {
@@ -1376,26 +1418,24 @@ html.has-modal { overflow: hidden; }
 }
 .logos ul {
   list-style: none;
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 34px 20px;
+  display: flex;
+  /* une rangée : les logos rétrécissent un peu plutôt que de passer à la ligne ; grilles 3 + 2 et 2 + 2 + 1 plus bas */
+  justify-content: space-evenly;
   align-items: center;
+  gap: 34px 32px;
   padding-top: 30px;
 }
-.logos li {
-  text-align: center;
-  font-size: 21px;
-  font-weight: 700;
-  letter-spacing: -.01em;
-  color: #a3aeab;
-  transition: color .18s ease;
+.logos li { display: flex; justify-content: center; min-width: 0; }
+/* En gris, discrets, comme le reste de la preuve ; la couleur revient au survol */
+.logos img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  filter: grayscale(1);
+  opacity: .55;
+  transition: filter .18s ease, opacity .18s ease;
 }
-.logos li:hover { color: var(--ink); }
-.logos li b { font-weight: 400; }
-.logos li i { font-style: italic; font-weight: 400; }
-.logos li:nth-child(3) { font-family: var(--font-body); font-size: 13px; letter-spacing: .12em; }
-.logos li:nth-child(7) { font-family: var(--font-display); font-size: 25px; letter-spacing: -.05em; }
-.logos li:nth-child(9) { font-size: 18px; letter-spacing: .04em; }
+.logos li:hover img { filter: none; opacity: 1; }
 
 /* ---------- FAQ (avant le dernier appel) : les réponses se déplient, details natif, pas de script ---------- */
 .faq { max-width: 860px; margin-inline: auto; }
@@ -1488,12 +1528,7 @@ html.has-modal { overflow: hidden; }
   width: 17px; height: 17px; border-radius: 50%;
   color: #fff; font-style: normal; font-size: 8.5px; font-weight: 800; line-height: 1;
 }
-.social svg { width: 10px; height: 10px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
 .sn-in { background: #0a66c2; }
-.sn-x { background: #111; }
-.sn-ig { background: linear-gradient(45deg, #f9a03f, #e1306c 55%, #8a3ab9); }
-.sn-yt { background: #ff0033; }
-.sn-fb { background: #1877f2; }
 .footer-go { display: flex; flex-direction: column; }
 .go { display: block; padding: 13px 0 15px; border-top: 1px solid var(--line); }
 .go:first-child { border-top: 0; padding-top: 0; }
@@ -1545,9 +1580,6 @@ html.has-modal { overflow: hidden; }
 }
 .footer-legal a:hover { color: var(--ink); }
 .footer-here { margin-left: auto; display: inline-flex; align-items: center; gap: 18px; }
-.footer-clock { font-variant-numeric: tabular-nums; }
-.footer-wx { display: inline-flex; align-items: center; gap: 6px; }
-.footer-wx svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; }
 
 /* ---------- Adaptations ---------- */
 
@@ -1620,7 +1652,11 @@ html.has-modal { overflow: hidden; }
   .device-stat { display: none; }
   .tour-stage.cut-armed .device-wrap { animation: none; }
   .blog-rail { grid-auto-columns: 84%; }
-  .logos ul { grid-template-columns: repeat(3, 1fr); }
+  /* 3 + 2 : six colonnes, deux par logo, la rangée du bas décalée d'une colonne */
+  .logos ul { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 30px 16px; }
+  .logos li { grid-column: span 2; }
+  .logos li:nth-child(4) { grid-column: 2 / 4; }
+  .logos li:nth-child(5) { grid-column: 4 / 6; }
   .cta-inner { padding: 48px 28px 96px; }
   .cta-dock { padding-left: 12px; }
   .quote-grid { grid-template-columns: 1fr; gap: 28px; }
@@ -1648,8 +1684,10 @@ html.has-modal { overflow: hidden; }
   .mm-side { grid-template-columns: 1fr; }
   .mm-actions .btn { width: 100%; justify-content: center; }
   .float-chart, .hm-tr { display: none; }
-  .logos ul { grid-template-columns: repeat(2, 1fr); }
   .footer-top { grid-template-columns: 1fr; gap: 28px; }
+  .logos ul { grid-template-columns: repeat(2, minmax(0, 1fr)); }   /* 2 + 2 + 1 */
+  .logos li, .logos li:nth-child(4) { grid-column: auto; }
+  .logos li:nth-child(5) { grid-column: 1 / -1; }
   .footer-here { margin-left: 0; width: 100%; gap: 14px; }
   .brand img { height: 22px; }
 }
