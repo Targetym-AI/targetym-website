@@ -19,6 +19,7 @@ const initialForm = {
   mainObjectives: [] as string[],
   howDidYouHear: '',
   message: '',
+  info_supp: '',
   consent: false,
 };
 
@@ -95,7 +96,7 @@ export default function TrialFlow() {
         body: JSON.stringify(form),
       });
       if (!res.ok) {
-        const data = await res.json();
+        const data = await res.json().catch(() => ({}));
         throw new Error(data.error ?? 'Erreur inconnue');
       }
       router.push('/essai-gratuit/confirmation');
@@ -193,6 +194,9 @@ export default function TrialFlow() {
         <div className="req">
           <div className="form-card">
             <form onSubmit={handleSubmit}>
+              <div aria-hidden="true" style={{ position: 'absolute', left: '-10000px', width: 1, height: 1, overflow: 'hidden' }}>
+                <input type="text" name="info_supp" tabIndex={-1} autoComplete="off" {...bind('info_supp')} />
+              </div>
               <fieldset className="f-set">
                 <legend className="f-legend">Vos coordonnées</legend>
                 <div className="f-grid">
