@@ -27,6 +27,7 @@ export default function ContactForm() {
           phone: field('tel'),
           subject: field('subject'),
           message: field('message'),
+          info_supp: field('info_supp'),
         }),
       });
       if (!res.ok) {
@@ -45,6 +46,9 @@ export default function ContactForm() {
       <h2>Envoyez-nous un message</h2>
       <p>Un membre de l&apos;équipe vous répond sous 24&nbsp;h ouvrées.</p>
       <form action="/api/contact" method="post" onSubmit={submit} hidden={status === 'done'}>
+        <div aria-hidden="true" style={{ position: 'absolute', left: '-10000px', width: 1, height: 1, overflow: 'hidden' }}>
+          <input type="text" name="info_supp" tabIndex={-1} autoComplete="off" />
+        </div>
         <div className="f-grid">
           <div className="f-field"><label htmlFor="c-name">Nom complet <small>*</small></label><input id="c-name" name="name" type="text" autoComplete="name" required /></div>
           <div className="f-field"><label htmlFor="c-mail">Email <small>*</small></label><input id="c-mail" name="email" type="email" autoComplete="email" required /></div>

@@ -3,7 +3,7 @@
 import { useState, type FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
 
-const initialForm = { firstName: '', lastName: '', whatsapp: '', email: '', jobTitle: '', company: '', consent: false };
+const initialForm = { firstName: '', lastName: '', whatsapp: '', email: '', jobTitle: '', company: '', info_supp: '', consent: false };
 
 /* Formulaire de la démo gratuite : envoyé à /api/demo-gratuit-targetym */
 export default function DemoForm() {
@@ -32,7 +32,7 @@ export default function DemoForm() {
         body: JSON.stringify(form),
       });
       if (!res.ok) {
-        const data = await res.json();
+        const data = await res.json().catch(() => ({}));
         throw new Error(data.error ?? 'Erreur inconnue');
       }
       router.push('/demo-gratuit-targetym/confirmation');
@@ -48,6 +48,9 @@ export default function DemoForm() {
       <h2>Vos coordonnées</h2>
       <p>Les champs marqués d&apos;un astérisque sont obligatoires.</p>
       <form onSubmit={handleSubmit}>
+        <div aria-hidden="true" style={{ position: 'absolute', left: '-10000px', width: 1, height: 1, overflow: 'hidden' }}>
+          <input type="text" name="info_supp" tabIndex={-1} autoComplete="off" {...bind('info_supp')} />
+        </div>
         <div className="f-grid">
           <div className="f-field"><label htmlFor="d-first">Prénom <small>*</small></label><input id="d-first" type="text" autoComplete="given-name" required {...bind('firstName')} /></div>
           <div className="f-field"><label htmlFor="d-last">Nom <small>*</small></label><input id="d-last" type="text" autoComplete="family-name" required {...bind('lastName')} /></div>

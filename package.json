@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "check:urls": "tsx scripts/check-urls.ts",
-    "check:entetes": "tsx scripts/check-entetes.ts"
+    "check:entetes": "tsx scripts/check-entetes.ts",
+    "check:formulaires": "tsx scripts/check-formulaires.ts"
   },
   "dependencies": {
     "@tailwindcss/typography": "^0.5.19",
