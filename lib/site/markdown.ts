@@ -1,4 +1,5 @@
 import { API_URL } from '@/lib/site/blog';
+import { safeExternalUrl, safeMediaUrl } from '@/lib/site/safeUrl';
 
 export interface BlogPostFull {
   id: number;
@@ -32,7 +33,8 @@ export function parseMarkdown(text: string): string {
     // Les images sont mises de côté avant l'échappement pour préserver leurs URL
     const imgs: string[] = [];
     let r = s.replace(/!\[([^\]]*)\]\(([^\s)]+)\)/g, (_, alt: string, src: string) => {
-      const fullSrc = src.startsWith('/') ? `${API_URL}${src}` : src;
+      const fullSrc = safeMediaUrl(src, API_URL);
+      if (!fullSrc) return '';
       imgs.push(`<img src="${escapeAttr(fullSrc)}" alt="${escapeAttr(alt)}" loading="lazy" decoding="async" />`);
       return `\x00IMG${imgs.length - 1}\x00`;
     });
@@ -41,7 +43,10 @@ export function parseMarkdown(text: string): string {
       .replace(/\*(.+?)\*/g, '<em>$1</em>')
       .replace(/_(.+?)_/g, '<em>$1</em>')
       .replace(/`(.+?)`/g, '<code>$1</code>')
-      .replace(/\[([^\]]+)\]\((https?:\/\/[^)"]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>');
+      .replace(/\[([^\]]+)\]\((https?:\/\/[^)"]+)\)/g, (_, label: string, url: string) => {
+        const href = safeExternalUrl(url.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&'));
+        return href ? `<a href="${escapeAttr(href)}" target="_blank" rel="noopener noreferrer">${label}</a>` : label;
+      });
     return r.replace(/\x00IMG(\d+)\x00/g, (_, idx: string) => imgs[parseInt(idx, 10)]);
   }
 

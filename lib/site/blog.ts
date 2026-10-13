@@ -1,4 +1,5 @@
 import { SERVER_FETCH_HEADERS } from '@/lib/http';
+import { safeMediaUrl } from '@/lib/site/safeUrl';
 
 /* Articles du blog : l'API publique de Targetym (reprise de app/blog/page.tsx) */
 export const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.targetym.ai';
@@ -50,8 +51,7 @@ export async function fetchCategories(): Promise<{ category: string; count: numb
 }
 
 export function mediaUrl(url?: string | null): string {
-  if (!url) return '';
-  return url.startsWith('/') ? `${API_URL}${url}` : url;
+  return safeMediaUrl(url, API_URL);
 }
 
 /* Dates en UTC : le serveur et le navigateur écrivent le même jour */

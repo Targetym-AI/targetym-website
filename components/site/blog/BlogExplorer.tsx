@@ -14,6 +14,7 @@ import {
   type BlogListResponse,
   type BlogPost,
 } from '@/lib/site/blog';
+import { blogHref } from '@/lib/site/safeUrl';
 
 type View = 'grid' | 'list' | 'compact';
 type Sort = 'recent' | 'reads';
@@ -100,16 +101,16 @@ export default function BlogExplorer({ initialPosts, initialCategories, initialC
   const shown = (i: number) => (cat === '*' || same(rest[i].category, cat)) && (!q || texts[i].indexOf(q) >= 0);
   const n = rest.filter((_, i) => shown(i)).length;
   const tab = (on: boolean) => (on ? 'tab is-on' : 'tab');
-  const cover = (p: BlogPost, i: number) => (p.cover_image_url ? mediaUrl(p.cover_image_url) : FALLBACK[i % FALLBACK.length]);
+  const cover = (p: BlogPost, i: number) => (mediaUrl(p.cover_image_url) || FALLBACK[i % FALLBACK.length]);
 
   return (
     <>
       <section className="section sec-anim blog-lead" aria-labelledby="une-title">
         <p className="eyebrow left" id="une-title">À la une</p>
         <article className="post-feature" data-cut>
-          <Link className="pf-media" href={`/blog/${featured.slug}`} aria-label="Lire l'article à la une">
+          <Link className="pf-media" href={blogHref(featured.slug)} aria-label="Lire l'article à la une">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={featured.cover_image_url ? mediaUrl(featured.cover_image_url) : '/img/mod-3a.jpg'} alt={featured.title} width="900" height="680" />
+            <img src={mediaUrl(featured.cover_image_url) || '/img/mod-3a.jpg'} alt={featured.title} width="900" height="680" />
             {featured.category && <>{' '}<span className="tag pf-tag">{categoryLabel(featured.category)}</span></>}
             {' '}<span className="dock dock-br" aria-hidden="true"><span className="round">↗</span></span>
           </Link>
@@ -119,9 +120,9 @@ export default function BlogExplorer({ initialPosts, initialCategories, initialC
               {featured.category && <>{categoryLabel(featured.category)}<b>·</b></>}
               {readTime(featured.excerpt)} de lecture
             </p>
-            <h2><Link href={`/blog/${featured.slug}`}>{featured.title}</Link></h2>
+            <h2><Link href={blogHref(featured.slug)}>{featured.title}</Link></h2>
             {featured.excerpt && <p>{teaser(featured.excerpt, 240)}</p>}
-            <Link className="more" href={`/blog/${featured.slug}`}>Lire l&apos;article →</Link>
+            <Link className="more" href={blogHref(featured.slug)}>Lire l&apos;article →</Link>
           </div>
         </article>
       </section>
@@ -158,9 +159,9 @@ export default function BlogExplorer({ initialPosts, initialCategories, initialC
             {order.map(({ p, i }) => (
               <li key={p.id} className="post" data-cat={p.category || undefined} data-order={i} data-reads={p.views_count ?? 0} hidden={!shown(i)}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <Link className="bl-media" href={`/blog/${p.slug}`} data-cut aria-label={`Lire : ${p.title}`}><img src={cover(p, i)} alt={p.title} width="980" height="640" loading="lazy" /><span className="dock dock-br" aria-hidden="true"><span className="round">↗</span></span></Link>
+                <Link className="bl-media" href={blogHref(p.slug)} data-cut aria-label={`Lire : ${p.title}`}><img src={cover(p, i)} alt={p.title} width="980" height="640" loading="lazy" /><span className="dock dock-br" aria-hidden="true"><span className="round">↗</span></span></Link>
                 {p.category && <span className="tag">{categoryLabel(p.category)}</span>}
-                <h3><Link href={`/blog/${p.slug}`}>{p.title}</Link></h3>
+                <h3><Link href={blogHref(p.slug)}>{p.title}</Link></h3>
                 {p.excerpt && <p>{teaser(p.excerpt)}</p>}
                 <div className="meta">
                   {p.published_at && <span><IcoDate /> {formatDate(p.published_at)}</span>}

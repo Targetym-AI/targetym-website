@@ -1,5 +1,6 @@
 import { SERVER_FETCH_HEADERS } from '@/lib/http';
 import { API_URL } from '@/lib/site/blog';
+import { safeVideoEmbed, type VideoEmbed } from '@/lib/site/safeUrl';
 
 /* Vidéos tutorielles et webinaires : l'API publique de Targetym (reprise de l'ancienne page Ressources) */
 export interface Resource {
@@ -55,30 +56,11 @@ export async function fetchWebinars(): Promise<PublicWebinar[]> {
   }
 }
 
-export type VideoEmbed = { type: 'iframe' | 'video'; src: string };
+export type { VideoEmbed };
 
-/** Convertit une URL vidéo en lecteur intégré. Retourne { type, src } ou null. */
+/** Convertit une URL vidéo en lecteur intégré (fournisseurs approuvés uniquement). Retourne { type, src } ou null. */
 export function getVideoEmbed(url: string): VideoEmbed | null {
-  try {
-    const u = new URL(url);
-    if (u.hostname.includes('youtube.com') && u.searchParams.get('v')) {
-      return { type: 'iframe', src: `https://www.youtube.com/embed/${u.searchParams.get('v')}` };
-    }
-    if (u.hostname === 'youtu.be') {
-      return { type: 'iframe', src: `https://www.youtube.com/embed${u.pathname}` };
-    }
-    if (u.pathname.includes('/embed/')) {
-      return { type: 'iframe', src: url };
-    }
-    if (u.hostname.includes('vimeo.com')) {
-      const id = u.pathname.replace(/^\//, '');
-      if (/^\d+$/.test(id)) return { type: 'iframe', src: `https://player.vimeo.com/video/${id}` };
-    }
-    // Fichier vidéo direct ou URL non reconnue → lecture native (jamais de nouvel onglet)
-    return { type: 'video', src: url };
-  } catch {
-    return null;
-  }
+  return safeVideoEmbed(url, API_URL);
 }
 
 /* Les titres de la chaîne portent un suffixe de référencement (« … - SIRH ») : on le retire */
