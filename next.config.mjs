@@ -1,3 +1,5 @@
+import { securityHeaders } from './lib/site/securityHeaders.mjs';
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
@@ -16,17 +18,20 @@ const nextConfig = {
       },
       {
         protocol: 'https',
-        hostname: '*.s3.amazonaws.com',
-      },
-      {
-        protocol: 'https',
-        hostname: '*.s3.*.amazonaws.com',
-      },
-      {
-        protocol: 'https',
         hostname: 'api.targetym.ai',
       },
     ],
+  },
+  async headers() {
+    return [
+      {
+        source: '/:path*',
+        headers: securityHeaders({
+          apiUrl: process.env.NEXT_PUBLIC_API_URL || 'https://api.targetym.ai',
+          isDev: process.env.NODE_ENV !== 'production',
+        }),
+      },
+    ];
   },
 };
 
