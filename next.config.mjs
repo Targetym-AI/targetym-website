@@ -29,6 +29,7 @@ const nextConfig = {
         headers: securityHeaders({
           apiUrl: process.env.NEXT_PUBLIC_API_URL || 'https://api.targetym.ai',
           isDev: process.env.NODE_ENV !== 'production',
+          isPreview: process.env.VERCEL_ENV === 'preview',
         }),
       },
     ];

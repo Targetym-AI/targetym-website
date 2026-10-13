@@ -186,6 +186,13 @@ verifier('Google tag : script, collecte et conversions autorisés en observation
   assert.ok(sources(d, 'img-src').includes('https://*.google-analytics.com'));
 });
 
+verifier('preview Vercel : son outil de commentaires est permis là, et là seulement', () => {
+  const preview = directives(valeur(securityHeaders({ apiUrl: API, isDev: false, isPreview: true }), 'Content-Security-Policy-Report-Only'));
+  assert.ok(preview.get('script-src')?.includes('https://vercel.live'));
+  assert.ok(preview.get('frame-src')?.includes('https://vercel.live'));
+  for (const h of entetes(API, false)) assert.ok(!h.value.includes('vercel'), `${h.key} cite Vercel en production`);
+});
+
 Promise.all(attente).then(() => {
   console.log(echecs === 0 ? `\n${total} contrôles passent.` : `\n${echecs} contrôle(s) en échec sur ${total}.`);
   process.exit(echecs === 0 ? 0 : 1);
