@@ -1,5 +1,6 @@
 import type { MetadataRoute } from 'next';
 import { SERVER_FETCH_HEADERS } from '@/lib/http';
+import { blogHref, isValidSlug } from '@/lib/site/safeUrl';
 import { cases } from '@/lib/site/use-cases';
 
 const BASE_URL = 'https://www.targetym.ai';
@@ -53,10 +54,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const apiPosts = await fetchBlogSlugs();
   const posts = Array.from(
-    new Map([...FALLBACK_BLOG_POSTS, ...apiPosts].map((post) => [post.slug, post])).values(),
+    new Map([...FALLBACK_BLOG_POSTS, ...apiPosts].filter((post) => isValidSlug(post.slug)).map((post) => [post.slug, post])).values(),
   );
   const blogRoutes: MetadataRoute.Sitemap = posts.map((post) => ({
-    url: `${BASE_URL}/blog/${post.slug}`,
+    url: `${BASE_URL}${blogHref(post.slug)}`,
     lastModified: post.published_at ? new Date(post.published_at) : undefined,
     changeFrequency: 'monthly',
     priority: 0.6,

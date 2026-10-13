@@ -1,13 +1,17 @@
+import { notFound } from 'next/navigation';
 import ArticleClientFallback from '@/components/site/article/ArticleClientFallback';
 import ArticleSidebar, { type SidebarAd } from '@/components/site/article/ArticleSidebar';
 import ArticleView from '@/components/site/article/ArticleView';
 import { SERVER_FETCH_HEADERS } from '@/lib/http';
-import { API_URL, fetchCategories, fetchPosts } from '@/lib/site/blog';
+import { API_URL, fetchCategories, fetchPosts, mediaUrl } from '@/lib/site/blog';
 import type { BlogPostFull } from '@/lib/site/markdown';
+import { blogPostApiUrl, isValidSlug } from '@/lib/site/safeUrl';
 
 async function fetchPost(slug: string): Promise<BlogPostFull | null> {
+  const url = blogPostApiUrl(API_URL, slug);
+  if (!url) return null;
   try {
-    const res = await fetch(`${API_URL}/api/public/blog/${slug}`, {
+    const res = await fetch(url, {
       cache: 'no-store',
       headers: SERVER_FETCH_HEADERS,
     });
@@ -94,6 +98,7 @@ function blogKeywords(title: string, category?: string | null): string[] {
 }
 
 export async function generateMetadata({ params }: { params: { slug: string } }) {
+  if (!isValidSlug(params.slug)) notFound();
   const post = await fetchPost(params.slug);
   const canonical = `/blog/${encodeURIComponent(params.slug)}`;
   if (!post) {
@@ -116,12 +121,13 @@ export async function generateMetadata({ params }: { params: { slug: string } })
       url: canonical,
       title: post.title,
       description,
-      images: post.cover_image_url ? [post.cover_image_url] : [],
+      images: mediaUrl(post.cover_image_url) ? [mediaUrl(post.cover_image_url)] : [],
     },
   };
 }
 
 export default async function BlogPostPage({ params }: { params: { slug: string } }) {
+  if (!isValidSlug(params.slug)) notFound();
   const [post, { items }, categories, ads] = await Promise.all([
     fetchPost(params.slug),
     fetchPosts({ limit: 50 }),

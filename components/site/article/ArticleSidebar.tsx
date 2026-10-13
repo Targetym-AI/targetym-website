@@ -4,6 +4,7 @@ import { useState, type FormEvent } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { categoryLabel, formatDate, mediaUrl, type BlogPost } from '@/lib/site/blog';
+import { blogHref, safeLink } from '@/lib/site/safeUrl';
 
 export interface SidebarAd {
   id: number;
@@ -27,12 +28,13 @@ type Props = {
 const time = (iso: string | null) => (iso ? new Date(iso).getTime() : 0);
 
 function AdLink({ ad }: { ad: SidebarAd }) {
-  const external = /^https?:\/\//.test(ad.cta_url);
+  const link = safeLink(ad.cta_url);
+  if (!link) return null;
   const label = <>{ad.cta_label} <span aria-hidden="true">→</span></>;
   const className = ad.style === 'minimal' ? 'btn btn-mint' : 'btn btn-plain';
-  return external
-    ? <a className={className} href={ad.cta_url} target="_blank" rel="noopener noreferrer">{label}</a>
-    : <Link className={className} href={ad.cta_url}>{label}</Link>;
+  return link.kind === 'external'
+    ? <a className={className} href={link.href} target="_blank" rel="noopener noreferrer">{label}</a>
+    : <Link className={className} href={link.href}>{label}</Link>;
 }
 
 /* Colonne latérale d'un article : recherche, catégories, articles récents et encarts de l'API */
@@ -75,9 +77,9 @@ export default function ArticleSidebar({ currentSlug, posts, categories, ads }: 
           <ul className="side-posts">
             {recent.map((p) => (
               <li key={p.id}>
-                <Link href={`/blog/${p.slug}`}>
+                <Link href={blogHref(p.slug)}>
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  {p.cover_image_url ? <img src={mediaUrl(p.cover_image_url)} alt="" width="68" height="68" loading="lazy" /> : <span className="side-thumb" aria-hidden="true"></span>}
+                  {mediaUrl(p.cover_image_url) ? <img src={mediaUrl(p.cover_image_url)} alt="" width="68" height="68" loading="lazy" /> : <span className="side-thumb" aria-hidden="true"></span>}
                   <span><b>{p.title}</b>{p.published_at && <i>{formatDate(p.published_at)}</i>}</span>
                 </Link>
               </li>

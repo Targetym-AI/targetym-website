@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { API_URL, mediaUrl, teaser, type BlogListResponse, type BlogPost } from '@/lib/site/blog';
+import { blogHref } from '@/lib/site/safeUrl';
 
 /* Rail du blog de l'accueil : les trois derniers articles. Rendus par le serveur
    quand l'API répond ; sinon le navigateur les demande lui-même (Cloudflare
@@ -43,9 +44,9 @@ export default function BlogRail({ initial }: { initial: BlogPost[] }) {
       <ul className="blog-rail" ref={rail}>
         {posts.map((p, i) => (
           <li key={p.id}>
-            <Link href={`/blog/${p.slug}`}>
+            <Link href={blogHref(p.slug)}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <span className="bl-media" data-cut><img src={p.cover_image_url ? mediaUrl(p.cover_image_url) : `/img/blog-${(i % 3) + 1}.jpg`} alt={p.title} width="980" height="640" loading="lazy" /><span className="dock dock-br" aria-hidden="true"><span className="round">↗</span></span></span>
+              <span className="bl-media" data-cut><img src={mediaUrl(p.cover_image_url) || `/img/blog-${(i % 3) + 1}.jpg`} alt={p.title} width="980" height="640" loading="lazy" /><span className="dock dock-br" aria-hidden="true"><span className="round">↗</span></span></span>
               <div className="bl-foot">
                 <div>
                   <h3>{p.title}</h3>

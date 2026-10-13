@@ -4,6 +4,7 @@ import ResourceTabs from '@/components/site/resources/ResourceTabs';
 import VideoCard from '@/components/site/resources/VideoCard';
 import { publicPageMetadata } from '@/lib/seo';
 import { mediaUrl, teaser } from '@/lib/site/blog';
+import { safeExternalUrl } from '@/lib/site/safeUrl';
 import { cleanTitle, fetchResources, fetchWebinars, fixCaps, getVideoEmbed, thumbTitle, webinarDay, webinarWhen, type PublicWebinar } from '@/lib/site/resources';
 
 export const metadata = publicPageMetadata({
@@ -33,12 +34,14 @@ function typeLabel(type: string) {
 function webinarFoot(w: PublicWebinar, now: number): ReactNode {
   const done = w.status === 'completed';
   const upcoming = !!w.webinar_date && new Date(w.webinar_date).getTime() > now;
-  if (done && w.replay_url) {
-    return <><span className="tag ok">Replay disponible</span><a className="btn btn-mint" href={w.replay_url} target="_blank" rel="noopener">Regarder le replay</a></>;
+  const replay = safeExternalUrl(w.replay_url);
+  const registration = safeExternalUrl(w.registration_url);
+  if (done && replay) {
+    return <><span className="tag ok">Replay disponible</span><a className="btn btn-mint" href={replay} target="_blank" rel="noopener">Regarder le replay</a></>;
   }
   if (done) return <span className="tag">Terminé</span>;
-  const tag = upcoming && w.registration_url ? <span className="tag ok">Inscription ouverte</span> : <span className="tag">Webinaire live</span>;
-  return <>{tag}{w.registration_url && <a className="btn btn-mint" href={w.registration_url} target="_blank" rel="noopener">Je m&apos;inscris</a>}</>;
+  const tag = upcoming && registration ? <span className="tag ok">Inscription ouverte</span> : <span className="tag">Webinaire live</span>;
+  return <>{tag}{registration && <a className="btn btn-mint" href={registration} target="_blank" rel="noopener">Je m&apos;inscris</a>}</>;
 }
 
 export default async function ResourcesPage({ searchParams }: { searchParams: { tab?: string } }) {
@@ -68,7 +71,7 @@ export default async function ResourcesPage({ searchParams }: { searchParams: { 
                   <VideoCard
                     key={r.id}
                     embed={embed}
-                    href={r.video_url || (r.file_url ? mediaUrl(r.file_url) : null)}
+                    href={(r.video_url && mediaUrl(r.video_url)) || (r.file_url && mediaUrl(r.file_url)) || null}
                     thumb={fixCaps(thumbTitle(r.title))}
                     title={fixCaps(cleanTitle(r.title))}
                     text={teaser(r.description, 110)}
