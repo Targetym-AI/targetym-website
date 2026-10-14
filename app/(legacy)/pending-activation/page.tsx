@@ -22,7 +22,9 @@ export default function PendingActivationPage() {
 
           {/* Subtitle */}
           <p className="text-gray-600 leading-relaxed mb-6">
-            Notre équipe vous contactera sous <strong>24H</strong> pour finaliser
+            Un e-mail de confirmation vient de vous être envoyé : cliquez sur le
+            lien qu&apos;il contient pour confirmer votre adresse. Notre équipe vous
+            contactera ensuite sous <strong>24H</strong> pour finaliser
             votre activation. Des frais d&apos;installation de{' '}
             <strong className="text-gray-900">297 000 FCFA</strong> seront
             requis pour démarrer votre essai gratuit de 15 jours.
