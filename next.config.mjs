@@ -3,9 +3,6 @@ import { securityHeaders } from './lib/site/securityHeaders.mjs';
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    // Cloudflare bloque /_next/image en production (403) : les images sont
-    // servies directement. À retirer une fois l'exception ajoutée côté Cloudflare.
-    unoptimized: true,
     formats: ['image/avif', 'image/webp'],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
