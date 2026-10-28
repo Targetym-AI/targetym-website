@@ -192,6 +192,13 @@ verifier('preview Vercel : son outil de commentaires est permis là, et là seul
   assert.ok(preview.get('frame-src')?.includes('https://vercel.live'));
   for (const h of entetes(API, false)) assert.ok(!h.value.includes('vercel'), `${h.key} cite Vercel en production`);
 });
+verifier('Turnstile : script et cadre de Cloudflare permis, en production comme en développement', () => {
+  for (const isDev of [false, true]) {
+    const d = rapport(API, isDev);
+    assert.ok(sources(d, 'script-src').includes('https://challenges.cloudflare.com'));
+    assert.ok(sources(d, 'frame-src').includes('https://challenges.cloudflare.com'));
+  }
+});
 
 Promise.all(attente).then(() => {
   console.log(echecs === 0 ? `\n${total} contrôles passent.` : `\n${echecs} contrôle(s) en échec sur ${total}.`);

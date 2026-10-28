@@ -2,6 +2,8 @@
 
 import { useState, type FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
+import TurnstileWidget from '../TurnstileWidget';
+import { TURNSTILE_FIELD } from '../../../lib/site/turnstileKeys';
 
 const initialForm = { firstName: '', lastName: '', whatsapp: '', email: '', jobTitle: '', company: '', info_supp: '', consent: false };
 
@@ -11,6 +13,8 @@ export default function DemoForm() {
   const [form, setForm] = useState(initialForm);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [token, setToken] = useState('');
+  const [resetSignal, setResetSignal] = useState(0);
 
   const bind = (field: Exclude<keyof typeof initialForm, 'consent'>) => ({
     value: form[field],
@@ -23,13 +27,17 @@ export default function DemoForm() {
       setError('Veuillez accepter la politique de confidentialité pour continuer.');
       return;
     }
+    if (!token) {
+      setError('Vérification anti-robot en cours. Réessayez dans un instant.');
+      return;
+    }
     setLoading(true);
     setError('');
     try {
       const res = await fetch('/api/demo-gratuit-targetym', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
+        body: JSON.stringify({ ...form, [TURNSTILE_FIELD]: token }),
       });
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
@@ -38,6 +46,7 @@ export default function DemoForm() {
       router.push('/demo-gratuit-targetym/confirmation');
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : "Erreur lors de l'envoi. Veuillez réessayer.");
+      setResetSignal((n) => n + 1);
     } finally {
       setLoading(false);
     }
@@ -64,6 +73,8 @@ export default function DemoForm() {
           <input type="checkbox" checked={form.consent} onChange={(e) => setForm((prev) => ({ ...prev, consent: e.target.checked }))} />
           <span>J&apos;accepte que mes données soient utilisées pour me recontacter dans le cadre de ma demande de démo Targetym AI. Conformément au RGPD, vous pouvez exercer vos droits à tout moment en écrivant à <a href="mailto:sales@agiltym.com">sales@agiltym.com</a>. *</span>
         </label>
+
+        <TurnstileWidget onToken={setToken} resetSignal={resetSignal} />
 
         {error && <p className="f-error" role="alert">{error}</p>}
 
