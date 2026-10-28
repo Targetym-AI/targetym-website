@@ -1,7 +1,8 @@
 /**
  * Formulaires publics (TAR-41) : validation serveur, bornes de la requête, contrôle de
- * l'origine, champ piège et erreur d'envoi. Faux envoi qui compte ses appels : aucun e-mail
- * n'est envoyé et Resend n'est jamais appelé.
+ * l'origine, champ piège, preuve anti-robot et erreur d'envoi. Faux envoi qui compte ses
+ * appels et faux vérificateur Turnstile : aucun e-mail n'est envoyé, ni Resend ni
+ * Cloudflare ne sont appelés.
  */
 import assert from 'node:assert/strict';
 import {
@@ -13,6 +14,8 @@ import {
   type SendLead,
 } from '../lib/site/leadForms';
 import { MAX_BODY_BYTES } from '../lib/site/formValidation';
+import { makeTurnstileVerifier, turnstileSecret, type HumanCheck, type VerifyHuman } from '../lib/site/turnstile';
+import { TURNSTILE_FIELD, TURNSTILE_TEST_SECRET_KEY } from '../lib/site/turnstileKeys';
 
 let total = 0;
 let echecs = 0;
@@ -31,20 +34,21 @@ const HOTE = 'www.targetym.ai';
 type Corps = Record<string, unknown>;
 
 // Formes exactes envoyées par les formulaires clients
+const JETON = 'jeton-turnstile-test';
 const CONTACT: Corps = {
   name: 'Awa Diop', email: 'awa@exemple.sn', company: 'Exemple SA', phone: '+221 77 000 00 00',
-  subject: 'demo', message: 'Bonjour,\nje souhaite une démo.', info_supp: '',
+  subject: 'demo', message: 'Bonjour,\nje souhaite une démo.', info_supp: '', [TURNSTILE_FIELD]: JETON,
 };
 const DEMO: Corps = {
   firstName: 'Awa', lastName: 'Diop', whatsapp: '+221 77 000 00 00', email: 'awa@exemple.sn',
-  jobTitle: '', company: '', info_supp: '', consent: true,
+  jobTitle: '', company: '', info_supp: '', consent: true, [TURNSTILE_FIELD]: JETON,
 };
 const ESSAI: Corps = {
   firstName: 'Awa', lastName: 'Diop', email: 'awa@exemple.sn', phone: '+221 77 000 00 00',
   jobTitle: 'DRH', company: 'Exemple SA', sector: 'Banque', companySize: '51 – 100 employés',
   country: "Côte d'Ivoire", city: 'Abidjan', currentTools: 'Excel, Sage',
   mainChallenges: ['Gestion de la paie', 'Recrutement difficile'], mainObjectives: ['Reporting RH & tableau de bord'],
-  howDidYouHear: 'LinkedIn', message: '', info_supp: '', consent: true,
+  howDidYouHear: 'LinkedIn', message: '', info_supp: '', consent: true, [TURNSTILE_FIELD]: JETON,
 };
 
 const FORMULAIRES: { nom: string; process: FormProcessor; valide: Corps }[] = [
@@ -69,10 +73,17 @@ function requete(corps: unknown, entetes: Record<string, string> = {}, brut = fa
   });
 }
 
-async function appel(process: FormProcessor, req: Request, sortie: { error?: unknown } = {}) {
+function fauxVerificateur(reponse: HumanCheck = 'ok') {
+  const verifications: { token: string; ip: string | null }[] = [];
+  const verify: VerifyHuman = async (token, ip) => { verifications.push({ token, ip }); return reponse; };
+  return { verifications, verify };
+}
+
+async function appel(process: FormProcessor, req: Request, sortie: { error?: unknown } = {}, humain: HumanCheck = 'ok') {
   const { appels, send } = fauxEnvoi(sortie);
-  const res = await handleFormRequest(req, process, send, 'Erreur lors de l\'envoi.', () => undefined);
-  return { res, appels };
+  const { verifications, verify } = fauxVerificateur(humain);
+  const res = await handleFormRequest(req, process, send, verify, 'Erreur lors de l\'envoi.', () => undefined);
+  return { res, appels, verifications };
 }
 
 async function refus(process: FormProcessor, req: Request, statut: number) {
@@ -202,14 +213,90 @@ async function main() {
       for (const sortie of [{ error: { message: 'SECRET-RESEND-DETAIL', name: 'x' } }, null]) {
         const { appels, send } = fauxEnvoi();
         const envoi: SendLead = sortie ? async (m) => { appels.push(m); return sortie; } : async () => { throw new Error('SECRET-RESEND-DETAIL'); };
-        const res = await handleFormRequest(requete(f.valide), f.process, envoi, "Erreur lors de l'envoi.", () => undefined);
+        const res = await handleFormRequest(requete(f.valide), f.process, envoi, fauxVerificateur().verify, "Erreur lors de l'envoi.", () => undefined);
         assert.equal(res.status, 500);
         assert.deepEqual(res.body, { error: "Erreur lors de l'envoi." });
         assert.ok(!JSON.stringify(res.body).includes('SECRET'));
         void send;
       }
     });
+
+    await verifier(`${f.nom} : jeton anti-robot absent, vide, non textuel ou trop long → 400, ni vérification ni envoi`, async () => {
+      for (const corps of [sans(f.valide, TURNSTILE_FIELD), avec(f.valide, { [TURNSTILE_FIELD]: '' }),
+        avec(f.valide, { [TURNSTILE_FIELD]: 42 }), avec(f.valide, { [TURNSTILE_FIELD]: 'x'.repeat(2049) })]) {
+        const { res, appels, verifications } = await appel(f.process, requete(corps));
+        assert.equal(res.status, 400);
+        assert.equal(appels.length, 0);
+        assert.equal(verifications.length, 0);
+      }
+    });
+    await verifier(`${f.nom} : jeton refusé par Cloudflare → 400, zéro envoi`, async () => {
+      const { res, appels } = await appel(f.process, requete(f.valide), {}, 'refused');
+      assert.equal(res.status, 400);
+      assert.deepEqual(res.body, { error: 'Vérification anti-robot échouée. Réessayez.' });
+      assert.equal(appels.length, 0);
+    });
+    await verifier(`${f.nom} : Cloudflare indisponible → 503, zéro envoi`, async () => {
+      const { res, appels } = await appel(f.process, requete(f.valide), {}, 'unavailable');
+      assert.equal(res.status, 503);
+      assert.equal(appels.length, 0);
+    });
+    await verifier(`${f.nom} : jeton vérifié une fois, avec l'adresse vue par Cloudflare`, async () => {
+      const { res, verifications } = await appel(f.process, requete(f.valide, { 'cf-connecting-ip': '41.82.1.2' }));
+      assert.equal(res.status, 200);
+      assert.deepEqual(verifications, [{ token: JETON, ip: '41.82.1.2' }]);
+    });
+    await verifier(`${f.nom} : formulaire invalide ou champ piège → jeton non consommé`, async () => {
+      const invalide = await appel(f.process, requete(avec(f.valide, { email: 'nul' })));
+      assert.equal(invalide.res.status, 400);
+      assert.equal(invalide.verifications.length, 0);
+      const piege = await appel(f.process, requete(avec(f.valide, { info_supp: 'spam' })));
+      assert.equal(piege.res.status, 200);
+      assert.equal(piege.verifications.length, 0);
+    });
   }
+
+  // Vérificateur Cloudflare, avec un faux fetch
+  const fauxFetch = (reponse: () => Promise<Response>) => {
+    const requetes: { url: string; corps: string }[] = [];
+    const f = (async (url: string | URL | Request, init?: RequestInit) => {
+      requetes.push({ url: String(url), corps: String(init?.body) });
+      return reponse();
+    }) as typeof fetch;
+    return { requetes, f };
+  };
+  const json = (corps: unknown, status = 200) => async () => new Response(JSON.stringify(corps), { status });
+  await verifier('Cloudflare : success true → ok, avec la clé, le jeton et l\'adresse', async () => {
+    const { requetes, f } = fauxFetch(json({ success: true }));
+    assert.equal(await makeTurnstileVerifier('cle-secrete', f, () => undefined)('jeton', '41.82.1.2'), 'ok');
+    assert.equal(requetes[0].url, 'https://challenges.cloudflare.com/turnstile/v0/siteverify');
+    const corps = new URLSearchParams(requetes[0].corps);
+    assert.equal(corps.get('secret'), 'cle-secrete');
+    assert.equal(corps.get('response'), 'jeton');
+    assert.equal(corps.get('remoteip'), '41.82.1.2');
+  });
+  await verifier('Cloudflare : success false ou absent → refused', async () => {
+    for (const corps of [{ success: false, 'error-codes': ['invalid-input-response'] }, {}, { success: 'true' }]) {
+      assert.equal(await makeTurnstileVerifier('cle', fauxFetch(json(corps)).f, () => undefined)('jeton', null), 'refused');
+    }
+  });
+  await verifier('Cloudflare : erreur HTTP, réseau ou réponse illisible → unavailable', async () => {
+    const cas = [json({ success: true }, 500), async () => { throw new Error('réseau'); }, async () => new Response('pas du json')];
+    for (const reponse of cas) {
+      assert.equal(await makeTurnstileVerifier('cle', fauxFetch(reponse).f, () => undefined)('jeton', null), 'unavailable');
+    }
+  });
+  await verifier('Cloudflare : clé secrète absente → unavailable, sans appel', async () => {
+    const { requetes, f } = fauxFetch(json({ success: true }));
+    assert.equal(await makeTurnstileVerifier(null, f, () => undefined)('jeton', null), 'unavailable');
+    assert.equal(requetes.length, 0);
+  });
+  await verifier('clé secrète : celle de l\'environnement, sinon la clé de test hors production, jamais en production', async () => {
+    assert.equal(turnstileSecret({ TURNSTILE_SECRET_KEY: 'vraie', VERCEL_ENV: 'production' }), 'vraie');
+    assert.equal(turnstileSecret({ VERCEL_ENV: 'production' }), null);
+    assert.equal(turnstileSecret({ VERCEL_ENV: 'preview' }), TURNSTILE_TEST_SECRET_KEY);
+    assert.equal(turnstileSecret({}), TURNSTILE_TEST_SECRET_KEY);
+  });
 
   // Champs propres à chaque formulaire
   const requis: Record<string, string[]> = {
