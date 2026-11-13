@@ -299,6 +299,9 @@ function LoginForm() {
   const [recoveryCodesSaved, setRecoveryCodesSaved] = useState(false);
   const [completedUserRole, setCompletedUserRole] = useState<string | undefined>();
   const [copied2FAValue, setCopied2FAValue] = useState<'secret' | 'codes' | null>(null);
+  const [emailCodeAvailable, setEmailCodeAvailable] = useState(false);
+  const [emailHint, setEmailHint] = useState('');
+  const [sendingEmailCode, setSendingEmailCode] = useState(false);
   const otpRefs = useRef<(HTMLInputElement | null)[]>([]);
 
   // Setup 2FA (fetch QR code)
@@ -387,7 +390,8 @@ function LoginForm() {
     let responseStatus: number | undefined;
 
     try {
-      const res = await fetch(`${API_URL}/api/auth/2fa/verify`, {
+      const verifyPath = emailHint ? '/api/auth/2fa/email/verify' : '/api/auth/2fa/verify';
+      const res = await fetch(`${API_URL}${verifyPath}`, {
         method: 'POST',
         credentials: 'include',
         headers: {
@@ -419,6 +423,28 @@ function LoginForm() {
       otpRefs.current[0]?.focus();
     } finally {
       setVerifying2FA(false);
+    }
+  };
+
+  const sendEmailCode = async () => {
+    setSendingEmailCode(true);
+    setError('');
+    try {
+      const res = await fetch(`${API_URL}/api/auth/2fa/email/send`, {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${tempToken}` },
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.detail || "Envoi de l'e-mail impossible");
+      }
+      setEmailHint(data.email_hint);
+      setOtpCode(['', '', '', '', '', '']);
+      otpRefs.current[0]?.focus();
+    } catch (err) {
+      setError(getAuthErrorMessage(err));
+    } finally {
+      setSendingEmailCode(false);
     }
   };
 
@@ -506,6 +532,8 @@ function LoginForm() {
         if (data.requires_2fa) {
           setTempToken(data.temp_token);
           setNeedsSetup(data.needs_setup);
+          setEmailCodeAvailable(data.email_code_available === true);
+          setEmailHint('');
           setTwoFactorStep(true);
           return;
         }
@@ -618,7 +646,9 @@ function LoginForm() {
                         ? 'Utilisez un des codes enregistrés lors de l’activation.'
                         : needsSetup
                           ? "Configurez votre application d'authentification"
-                          : "Entrez le code de votre application d'authentification"}
+                          : emailHint
+                            ? `Entrez le code envoyé à ${emailHint}. Il est valable 5 minutes.`
+                            : "Entrez le code de votre application d'authentification"}
                   </p>
                 </div>
 
@@ -785,11 +815,40 @@ function LoginForm() {
                       )}
                     </button>
 
+                    {!needsSetup && !recoveryMode && emailCodeAvailable && (
+                      <div className="mt-4 flex flex-col items-center gap-1 text-sm">
+                        <button
+                          type="button"
+                          onClick={sendEmailCode}
+                          disabled={sendingEmailCode}
+                          className="font-medium text-primary-600 hover:text-primary-700 disabled:opacity-50"
+                        >
+                          {sendingEmailCode
+                            ? 'Envoi...'
+                            : emailHint ? 'Renvoyer le code' : 'Recevoir le code par e-mail'}
+                        </button>
+                        {emailHint && (
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setEmailHint('');
+                              setError('');
+                              setOtpCode(['', '', '', '', '', '']);
+                            }}
+                            className="text-slate-500 hover:text-slate-700"
+                          >
+                            Utiliser mon application
+                          </button>
+                        )}
+                      </div>
+                    )}
+
                     {!needsSetup && (
                       <button
                         type="button"
                         onClick={() => {
                           setRecoveryMode(!recoveryMode);
+                          setEmailHint('');
                           setError('');
                         }}
                         className="mt-4 flex w-full items-center justify-center gap-2 py-2 text-sm font-medium text-primary-600 hover:text-primary-700"
@@ -808,6 +867,8 @@ function LoginForm() {
                         setOtpCode(['', '', '', '', '', '']);
                         setRecoveryMode(false);
                         setRecoveryCode('');
+                        setEmailCodeAvailable(false);
+                        setEmailHint('');
                         setError('');
                       }}
                       className="w-full mt-2 py-2 text-sm text-slate-500 hover:text-slate-700 flex items-center justify-center gap-1 transition-colors"
