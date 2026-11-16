@@ -1,6 +1,8 @@
 'use client';
 
 import { useState, type FormEvent } from 'react';
+import TurnstileWidget from '../TurnstileWidget';
+import { TURNSTILE_FIELD } from '../../../lib/site/turnstileKeys';
 
 type Status = 'idle' | 'sending' | 'done' | 'error';
 
@@ -9,9 +11,16 @@ type Status = 'idle' | 'sending' | 'done' | 'error';
 export default function ContactForm() {
   const [status, setStatus] = useState<Status>('idle');
   const [error, setError] = useState('');
+  const [token, setToken] = useState('');
+  const [resetSignal, setResetSignal] = useState(0);
 
   const submit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!token) {
+      setError('Vérification anti-robot en cours. Réessayez dans un instant.');
+      setStatus('error');
+      return;
+    }
     const data = new FormData(e.currentTarget);
     const field = (k: string) => String(data.get(k) ?? '').trim();
     setStatus('sending');
@@ -28,6 +37,7 @@ export default function ContactForm() {
           subject: field('subject'),
           message: field('message'),
           info_supp: field('info_supp'),
+          [TURNSTILE_FIELD]: token,
         }),
       });
       if (!res.ok) {
@@ -38,6 +48,7 @@ export default function ContactForm() {
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : 'Erreur lors de l\'envoi. Veuillez réessayer.');
       setStatus('error');
+      setResetSignal((n) => n + 1);
     }
   };
 
@@ -64,6 +75,7 @@ export default function ContactForm() {
             </select></div>
           <div className="f-field span2"><label htmlFor="c-msg">Message <small>*</small></label><textarea id="c-msg" name="message" placeholder="Comment pouvons-nous vous aider&nbsp;?" required></textarea></div>
         </div>
+        <TurnstileWidget onToken={setToken} resetSignal={resetSignal} />
         <button className="btn btn-mint" type="submit" disabled={status === 'sending'}>{status === 'sending' ? 'Envoi en cours…' : 'Envoyer le message'}</button>
         {status === 'error' && <p className="f-note" role="alert">{error}</p>}
       </form>

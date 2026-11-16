@@ -1,6 +1,7 @@
 /* Logique des trois formulaires publics, sans dépendance à Resend ni à Next : chaque
-   traitement reçoit le corps déjà décodé et une fonction d'envoi injectée. La route réelle
-   branche Resend, les contrôles (scripts/check-formulaires.ts) branchent un faux envoi.
+   traitement reçoit le corps déjà décodé, une fonction d'envoi et une vérification
+   anti-robot injectées. La route réelle branche Resend et Cloudflare Turnstile, les
+   contrôles (scripts/check-formulaires.ts) branchent un faux envoi et un faux vérificateur.
    Les mises en forme d'e-mail sont celles des routes d'origine, inchangées. */
 import { escapeHtml } from '../sanitize';
 import {
@@ -13,13 +14,32 @@ import {
   validateForm,
   type FormSpec,
 } from './formValidation';
+import type { HumanCheck, VerifyHuman } from './turnstile';
+import { TURNSTILE_FIELD } from './turnstileKeys';
 
 export type LeadMail = { replyTo: string; subject: string; html: string };
 export type SendLead = (mail: LeadMail) => Promise<{ error?: unknown }>;
 export type FormResult = { status: number; body: { success: true } | { error: string } };
-export type FormProcessor = (input: unknown, send: SendLead) => Promise<FormResult>;
+export type CheckToken = (token: string) => Promise<HumanCheck>;
+export type FormProcessor = (input: unknown, send: SendLead, checkToken: CheckToken) => Promise<FormResult>;
 
 const OK: FormResult = { status: 200, body: { success: true } };
+
+const TOKEN_MAX_LENGTH = 2048;
+
+/** Refus à renvoyer si la preuve anti-robot manque ou ne passe pas ; null si elle passe. */
+async function refuseUnlessHuman(input: unknown, checkToken: CheckToken): Promise<FormResult | null> {
+  const token = (input as Record<string, unknown>)[TURNSTILE_FIELD];
+  if (typeof token !== 'string' || !token || token.length > TOKEN_MAX_LENGTH) {
+    return { status: 400, body: { error: 'Vérification anti-robot manquante. Rechargez la page et réessayez.' } };
+  }
+  const result = await checkToken(token);
+  if (result === 'ok') return null;
+  if (result === 'refused') {
+    return { status: 400, body: { error: 'Vérification anti-robot échouée. Réessayez.' } };
+  }
+  return { status: 503, body: { error: 'Vérification anti-robot indisponible. Réessayez dans un instant.' } };
+}
 
 const subjectLabels: Record<string, string> = {
   demo: 'Demande de démonstration',
@@ -144,11 +164,14 @@ function buildTrial(d: Record<string, string | string[]>): LeadMail {
 }
 
 function makeProcessor(spec: FormSpec, build: (d: Record<string, string | string[]>) => LeadMail): FormProcessor {
-  return async (input, send) => {
+  return async (input, send, checkToken) => {
     // Un robot qui remplit le champ piège reçoit un succès, sans aucun envoi.
     if (isHoneypotFilled(input)) return OK;
     const checked = validateForm(spec, input);
     if (!checked.ok) return { status: 400, body: { error: checked.error } };
+    // Après la validation : un formulaire mal rempli ne consomme pas le jeton à usage unique.
+    const refused = await refuseUnlessHuman(input, checkToken);
+    if (refused) return refused;
     const { error } = await send(build(checked.data));
     if (error) throw new Error('send failed', { cause: error });
     return OK;
@@ -165,14 +188,17 @@ export async function handleFormRequest(
   req: Request,
   process: FormProcessor,
   send: SendLead,
+  verifyHuman: VerifyHuman,
   sendErrorMessage: string,
   log: (...args: unknown[]) => void = console.error,
 ): Promise<FormResult> {
   if (!isSameOrigin(req.headers)) return { status: 403, body: { error: 'Requête refusée.' } };
   const parsed = await readJsonBody(req);
   if (!parsed.ok) return { status: parsed.status, body: { error: parsed.error } };
+  // Derrière Cloudflare, l'adresse du visiteur est dans CF-Connecting-IP.
+  const ip = req.headers.get('cf-connecting-ip');
   try {
-    return await process(parsed.value, send);
+    return await process(parsed.value, send, (token) => verifyHuman(token, ip));
   } catch (err) {
     log('[formulaire public]', err);
     return { status: 500, body: { error: sendErrorMessage } };
