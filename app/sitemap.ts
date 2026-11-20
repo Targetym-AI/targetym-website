@@ -36,6 +36,9 @@ async function fetchBlogSlugs(): Promise<BlogPost[]> {
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  // Une preview ne doit pas désigner les pages de production
+  if (process.env.VERCEL_ENV === 'preview') return [];
+
   const staticRoutes: MetadataRoute.Sitemap = [
     { url: `${BASE_URL}/`, changeFrequency: 'weekly', priority: 1 },
     { url: `${BASE_URL}/solutions`, changeFrequency: 'monthly', priority: 0.9 },

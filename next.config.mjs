@@ -2,6 +2,7 @@ import { securityHeaders } from './lib/site/securityHeaders.mjs';
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  poweredByHeader: false,
   images: {
     formats: ['image/avif', 'image/webp'],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
@@ -30,7 +31,14 @@ const nextConfig = {
           apiUrl: process.env.NEXT_PUBLIC_API_URL || 'https://api.targetym.ai',
           isDev: process.env.NODE_ENV !== 'production',
           isPreview: process.env.VERCEL_ENV === 'preview',
+          /* La production reste en observation tant que la politique complète n'a pas été éprouvée sur les previews */
+          enforceFullPolicy: process.env.VERCEL_ENV === 'preview',
         }),
+      },
+      /* Les routes d'API ne doivent pas être indexées : mieux qu'une ligne dans robots.txt, qui les désignerait */
+      {
+        source: '/api/:path*',
+        headers: [{ key: 'X-Robots-Tag', value: 'noindex' }],
       },
     ];
   },

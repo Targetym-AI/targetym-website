@@ -4,7 +4,7 @@
  */
 import assert from 'node:assert/strict';
 import nextConfig from '../next.config.mjs';
-import { securityHeaders } from '../lib/site/securityHeaders.mjs';
+import { enforcedPolicy, reportOnlyPolicy, securityHeaders } from '../lib/site/securityHeaders.mjs';
 import { safeVideoEmbed } from '../lib/site/safeUrl';
 
 const API = 'https://api.targetym.ai';
@@ -175,7 +175,7 @@ verifier('next.config.mjs : aucun nom d’hôte avec joker dans les images', () 
 });
 verifier('next.config.mjs : headers() applique la liste à toutes les routes', async () => {
   const regles = await nextConfig.headers?.();
-  assert.ok(regles && regles.length === 1);
+  assert.ok(regles && regles.length === 2);
   assert.equal(regles[0].source, '/:path*');
   for (const k of ATTENDUS) assert.equal(regles[0].headers.filter((h: Entete) => h.key === k).length, 1, k);
 });
@@ -191,6 +191,37 @@ verifier('preview Vercel : son outil de commentaires est permis là, et là seul
   assert.ok(preview.get('script-src')?.includes('https://vercel.live'));
   assert.ok(preview.get('frame-src')?.includes('https://vercel.live'));
   for (const h of entetes(API, false)) assert.ok(!h.value.includes('vercel'), `${h.key} cite Vercel en production`);
+});
+
+function entetesPreview(): Entete[] {
+  return securityHeaders({ apiUrl: API, isDev: false, isPreview: true, enforceFullPolicy: true });
+}
+
+verifier('production : aucun en-tête ne cite pusher ni vercel.live, et pas de X-Robots-Tag global', () => {
+  for (const liste of [entetes(API, false), securityHeaders({ apiUrl: API, isDev: false, isPreview: false, enforceFullPolicy: false })]) {
+    for (const h of liste) assert.ok(!/pusher|vercel\.live/i.test(h.value), `${h.key} cite pusher ou vercel.live`);
+    assert.ok(!liste.some((h) => h.key.toLowerCase() === 'x-robots-tag'));
+  }
+});
+verifier('production : la politique complète reste en observation, la politique appliquée ne change pas', () => {
+  const liste = entetes(API, false);
+  assert.equal(valeur(liste, 'Content-Security-Policy'), enforcedPolicy());
+  assert.equal(valeur(liste, 'Content-Security-Policy-Report-Only'), reportOnlyPolicy({ apiUrl: API, isDev: false }));
+});
+verifier('preview avec l’option : politique complète appliquée, sans Report-Only, X-Robots-Tag présent', () => {
+  const liste = entetesPreview();
+  assert.ok(!liste.some((h) => h.key.toLowerCase() === 'content-security-policy-report-only'));
+  const d = directives(valeur(liste, 'Content-Security-Policy'));
+  for (const n of ['frame-ancestors', 'base-uri', 'object-src', 'default-src', 'script-src', 'connect-src', 'frame-src']) assert.ok(d.has(n), n);
+  assert.deepEqual(d.get('default-src'), ["'self'"]);
+  assert.equal(valeur(liste, 'X-Robots-Tag'), 'noindex, nofollow');
+});
+verifier('next.config.mjs : /api/ porte X-Robots-Tag noindex et poweredByHeader est coupé', async () => {
+  assert.equal(nextConfig.poweredByHeader, false);
+  const regles = await nextConfig.headers?.();
+  const api = regles?.find((r: { source: string }) => r.source === '/api/:path*');
+  assert.ok(api);
+  assert.deepEqual(api.headers, [{ key: 'X-Robots-Tag', value: 'noindex' }]);
 });
 
 Promise.all(attente).then(() => {
