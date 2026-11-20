@@ -68,6 +68,29 @@ const BLOCKED_EMAIL_DOMAINS = [
   'orange.fr', 'wanadoo.fr', 'free.fr', 'sfr.fr', 'laposte.net',
 ];
 
+// Affiché à l'agent que le dashboard renvoie ici après la coupure de la connexion par numéro.
+const PHONE_LOGIN_CLOSED_MESSAGE =
+  "La connexion par numéro n'est plus ouverte pour votre compte. Reconnectez-vous avec votre e-mail.";
+
+const PHONE_LOGIN_UNAVAILABLE_MESSAGE =
+  "La connexion par numéro n'est pas disponible pour le moment.";
+
+// Indicatifs proposés pour la connexion par numéro ; le premier est choisi par défaut.
+const PHONE_COUNTRY_CODES = [
+  { code: '+221', label: 'Sénégal (+221)' },
+  { code: '+225', label: "Côte d'Ivoire (+225)" },
+  { code: '+223', label: 'Mali (+223)' },
+  { code: '+226', label: 'Burkina Faso (+226)' },
+  { code: '+224', label: 'Guinée (+224)' },
+  { code: '+229', label: 'Bénin (+229)' },
+  { code: '+228', label: 'Togo (+228)' },
+  { code: '+227', label: 'Niger (+227)' },
+  { code: '+222', label: 'Mauritanie (+222)' },
+  { code: '+237', label: 'Cameroun (+237)' },
+  { code: '+241', label: 'Gabon (+241)' },
+  { code: '+33', label: 'France (+33)' },
+];
+
 function isPersonalEmail(email: string): boolean {
   const domain = email.split('@')[1]?.toLowerCase();
   return domain ? BLOCKED_EMAIL_DOMAINS.includes(domain) : false;
@@ -271,9 +294,24 @@ function LoginForm() {
   const requestedDashboardPath = searchParams.get('next');
 
   const [activeTab, setActiveTab] = useState(defaultTab);
+  // Agents de terrain sans e-mail : numéro de la fiche + code reçu par SMS.
+  const [chosenLoginMethod, setLoginMethod] = useState<'email' | 'phone'>(
+    searchParams.get('method') === 'phone' ? 'phone' : 'email'
+  );
+  // Tant que l'API ne dit pas qu'un fournisseur de SMS est branché, la page ne propose pas le numéro.
+  const [phoneLoginAvailable, setPhoneLoginAvailable] = useState(false);
+  const [phoneLoginUnavailable, setPhoneLoginUnavailable] = useState(false);
+  const loginMethod = phoneLoginAvailable ? chosenLoginMethod : 'email';
+  const [phoneCountry, setPhoneCountry] = useState(PHONE_COUNTRY_CODES[0].code);
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [phoneCodeSent, setPhoneCodeSent] = useState(false);
+  const [phoneCode, setPhoneCode] = useState('');
+  const [phoneInfo, setPhoneInfo] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState(
+    searchParams.get('reason') === 'phone_login_closed' ? PHONE_LOGIN_CLOSED_MESSAGE : ''
+  );
   const [emailError, setEmailError] = useState('');
   const [formData, setFormData] = useState({
     email: '',
@@ -335,6 +373,19 @@ function LoginForm() {
       setError('Copie impossible. Sélectionnez le texte manuellement.');
     }
   };
+
+  useEffect(() => {
+    let cancelled = false;
+    fetch(`${API_URL}/api/auth/phone/availability`)
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (!cancelled) setPhoneLoginAvailable(data?.available === true);
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   // Auto-setup when entering 2FA step with needs_setup
   useEffect(() => {
@@ -484,8 +535,81 @@ function LoginForm() {
     }
   };
 
+  const fullPhoneNumber = () => {
+    const typed = phoneNumber.trim();
+    return typed.startsWith('+') ? typed : `${phoneCountry} ${typed}`;
+  };
+
+  const resetPhoneCode = () => {
+    setPhoneCodeSent(false);
+    setPhoneCode('');
+    setPhoneInfo('');
+    setError('');
+  };
+
+  const sendPhoneCode = async () => {
+    let responseStatus: number | undefined;
+    setIsLoading(true);
+    setError('');
+    setPhoneLoginUnavailable(false);
+    try {
+      const response = await fetch(`${API_URL}/api/auth/phone/send-code`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ phone: fullPhoneNumber() }),
+      });
+      responseStatus = response.status;
+      const data = await response.json();
+      if (!response.ok) {
+        // 503 : le fournisseur de SMS a été débranché depuis l'ouverture de la page.
+        if (response.status === 503) {
+          setPhoneLoginUnavailable(true);
+          return;
+        }
+        throw new Error(typeof data.detail === 'string' ? data.detail : "Envoi du code impossible");
+      }
+      setPhoneCodeSent(true);
+      setPhoneCode('');
+      setPhoneInfo(data.message || 'Si ce numéro est enregistré, un code vient de lui être envoyé par SMS.');
+    } catch (err) {
+      setError(getAuthErrorMessage(err, responseStatus));
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const verifyPhoneCode = async () => {
+    let responseStatus: number | undefined;
+    setIsLoading(true);
+    setError('');
+    try {
+      const response = await fetch(`${API_URL}/api/auth/phone/verify`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ phone: fullPhoneNumber(), code: phoneCode.trim() }),
+      });
+      responseStatus = response.status;
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(typeof data.detail === 'string' ? data.detail : 'Code invalide ou expiré');
+      }
+      // Le refresh token reste dans le cookie HTTP-only de l'API, comme pour l'e-mail.
+      window.location.href = getDashboardDestination(data.user?.role, requestedDashboardPath);
+    } catch (err) {
+      setError(getAuthErrorMessage(err, responseStatus));
+      setPhoneCode('');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (activeTab === 'login' && loginMethod === 'phone') {
+      await (phoneCodeSent ? verifyPhoneCode() : sendPhoneCode());
+      return;
+    }
     setIsLoading(true);
     setError('');
     setEmailError('');
@@ -1044,6 +1168,111 @@ function LoginForm() {
                     </>
                   )}
 
+                  {activeTab === 'login' && loginMethod === 'phone' ? (
+                    <>
+                      <div>
+                        <label htmlFor="loginPhone" className="block text-sm font-semibold text-slate-900 mb-1.5">
+                          Numéro de téléphone
+                        </label>
+                        <div className="flex gap-2">
+                          <select
+                            aria-label="Indicatif du pays"
+                            value={phoneCountry}
+                            onChange={(e) => { setPhoneCountry(e.target.value); resetPhoneCode(); }}
+                            className="w-32 sm:w-40 px-2 sm:px-3 py-2.5 sm:py-3 bg-slate-50 border border-slate-300 rounded-lg sm:rounded-xl text-slate-900 focus:outline-none focus:ring-2 focus:ring-primary-500/50 focus:border-primary-500 transition-all text-sm sm:text-base"
+                          >
+                            {PHONE_COUNTRY_CODES.map((country) => (
+                              <option key={country.code} value={country.code}>{country.label}</option>
+                            ))}
+                          </select>
+                          <div className="relative flex-1">
+                            <Phone className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 text-slate-400" />
+                            <input
+                              type="tel"
+                              id="loginPhone"
+                              inputMode="tel"
+                              autoComplete="tel-national"
+                              value={phoneNumber}
+                              onChange={(e) => { setPhoneNumber(e.target.value); if (phoneCodeSent) resetPhoneCode(); }}
+                              placeholder="77 123 45 67"
+                              className="w-full pl-10 sm:pl-12 pr-4 py-2.5 sm:py-3 bg-slate-50 border border-slate-300 rounded-lg sm:rounded-xl text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-primary-500/50 focus:border-primary-500 transition-all text-sm sm:text-base"
+                              required
+                            />
+                          </div>
+                        </div>
+                        {phoneLoginUnavailable ? (
+                          <p className="mt-2 text-sm text-slate-600">
+                            {PHONE_LOGIN_UNAVAILABLE_MESSAGE}{' '}
+                            <button
+                              type="button"
+                              onClick={() => { setLoginMethod('email'); resetPhoneCode(); setPhoneLoginUnavailable(false); }}
+                              className="font-medium text-primary-600 hover:text-primary-700 transition-colors"
+                            >
+                              Se connecter avec mon e-mail
+                            </button>
+                          </p>
+                        ) : (
+                          <p className="mt-1 text-xs text-slate-500">
+                            Le numéro enregistré par votre RH sur votre fiche.
+                          </p>
+                        )}
+                      </div>
+
+                      {phoneCodeSent && (
+                        <div>
+                          {phoneInfo && (
+                            <p className="mb-3 text-sm text-slate-600">{phoneInfo}</p>
+                          )}
+                          <label htmlFor="loginPhoneCode" className="block text-sm font-semibold text-slate-900 mb-1.5">
+                            Code reçu par SMS
+                          </label>
+                          <input
+                            type="text"
+                            id="loginPhoneCode"
+                            inputMode="numeric"
+                            autoComplete="one-time-code"
+                            maxLength={6}
+                            value={phoneCode}
+                            onChange={(e) => setPhoneCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
+                            placeholder="123456"
+                            className="w-full px-4 py-2.5 sm:py-3 bg-slate-50 border border-slate-300 rounded-lg sm:rounded-xl text-center font-mono text-lg tracking-widest text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-primary-500/50 focus:border-primary-500 transition-all"
+                            autoFocus
+                            required
+                          />
+                          <div className="mt-2 flex items-center justify-between text-sm">
+                            <button
+                              type="button"
+                              onClick={sendPhoneCode}
+                              disabled={isLoading}
+                              className="font-medium text-primary-600 hover:text-primary-700 disabled:opacity-50"
+                            >
+                              Renvoyer le code
+                            </button>
+                            <button
+                              type="button"
+                              onClick={resetPhoneCode}
+                              className="text-slate-500 hover:text-slate-700"
+                            >
+                              Changer de numéro
+                            </button>
+                          </div>
+                        </div>
+                      )}
+
+                      {!phoneLoginUnavailable && (
+                        <div className="pt-1 text-right">
+                          <button
+                            type="button"
+                            onClick={() => { setLoginMethod('email'); resetPhoneCode(); }}
+                            className="text-sm font-medium text-primary-600 hover:text-primary-700 transition-colors"
+                          >
+                            Se connecter avec mon e-mail
+                          </button>
+                        </div>
+                      )}
+                    </>
+                  ) : (
+                  <>
                   {/* Email */}
                   <div>
                     <label htmlFor="email" className="block text-sm font-semibold text-slate-900 mb-1.5">
@@ -1135,6 +1364,20 @@ function LoginForm() {
                     </div>
                   )}
 
+                  {activeTab === 'login' && phoneLoginAvailable && (
+                    <div className="text-right">
+                      <button
+                        type="button"
+                        onClick={() => { setLoginMethod('phone'); setError(''); }}
+                        className="text-sm font-medium text-primary-600 hover:text-primary-700 transition-colors"
+                      >
+                        Se connecter avec mon numéro de téléphone
+                      </button>
+                    </div>
+                  )}
+                  </>
+                  )}
+
                   {/* CGU (register) */}
                   {activeTab === 'register' && (
                     <p className="text-xs text-slate-500">
@@ -1163,7 +1406,11 @@ function LoginForm() {
                     ) : (
                       <>
                         <span>
-                          {activeTab === 'login' ? 'Se connecter' : 'Démarrer mon essai gratuit'}
+                          {activeTab !== 'login'
+                            ? 'Démarrer mon essai gratuit'
+                            : loginMethod === 'phone' && !phoneCodeSent
+                              ? 'Recevoir le code par SMS'
+                              : 'Se connecter'}
                         </span>
                         <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform" />
                       </>
