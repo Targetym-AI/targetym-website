@@ -72,6 +72,9 @@ const BLOCKED_EMAIL_DOMAINS = [
 const PHONE_LOGIN_CLOSED_MESSAGE =
   "La connexion par numéro n'est plus ouverte pour votre compte. Reconnectez-vous avec votre e-mail.";
 
+const PHONE_LOGIN_UNAVAILABLE_MESSAGE =
+  "La connexion par numéro n'est pas disponible pour le moment.";
+
 // Indicatifs proposés pour la connexion par numéro ; le premier est choisi par défaut.
 const PHONE_COUNTRY_CODES = [
   { code: '+221', label: 'Sénégal (+221)' },
@@ -292,9 +295,13 @@ function LoginForm() {
 
   const [activeTab, setActiveTab] = useState(defaultTab);
   // Agents de terrain sans e-mail : numéro de la fiche + code reçu par SMS.
-  const [loginMethod, setLoginMethod] = useState<'email' | 'phone'>(
+  const [chosenLoginMethod, setLoginMethod] = useState<'email' | 'phone'>(
     searchParams.get('method') === 'phone' ? 'phone' : 'email'
   );
+  // Tant que l'API ne dit pas qu'un fournisseur de SMS est branché, la page ne propose pas le numéro.
+  const [phoneLoginAvailable, setPhoneLoginAvailable] = useState(false);
+  const [phoneLoginUnavailable, setPhoneLoginUnavailable] = useState(false);
+  const loginMethod = phoneLoginAvailable ? chosenLoginMethod : 'email';
   const [phoneCountry, setPhoneCountry] = useState(PHONE_COUNTRY_CODES[0].code);
   const [phoneNumber, setPhoneNumber] = useState('');
   const [phoneCodeSent, setPhoneCodeSent] = useState(false);
@@ -366,6 +373,19 @@ function LoginForm() {
       setError('Copie impossible. Sélectionnez le texte manuellement.');
     }
   };
+
+  useEffect(() => {
+    let cancelled = false;
+    fetch(`${API_URL}/api/auth/phone/availability`)
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (!cancelled) setPhoneLoginAvailable(data?.available === true);
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   // Auto-setup when entering 2FA step with needs_setup
   useEffect(() => {
@@ -531,6 +551,7 @@ function LoginForm() {
     let responseStatus: number | undefined;
     setIsLoading(true);
     setError('');
+    setPhoneLoginUnavailable(false);
     try {
       const response = await fetch(`${API_URL}/api/auth/phone/send-code`, {
         method: 'POST',
@@ -540,9 +561,9 @@ function LoginForm() {
       responseStatus = response.status;
       const data = await response.json();
       if (!response.ok) {
-        // 503 : aucun fournisseur de SMS branché ; le message de l'API le dit.
-        if (response.status === 503 && typeof data.detail === 'string') {
-          setError(data.detail);
+        // 503 : le fournisseur de SMS a été débranché depuis l'ouverture de la page.
+        if (response.status === 503) {
+          setPhoneLoginUnavailable(true);
           return;
         }
         throw new Error(typeof data.detail === 'string' ? data.detail : "Envoi du code impossible");
@@ -1179,9 +1200,22 @@ function LoginForm() {
                             />
                           </div>
                         </div>
-                        <p className="mt-1 text-xs text-slate-500">
-                          Le numéro enregistré par votre RH sur votre fiche.
-                        </p>
+                        {phoneLoginUnavailable ? (
+                          <p className="mt-2 text-sm text-slate-600">
+                            {PHONE_LOGIN_UNAVAILABLE_MESSAGE}{' '}
+                            <button
+                              type="button"
+                              onClick={() => { setLoginMethod('email'); resetPhoneCode(); setPhoneLoginUnavailable(false); }}
+                              className="font-medium text-primary-600 hover:text-primary-700 transition-colors"
+                            >
+                              Se connecter avec mon e-mail
+                            </button>
+                          </p>
+                        ) : (
+                          <p className="mt-1 text-xs text-slate-500">
+                            Le numéro enregistré par votre RH sur votre fiche.
+                          </p>
+                        )}
                       </div>
 
                       {phoneCodeSent && (
@@ -1225,15 +1259,17 @@ function LoginForm() {
                         </div>
                       )}
 
-                      <div className="pt-1 text-right">
-                        <button
-                          type="button"
-                          onClick={() => { setLoginMethod('email'); resetPhoneCode(); }}
-                          className="text-sm font-medium text-primary-600 hover:text-primary-700 transition-colors"
-                        >
-                          Se connecter avec mon e-mail
-                        </button>
-                      </div>
+                      {!phoneLoginUnavailable && (
+                        <div className="pt-1 text-right">
+                          <button
+                            type="button"
+                            onClick={() => { setLoginMethod('email'); resetPhoneCode(); }}
+                            className="text-sm font-medium text-primary-600 hover:text-primary-700 transition-colors"
+                          >
+                            Se connecter avec mon e-mail
+                          </button>
+                        </div>
+                      )}
                     </>
                   ) : (
                   <>
@@ -1328,7 +1364,7 @@ function LoginForm() {
                     </div>
                   )}
 
-                  {activeTab === 'login' && (
+                  {activeTab === 'login' && phoneLoginAvailable && (
                     <div className="text-right">
                       <button
                         type="button"
