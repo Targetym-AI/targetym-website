@@ -294,7 +294,7 @@ function LoginForm() {
   const requestedDashboardPath = searchParams.get('next');
 
   const [activeTab, setActiveTab] = useState(defaultTab);
-  // Agents de terrain sans e-mail : numéro de la fiche + code reçu par SMS.
+  // Agents de terrain sans e-mail : numéro de la fiche + mot de passe à 4 chiffres.
   const [chosenLoginMethod, setLoginMethod] = useState<'email' | 'phone'>(
     searchParams.get('method') === 'phone' ? 'phone' : 'email'
   );
@@ -307,6 +307,13 @@ function LoginForm() {
   const [phoneCodeSent, setPhoneCodeSent] = useState(false);
   const [phoneCode, setPhoneCode] = useState('');
   const [phoneInfo, setPhoneInfo] = useState('');
+  // Le SMS ne sert qu'à la première connexion et à l'oubli : il fait choisir le
+  // mot de passe à 4 chiffres, demandé ensuite à chaque connexion.
+  const [phoneStep, setPhoneStep] = useState<'password' | 'sms' | 'choose'>('password');
+  const [phonePin, setPhonePin] = useState('');
+  const [phoneSetupToken, setPhoneSetupToken] = useState('');
+  const [newPhonePin, setNewPhonePin] = useState('');
+  const [newPhonePinConfirm, setNewPhonePinConfirm] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(
@@ -547,6 +554,81 @@ function LoginForm() {
     setError('');
   };
 
+  const showPhoneStep = (step: 'password' | 'sms' | 'choose') => {
+    resetPhoneCode();
+    setPhonePin('');
+    setNewPhonePin('');
+    setNewPhonePinConfirm('');
+    if (step !== 'choose') setPhoneSetupToken('');
+    setPhoneStep(step);
+  };
+
+  // L'API répond par un texte, ou par { code, message } pour un blocage.
+  const phoneErrorMessage = (detail: unknown, fallback: string) => {
+    if (typeof detail === 'string') return detail;
+    const message = (detail as { message?: unknown } | null)?.message;
+    return typeof message === 'string' ? message : fallback;
+  };
+
+  const loginWithPhonePin = async () => {
+    let responseStatus: number | undefined;
+    setIsLoading(true);
+    setError('');
+    try {
+      const response = await fetch(`${API_URL}/api/auth/phone/login`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ phone: fullPhoneNumber(), pin: phonePin }),
+      });
+      responseStatus = response.status;
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(phoneErrorMessage(data.detail, 'Numéro ou mot de passe incorrect'));
+      }
+      // Le refresh token reste dans le cookie HTTP-only de l'API, comme pour l'e-mail.
+      window.location.href = getDashboardDestination(data.user?.role, requestedDashboardPath);
+    } catch (err) {
+      setError(getAuthErrorMessage(err, responseStatus));
+      setPhonePin('');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const choosePhonePin = async () => {
+    if (newPhonePin !== newPhonePinConfirm) {
+      setError('Les deux mots de passe ne sont pas identiques.');
+      return;
+    }
+    let responseStatus: number | undefined;
+    setIsLoading(true);
+    setError('');
+    try {
+      const response = await fetch(`${API_URL}/api/auth/phone/set-pin`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ setup_token: phoneSetupToken, pin: newPhonePin }),
+      });
+      responseStatus = response.status;
+      const data = await response.json();
+      if (!response.ok) {
+        const message = phoneErrorMessage(data.detail, 'Mot de passe refusé');
+        // 401 : l'étape a expiré, il faut un nouveau code.
+        if (response.status === 401) showPhoneStep('sms');
+        throw new Error(message);
+      }
+      window.location.href = getDashboardDestination(data.user?.role, requestedDashboardPath);
+    } catch (err) {
+      setError(getAuthErrorMessage(err, responseStatus));
+      setNewPhonePin('');
+      setNewPhonePinConfirm('');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const sendPhoneCode = async () => {
     let responseStatus: number | undefined;
     setIsLoading(true);
@@ -585,7 +667,6 @@ function LoginForm() {
     try {
       const response = await fetch(`${API_URL}/api/auth/phone/verify`, {
         method: 'POST',
-        credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ phone: fullPhoneNumber(), code: phoneCode.trim() }),
       });
@@ -594,8 +675,8 @@ function LoginForm() {
       if (!response.ok) {
         throw new Error(typeof data.detail === 'string' ? data.detail : 'Code invalide ou expiré');
       }
-      // Le refresh token reste dans le cookie HTTP-only de l'API, comme pour l'e-mail.
-      window.location.href = getDashboardDestination(data.user?.role, requestedDashboardPath);
+      showPhoneStep('choose');
+      setPhoneSetupToken(data.setup_token);
     } catch (err) {
       setError(getAuthErrorMessage(err, responseStatus));
       setPhoneCode('');
@@ -607,7 +688,9 @@ function LoginForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (activeTab === 'login' && loginMethod === 'phone') {
-      await (phoneCodeSent ? verifyPhoneCode() : sendPhoneCode());
+      if (phoneStep === 'password') await loginWithPhonePin();
+      else if (phoneStep === 'choose') await choosePhonePin();
+      else await (phoneCodeSent ? verifyPhoneCode() : sendPhoneCode());
       return;
     }
     setIsLoading(true);
@@ -1194,6 +1277,7 @@ function LoginForm() {
                               autoComplete="tel-national"
                               value={phoneNumber}
                               onChange={(e) => { setPhoneNumber(e.target.value); if (phoneCodeSent) resetPhoneCode(); }}
+                              readOnly={phoneStep === 'choose'}
                               placeholder="77 123 45 67"
                               className="w-full pl-10 sm:pl-12 pr-4 py-2.5 sm:py-3 bg-slate-50 border border-slate-300 rounded-lg sm:rounded-xl text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-primary-500/50 focus:border-primary-500 transition-all text-sm sm:text-base"
                               required
@@ -1205,7 +1289,7 @@ function LoginForm() {
                             {PHONE_LOGIN_UNAVAILABLE_MESSAGE}{' '}
                             <button
                               type="button"
-                              onClick={() => { setLoginMethod('email'); resetPhoneCode(); setPhoneLoginUnavailable(false); }}
+                              onClick={() => { setLoginMethod('email'); showPhoneStep('password'); setPhoneLoginUnavailable(false); }}
                               className="font-medium text-primary-600 hover:text-primary-700 transition-colors"
                             >
                               Se connecter avec mon e-mail
@@ -1218,7 +1302,82 @@ function LoginForm() {
                         )}
                       </div>
 
-                      {phoneCodeSent && (
+                      {phoneStep === 'password' && (
+                        <div>
+                          <label htmlFor="loginPhonePin" className="block text-sm font-semibold text-slate-900 mb-1.5">
+                            Mot de passe à 4 chiffres
+                          </label>
+                          <input
+                            type="password"
+                            id="loginPhonePin"
+                            inputMode="numeric"
+                            autoComplete="current-password"
+                            maxLength={4}
+                            value={phonePin}
+                            onChange={(e) => setPhonePin(e.target.value.replace(/\D/g, '').slice(0, 4))}
+                            className="w-full px-4 py-2.5 sm:py-3 bg-slate-50 border border-slate-300 rounded-lg sm:rounded-xl text-center font-mono text-lg tracking-widest text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-primary-500/50 focus:border-primary-500 transition-all"
+                            required
+                          />
+                          <div className="mt-2 text-right">
+                            <button
+                              type="button"
+                              onClick={() => showPhoneStep('sms')}
+                              className="text-sm font-medium text-primary-600 hover:text-primary-700 transition-colors"
+                            >
+                              Première connexion ou mot de passe oublié ?
+                            </button>
+                          </div>
+                        </div>
+                      )}
+
+                      {phoneStep === 'sms' && !phoneCodeSent && (
+                        <p className="text-sm text-slate-600">
+                          Vous allez recevoir un code par SMS, puis choisir votre mot de passe à 4 chiffres.
+                        </p>
+                      )}
+
+                      {phoneStep === 'choose' && (
+                        <>
+                          <div>
+                            <label htmlFor="newPhonePin" className="block text-sm font-semibold text-slate-900 mb-1.5">
+                              Choisissez votre mot de passe à 4 chiffres
+                            </label>
+                            <input
+                              type="password"
+                              id="newPhonePin"
+                              inputMode="numeric"
+                              autoComplete="new-password"
+                              maxLength={4}
+                              value={newPhonePin}
+                              onChange={(e) => setNewPhonePin(e.target.value.replace(/\D/g, '').slice(0, 4))}
+                              className="w-full px-4 py-2.5 sm:py-3 bg-slate-50 border border-slate-300 rounded-lg sm:rounded-xl text-center font-mono text-lg tracking-widest text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-primary-500/50 focus:border-primary-500 transition-all"
+                              autoFocus
+                              required
+                            />
+                            <p className="mt-1 text-xs text-slate-500">
+                              Il vous sera demandé à chaque connexion, avec votre numéro.
+                            </p>
+                          </div>
+                          <div>
+                            <label htmlFor="newPhonePinConfirm" className="block text-sm font-semibold text-slate-900 mb-1.5">
+                              Retapez-le
+                            </label>
+                            <input
+                              type="password"
+                              id="newPhonePinConfirm"
+                              inputMode="numeric"
+                              autoComplete="new-password"
+                              maxLength={4}
+                              value={newPhonePinConfirm}
+                              onChange={(e) => setNewPhonePinConfirm(e.target.value.replace(/\D/g, '').slice(0, 4))}
+                              className="w-full px-4 py-2.5 sm:py-3 bg-slate-50 border border-slate-300 rounded-lg sm:rounded-xl text-center font-mono text-lg tracking-widest text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-primary-500/50 focus:border-primary-500 transition-all"
+                              required
+                            />
+                          </div>
+                        </>
+                      )}
+
+                      {phoneStep === 'sms' && phoneCodeSent && (
                         <div>
                           {phoneInfo && (
                             <p className="mb-3 text-sm text-slate-600">{phoneInfo}</p>
@@ -1260,10 +1419,19 @@ function LoginForm() {
                       )}
 
                       {!phoneLoginUnavailable && (
-                        <div className="pt-1 text-right">
+                        <div className="pt-1 flex items-center justify-between gap-3">
+                          {phoneStep === 'password' ? <span /> : (
+                            <button
+                              type="button"
+                              onClick={() => showPhoneStep('password')}
+                              className="text-sm text-slate-500 hover:text-slate-700"
+                            >
+                              J&apos;ai déjà un mot de passe
+                            </button>
+                          )}
                           <button
                             type="button"
-                            onClick={() => { setLoginMethod('email'); resetPhoneCode(); }}
+                            onClick={() => { setLoginMethod('email'); showPhoneStep('password'); }}
                             className="text-sm font-medium text-primary-600 hover:text-primary-700 transition-colors"
                           >
                             Se connecter avec mon e-mail
@@ -1408,9 +1576,11 @@ function LoginForm() {
                         <span>
                           {activeTab !== 'login'
                             ? 'Démarrer mon essai gratuit'
-                            : loginMethod === 'phone' && !phoneCodeSent
-                              ? 'Recevoir le code par SMS'
-                              : 'Se connecter'}
+                            : loginMethod === 'phone' && phoneStep === 'sms'
+                              ? (phoneCodeSent ? 'Valider le code' : 'Recevoir le code par SMS')
+                              : loginMethod === 'phone' && phoneStep === 'choose'
+                                ? 'Enregistrer et me connecter'
+                                : 'Se connecter'}
                         </span>
                         <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform" />
                       </>
