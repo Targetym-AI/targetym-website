@@ -1533,7 +1533,7 @@ function LoginForm() {
                   )}
 
                   {activeTab === 'login' && phoneLoginAvailable && (
-                    <div className="text-right">
+                    <div className="text-center">
                       <button
                         type="button"
                         onClick={() => { setLoginMethod('phone'); setError(''); }}
